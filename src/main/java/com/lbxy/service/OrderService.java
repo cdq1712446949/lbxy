@@ -1,9 +1,11 @@
 package com.lbxy.service;
 
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.Status;
 import com.lbxy.controller.OrderController;
 import com.lbxy.model.Order;
+import com.lbxy.model.User;
 import com.sun.tools.corba.se.idl.constExpr.Or;
 
 import java.util.ArrayList;
@@ -49,8 +51,19 @@ public class OrderService {
     }
 
     public Page<Order> getAllOrder(int pn){
-        Page<Order> page=Order.dao.paginate(pn,10,"select *","from `Order`");
-        return page;
+        int totalNum = Db.queryInt("select count(*) from `Order`");
+        int totalPage = totalNum / 10;
+        if (totalNum % 10 >= 1) {
+            totalPage += 1;
+        }
+        if (pn >= totalPage) {
+            pn = totalPage;
+        }
+
+        if (pn <= 1) {
+            pn = 1;
+        }
+        return Order.dao.paginate(pn, 10, "select *", " from `Order`");
     }
 
 }
