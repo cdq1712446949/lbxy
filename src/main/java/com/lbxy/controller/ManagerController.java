@@ -1,15 +1,12 @@
 package com.lbxy.controller;
 
 import com.jfinal.plugin.activerecord.Page;
-import com.lbxy.common.response.MessageVo;
-import com.lbxy.common.response.ResponseStatus;
-import com.lbxy.model.Manager;
+import com.lbxy.model.Order;
 import com.lbxy.model.User;
 import com.lbxy.service.ManagerService;
+import com.lbxy.service.OrderService;
 import com.lbxy.service.UserService;
 import org.apache.commons.lang3.StringUtils;
-
-import java.util.List;
 
 public class ManagerController extends BaseController {
 
@@ -17,9 +14,12 @@ public class ManagerController extends BaseController {
 
     private UserService userService;
 
+    private OrderService orderService;
+
     public ManagerController() {
         userService = new UserService();
         managerService = new ManagerService();
+        orderService=new OrderService();
     }
 
     public void index() {
@@ -35,10 +35,7 @@ public class ManagerController extends BaseController {
             System.out.println(" pageNumber is invalid");
         }
         Page<User> users = userService.getAllUsers(pn);
-//        renderJson(users);
         setAttr("data", users);
-
-
         render("user_list.html");
     }
 
@@ -60,6 +57,7 @@ public class ManagerController extends BaseController {
     }
 
     public void login() {
+
         String username = getPara("username");
         String password = getPara("password");
         int i = managerService.login(username, password);
@@ -77,6 +75,18 @@ public class ManagerController extends BaseController {
             return;
         }
         System.out.println(username + password);
+    }
+
+    public void orderList(){
+        int pn = 1;
+        try {
+            pn = getParaToInt("pn");
+        } catch (Exception e) {
+            System.out.println(" pageNumber is invalid");
+        }
+        Page<Order> orderPage = orderService.getAllOrder(pn);
+        setAttr("orderpage", orderPage);
+        render("order_list.html");
     }
 
 }

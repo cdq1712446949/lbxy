@@ -48,4 +48,9 @@ public class OrderService {
         order.update();
     }
 
+    public Page<Order> getAllOrder(int pn){
+        Page<Order> page=Order.dao.paginate(pn,10,"select *","from `Order`");
+        return page;
+    }
+
 }

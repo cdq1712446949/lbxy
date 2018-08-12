@@ -31,7 +31,6 @@
                         <div id="box_center">
                             手机号&nbsp;&nbsp;<input type="number" name="phoneNumber" class="ui_input_txt02"/>
                             <button id="search_btn" type="submit" class="ui_input_btn01"  >查询</button>
-                            <div>#(error_search)</div>
                         </div>
                     </form>
                 </div>
@@ -41,22 +40,36 @@
             <div class="ui_tb">
                 <table class="table" cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
                     <tr>
-                        <th width="30"><input type="checkbox" id="all" onclick="selectOrClearAllCheckbox(this);"/>
+                        <th width="30"><input type="checkbox" id="all" />
                         </th>
                         <th>id</th>
-                        <th>手机号</th>
-                        <th>姓名</th>
-                        <th>余额</th>
-                        <th>是否认证</th>
+                        <th>完成状态</th>
+                        <th>发单时间</th>
+                        <th>完成时间</th>
+                        <th>接单人手机号</th>
+                        <th>发单人手机号</th>
+                        <th>酬金</th>
+                        <th>取货地址</th>
+                        <th>送货地址</th>
+                        <th>货物介绍</th>
+                        <th>配送时间段</th>
+                        <th>备注</th>
                     </tr>
-                    #for(x:data.list)
+                    #for(x:orderpage.list)
                     <tr>
                         <td><input type="checkbox" name="IDCheck" value="14458579642011" class="acb"/></td>
                         <td>#(x.id)</td>
-                        <td>#(x.phoneNumber)</td>
-                        <td>#(x.username)</td>
-                        <td>#(x.balance)</td>
                         <td>#(x.status==1?"是":"否")</td>
+                        <td>#(x.createdDate)</td>
+                        <td>#(x.completedDate)</td>
+                        <td>#(x.acceptUserPhoneNumber)</td>
+                        <td>#(x.userPhoneNumber)</td>
+                        <td>#(x.reward)</td>
+                        <td>#(x.fromAddress)</td>
+                        <td>#(x.toAddress)</td>
+                        <td>#(x.detail)</td>
+                        <td>#(x.availableDate)</td>
+                        <td>#(x.remark)</td>
                     </tr>
                     #end
 
@@ -65,9 +78,9 @@
             <div class="ui_tb_h30">
                 <div class="ui_flt" style="height: 30px; line-height: 30px;">
                     共有
-                    <span class="ui_txt_bold04">#(data.totalRow)</span>
+                    <span class="ui_txt_bold04">#(orderpage.totalRow)</span>
                     条记录，当前第
-                    <span class="ui_txt_bold04">#(data.pageNumber)/#(data.totalPage)</span>
+                    <span class="ui_txt_bold04">#(orderpage.pageNumber)/#(orderpage.totalPage)</span>
                     页
                 </div>
                 <div class="ui_frt">
