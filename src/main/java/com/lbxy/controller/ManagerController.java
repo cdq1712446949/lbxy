@@ -6,6 +6,9 @@ import com.lbxy.model.User;
 import com.lbxy.service.ManagerService;
 import com.lbxy.service.OrderService;
 import com.lbxy.service.UserService;
+import com.lbxy.service.impl.ManagerServiceImpl;
+import com.lbxy.service.impl.OrderServiceImpl;
+import com.lbxy.service.impl.UserServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 
 public class ManagerController extends BaseController {
@@ -17,9 +20,9 @@ public class ManagerController extends BaseController {
     private OrderService orderService;
 
     public ManagerController() {
-        userService = new UserService();
-        managerService = new ManagerService();
-        orderService=new OrderService();
+        userService = new UserServiceImpl();
+        managerService = new ManagerServiceImpl();
+        orderService =new OrderServiceImpl();
     }
 
     public void index() {

@@ -1,24 +1,20 @@
 package com.lbxy.controller;
 
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.response.MessageVo;
 import com.lbxy.common.response.ResponseStatus;
 import com.lbxy.model.Community;
 import com.lbxy.service.CommunityService;
-import org.apache.log4j.or.jms.MessageRenderer;
+import com.lbxy.service.impl.CommunityServiceImpl;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class CommunityController extends BaseController {
 
     public CommunityService communityService;
 
     public CommunityController() {
-        communityService = new CommunityService();
+        communityService = new CommunityServiceImpl();
     }
 
     public void index() {

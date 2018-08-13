@@ -1,4 +1,4 @@
-package com.lbxy.util;
+package com.lbxy.utils;
 
 /**
  * Password Hashing With PBKDF2 (http://crackstation.net/hashing-security.htm).

@@ -1,13 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.demo</groupId>
-  <artifactId>jfinal_demo_for_maven</artifactId>
+  <groupId>com.lbxy</groupId>
+  <artifactId>lbxy</artifactId>
   <packaging>war</packaging>
   <version>3.2</version>
-  <name>jfinal_demo_for_maven Maven Webapp</name>
-  <url>http://maven.apache.org</url>
-  
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
@@ -102,10 +100,55 @@
           <version>3.7</version>
       </dependency>
 
+      <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+      <dependency>
+          <groupId>org.apache.httpcomponents</groupId>
+          <artifactId>httpclient</artifactId>
+          <version>4.5.3</version>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime -->
+      <dependency>
+          <groupId>org.apache.httpcomponents</groupId>
+          <artifactId>httpmime</artifactId>
+          <version>4.5.3</version>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+          <version>1.7.25</version>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+      <dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter-api</artifactId>
+          <version>5.2.0</version>
+          <scope>test</scope>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-core -->
+      <dependency>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-core</artifactId>
+          <version>1.2.3</version>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+      <dependency>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+          <version>1.2.3</version>
+          <scope>test</scope>
+      </dependency>
+
+
   </dependencies>
   
   <build>
-    <finalName>jfinal_demo_for_maven</finalName>
+    <finalName>lbxy</finalName>
 	    <plugins>
 		  <plugin>
 		    <groupId>org.mortbay.jetty</groupId>

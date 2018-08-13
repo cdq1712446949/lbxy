@@ -1,12 +1,12 @@
 package com.lbxy.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.response.MessageVo;
 import com.lbxy.common.response.ResponseStatus;
 import com.lbxy.model.Order;
 import com.lbxy.service.OrderService;
+import com.lbxy.service.impl.OrderServiceImpl;
 
 import java.util.Date;
 
@@ -15,7 +15,7 @@ public class OrderController extends BaseController {
     private OrderService orderService;
 
     public OrderController() {
-        orderService = new OrderService();
+        orderService = new OrderServiceImpl();
     }
 
     public void index() {
