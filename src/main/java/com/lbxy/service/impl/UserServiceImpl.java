@@ -1,9 +1,11 @@
 package com.lbxy.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.model.User;
 import com.lbxy.service.UserService;
+import com.lbxy.weixin.utils.WeixinUtil;
 
 public class UserServiceImpl implements UserService {
     public User findById(int id) {
@@ -30,5 +32,12 @@ public class UserServiceImpl implements UserService {
         Page<User> list = User.dao.paginate(1, 1, "select * ", "from User where phoneNumber=?", phoneNumber);
 
         return list;
+    }
+
+    @Override
+    public int login(String code) {
+        JSONObject result = WeixinUtil.login(code);
+
+        return 0;
     }
 }

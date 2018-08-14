@@ -8,10 +8,7 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
 import com.jfinal.template.source.ClassPathSourceFactory;
-import com.lbxy.controller.BillController;
-import com.lbxy.controller.CommunityController;
-import com.lbxy.controller.ManagerController;
-import com.lbxy.controller.OrderController;
+import com.lbxy.controller.*;
 import com.lbxy.model.*;
 
 /**
@@ -50,7 +47,7 @@ public class Config extends JFinalConfig {
         me.add("/community",CommunityController.class);
         me.add("/bill",BillController.class);
         me.add("/back",ManagerController.class);
-//        me.add()
+		me.add("/user", UserController.class);
     }
 	
 	public void configEngine(Engine me) {

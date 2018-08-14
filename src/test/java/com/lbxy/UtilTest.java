@@ -16,6 +16,6 @@ import java.io.FileNotFoundException;
 class UtilTest {
     @Test
     void test() {
-            RandomAvatarUtil.generateAvatar("./test.png");
+            RandomAvatarUtil.generateAvatarUrl();
     }
 }

@@ -14,4 +14,6 @@ public interface UserService {
     Page<User> getAllUsers(int pn);
 
     Page<User> findByPhone(String phoneNumber);
+
+    int login(String code);
 }
