@@ -133,4 +133,40 @@ public class ManagerController extends BaseController {
         render("lostfound_list.html");
     }
 
+    public void deleteTreeHole(){
+        int id=getParaToInt("id");
+        boolean isDelete=treeHoleService.deleteTreeHole(id);
+        if (isDelete){
+            setAttr("isDelete","true");
+            treeHoleList();
+        }else {
+            setAttr("isDelete","false");
+            treeHoleList();
+        }
+    }
+
+    public void deleteFlea(){
+        int id=getParaToInt("id");
+        boolean isDelete=fleaService.deleteFlea(id);
+        if (isDelete){
+            setAttr("isDelete","true");
+            fleaList();
+        }else {
+            setAttr("isDelete","false");
+            fleaList();
+        }
+    }
+
+    public void deleteLostFound(){
+        int id=getParaToInt("id");
+        boolean isDelete=lostFoundService.deleteLostFound(id);
+        if (isDelete){
+            setAttr("isDelete","true");
+            lostFoundList();
+        }else {
+            setAttr("isDelete","false");
+            lostFoundList();
+        }
+    }
+
 }

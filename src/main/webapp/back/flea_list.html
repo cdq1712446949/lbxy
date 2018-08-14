@@ -94,6 +94,7 @@
                         <th>发帖时间</th>
                         <th>状态</th>
                         <th>图片路径</th>
+                        <th>操作</th>
                     </tr>
                     #for(x:fleaPage.list)
                     <tr>
@@ -104,8 +105,11 @@
                         <td>#(x.pId)</td>
                         <td>#(x.content)</td>
                         <td>#(x.postDate)</td>
-                        <td>#(x.status)</td>
+                        <td>#(x.status==0?"正常":"已删除")</td>
                         <td>#(x.pictureUrl)</td>
+                        <td>
+                            <a href="/back/deleteFlea?id=#(x.id)">删除</a>
+                        </td>
                     </tr>
                     #end
 

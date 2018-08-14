@@ -7,4 +7,6 @@ public interface FleaService {
 
     Page<Flea> getAllFlea(int pn);
 
+    boolean deleteFlea(int id);
+
 }
