@@ -73,7 +73,7 @@ public class Config extends JFinalConfig {
         arp.addMapping("TreeHole",TreeHole.class);
         arp.addMapping("Flea",Flea.class);
         arp.addMapping("LostFound",LostFound.class);
-
+        arp.addMapping("Notice",Notice.class);
         Engine engine = arp.getEngine();
 
         // 上面的代码获取到了用于 sql 管理功能的 Engine 对象，接着就可以开始配置了

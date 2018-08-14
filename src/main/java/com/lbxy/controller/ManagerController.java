@@ -18,6 +18,8 @@ public class ManagerController extends BaseController {
 
     private FleaService fleaService;
 
+    private NoticeService noticeService;
+
     private LostFoundService lostFoundService;
 
     public ManagerController() {
@@ -27,6 +29,7 @@ public class ManagerController extends BaseController {
         treeHoleService = new TreeHoleServiceImpl();
         fleaService = new FleaServiceImpl();
         lostFoundService = new LostFoundServiceImpl();
+        noticeService = new NoticeServiceImpl();
     }
 
     public void index() {
@@ -121,7 +124,7 @@ public class ManagerController extends BaseController {
         render("flea_list.html");
     }
 
-    public void lostFoundList(){
+    public void lostFoundList() {
         int pn = 1;
         try {
             pn = getParaToInt(pn);
@@ -133,39 +136,63 @@ public class ManagerController extends BaseController {
         render("lostfound_list.html");
     }
 
-    public void deleteTreeHole(){
-        int id=getParaToInt("id");
-        boolean isDelete=treeHoleService.deleteTreeHole(id);
-        if (isDelete){
-            setAttr("isDelete","true");
+    public void noticeList() {
+        int pn = 1;
+        try {
+            pn = getParaToInt(pn);
+        } catch (Exception e) {
+            System.out.println(" pageNumber is invalid");
+        }
+        Page<Notice> noticePage = noticeService.getAllNotice(pn);
+        setAttr("noticePage", noticePage);
+        render("notice_list.html");
+    }
+
+    public void deleteTreeHole() {
+        int id = getParaToInt("id");
+        boolean isDelete = treeHoleService.deleteTreeHole(id);
+        if (isDelete) {
+            setAttr("isDelete", "true");
             treeHoleList();
-        }else {
-            setAttr("isDelete","false");
+        } else {
+            setAttr("isDelete", "false");
             treeHoleList();
         }
     }
 
-    public void deleteFlea(){
-        int id=getParaToInt("id");
-        boolean isDelete=fleaService.deleteFlea(id);
-        if (isDelete){
-            setAttr("isDelete","true");
+    public void deleteFlea() {
+        int id = getParaToInt("id");
+        boolean isDelete = fleaService.deleteFlea(id);
+        if (isDelete) {
+            setAttr("isDelete", "true");
             fleaList();
-        }else {
-            setAttr("isDelete","false");
+        } else {
+            setAttr("isDelete", "false");
             fleaList();
         }
     }
 
-    public void deleteLostFound(){
-        int id=getParaToInt("id");
-        boolean isDelete=lostFoundService.deleteLostFound(id);
-        if (isDelete){
-            setAttr("isDelete","true");
+    public void deleteLostFound() {
+        int id = getParaToInt("id");
+        boolean isDelete = lostFoundService.deleteLostFound(id);
+        if (isDelete) {
+            setAttr("isDelete", "true");
             lostFoundList();
-        }else {
-            setAttr("isDelete","false");
+        } else {
+            setAttr("isDelete", "false");
             lostFoundList();
+        }
+    }
+
+    public void deleteNotice(){
+        int id = getParaToInt("id");
+        boolean isDelete = noticeService.deleteNotice(id);
+        if (isDelete) {
+            setAttr("isDelete", "true");
+            noticeList();
+        } else {
+            setAttr("isDelete", "false");
+            noticeList();
         }
     }
 
