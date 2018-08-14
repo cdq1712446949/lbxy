@@ -21,9 +21,7 @@ import org.apache.http.util.CharsetUtils;
 import org.apache.http.util.EntityUtils;
 
 import javax.net.ssl.SSLContext;
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -39,10 +37,10 @@ public class NetWorkUtil {
 
     private static final Class CLAZZ = NetWorkUtil.class;
 
-    public static JSONObject doGetUri(String uri) {
+    private static HttpGet preDoGet(String uri) {
+
         LoggerUtil.debug(CLAZZ, "do get the " + uri);
 
-        CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet get = new HttpGet(uri);
         //设置请求配置
         RequestConfig requestConfig = RequestConfig.custom()
@@ -53,21 +51,53 @@ public class NetWorkUtil {
                 .build();
         get.setConfig(requestConfig);
 
-        String result = "";
+        get.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
+        get.setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 
+        return get;
+    }
+
+    public static void doGetDownload(String uri,String savePath) {
+        HttpGet get = preDoGet(uri);
+
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpResponse response = null;
         try {
-            CloseableHttpResponse response = httpClient.execute(get);
+            response = httpClient.execute(get);
 
             if (response.getStatusLine().getStatusCode() == 200) {
-                result = EntityUtils.toString(response.getEntity(), "UTF-8");/** 设置utf-8字符集，否则请求微信数据可能会出现中文乱码 */
+                LoggerUtil.debug(CLAZZ, "got response success " );
+                response.getEntity().writeTo(new FileOutputStream(savePath));
+            } else {
+                LoggerUtil.error(CLAZZ, "something wrong happened" );
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                httpClient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static JSONObject doGetUri(String uri) {
+        HttpGet get = preDoGet(uri);
+
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpResponse response = null;
+        String result = "";
+        try {
+            response = httpClient.execute(get);
+
+            if (response.getStatusLine().getStatusCode() == 200) {
                 LoggerUtil.debug(CLAZZ, "got response : " + result);
+                result = EntityUtils.toString(response.getEntity(), "UTF-8");
             } else {
                 LoggerUtil.error(CLAZZ, "something wrong happened：" + EntityUtils.toString(response.getEntity()));
             }
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassCastException e) {
-            LoggerUtil.info(CLAZZ, "the response is not JSON");
             e.printStackTrace();
         } finally {
             try {
@@ -91,22 +121,12 @@ public class NetWorkUtil {
     }
 
     public static String doPostUriReturnPlainText(String uri, String params) {
-
         return doPost(uri, params);
     }
 
-    private static String doFormPost(String url, Map<String, String> data) {
-        LoggerUtil.fmtDebug(CLAZZ, "do post the %s, data is %s", url, data);
-
-        CloseableHttpClient httpClient = HttpClients.createDefault();
+    private static HttpPost preDoPost(String url) {
         HttpPost post = new HttpPost(url);
         //设置请求配置
-//        RequestConfig requestConfig = RequestConfig.custom()
-//                .setConnectTimeout(5000)   //设置连接超时时间
-//                .setConnectionRequestTimeout(5000) // 设置请求超时时间
-//                .setSocketTimeout(5000)
-//                .setRedirectsEnabled(true)//默认允许自动重定向
-//                .build();
         RequestConfig requestConfig = RequestConfig.custom()
                 .setConnectTimeout(50000)   //设置连接超时时间
                 .setConnectionRequestTimeout(50000) // 设置请求超时时间
@@ -114,12 +134,18 @@ public class NetWorkUtil {
                 .setRedirectsEnabled(true)//默认允许自动重定向
                 .build();
         post.setConfig(requestConfig);
+        return post;
+    }
+
+    private static String doFormPost(String url, Map<String, String> data) {
+        LoggerUtil.fmtDebug(CLAZZ, "do post the %s, data is %s", url, data);
+        HttpPost post = preDoPost(url);
+        CloseableHttpClient httpClient = HttpClients.createDefault();
 
         ContentType strContent = ContentType.create("text/plain", Charset.forName("UTF-8"));
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.setCharset(Charset.forName("UTF-8"));
         if (data != null && data.size() != 0) {
-            int index = 0;
             for (Map.Entry<String, String> entry : data.entrySet()) {
                 builder.addTextBody(entry.getKey(), entry.getValue(), strContent);
             }
@@ -151,16 +177,8 @@ public class NetWorkUtil {
     private static String doPost(String uri, String params) {
         LoggerUtil.fmtDebug(CLAZZ, "do post the %s, data is %s", uri, params);
 
+        HttpPost post = preDoPost(uri);
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpPost post = new HttpPost(uri);
-        //设置请求配置
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(5000)   //设置连接超时时间
-                .setConnectionRequestTimeout(5000) // 设置请求超时时间
-                .setSocketTimeout(5000)
-                .setRedirectsEnabled(true)//默认允许自动重定向
-                .build();
-        post.setConfig(requestConfig);
 
         String result = "";
 

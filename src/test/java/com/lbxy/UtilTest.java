@@ -1,7 +1,11 @@
 package com.lbxy;
 
 import com.lbxy.utils.LoggerUtil;
+import com.lbxy.utils.NetWorkUtil;
+import com.lbxy.utils.RandomAvatarUtil;
 import org.junit.jupiter.api.Test;
+
+import java.io.FileNotFoundException;
 
 /**
  * @author lmy
@@ -9,9 +13,9 @@ import org.junit.jupiter.api.Test;
  * @date 2018/8/14
  */
 
-public class UtilTest {
+class UtilTest {
     @Test
     void test() {
-        LoggerUtil.info(getClass(), "hello");
+            RandomAvatarUtil.generateAvatar("./test.png");
     }
 }

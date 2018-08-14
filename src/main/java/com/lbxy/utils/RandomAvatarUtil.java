@@ -2,6 +2,10 @@ package com.lbxy.utils;
 
 import org.apache.commons.lang3.RandomUtils;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,12 +21,15 @@ public class RandomAvatarUtil {
      */
     public static String avatarUrl = "http://www.gravatar.com/avatar/%s?s=%s&d=%s";
 
-    public static List<String> avatarTypes = Arrays.asList("identicon", "monsterid", "wavatar", "retro", "robohash","mp");
+    public static List<String> avatarTypes = Arrays.asList("identicon", "monsterid", "wavatar", "retro", "robohash");
 
     public static void generateAvatar(String savePath) {
         int avatarCode = RandomUtils.nextInt();
-        int avatarType = RandomUtils.nextInt(0, 6);
+        int avatarType = RandomUtils.nextInt(0, 5);
         String reqUrl = String.format(avatarUrl, avatarCode, 100, avatarTypes.get(avatarType));
 
+        NetWorkUtil.doGetDownload(reqUrl,savePath);
     }
+
+
 }
