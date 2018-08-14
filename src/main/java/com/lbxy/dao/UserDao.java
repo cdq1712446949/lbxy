@@ -10,12 +10,17 @@ import com.lbxy.model.User;
 public class UserDao {
 
 
-    public boolean insert(User user) {
-        return user.save();
+    public int insert(User user) {
+        user.save();
+        return this.findByOpenid(user.getStr("openId")).getInt("id");
     }
 
     public User findByOpenid(String openid) {
         return User.dao.findFirst("select * from User where openid = ?", openid);
+    }
+
+    public User findById(int id) {
+        return User.dao.findById(id);
     }
 
     public boolean update(User user) {

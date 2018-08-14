@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.lbxy.model.User;
+import com.lbxy.utils.JWTUtil;
 import com.lbxy.utils.LoggerUtil;
 import com.lbxy.utils.NetWorkUtil;
 import com.lbxy.utils.RandomAvatarUtil;
@@ -23,7 +24,7 @@ import java.util.Date;
 class UtilTest {
     @Test
     void test() {
-
+        System.out.println(JWTUtil.createToken(10));
 
     }
 }

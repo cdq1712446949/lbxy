@@ -51,25 +51,35 @@ public class UserServiceImpl implements UserService {
         JSONObject result = WeixinUtil.login(code);
         User user = userDao.findByOpenid(result.getString("openid"));
         JSONObject returnValue = null;
+        int userId = -1;
         if (user != null) {
             //更新sessionKey
             user.set("sessionKey", result.getString("session_key"));
             userDao.update(user);
 
+            userId = user.getInt("id");
             returnValue.put("isNew", false);
         } else {
             user = new User();
             user.set("openId", result.getString("openid"));
             user.set("sessionKey", result.getString("session_key"));
-            userDao.insert(user);
+            userId = userDao.insert(user);
 
             returnValue = JSON.parseObject(user.toJson());
             returnValue.put("isNew", true);
         }
 
-        returnValue.put("token", JWTUtil.createToken());
+        returnValue.put("token", JWTUtil.createToken(userId));
         returnValue.put("user", user);
         return returnValue;
+    }
+
+    @Override
+    public boolean updateUserInfo(JSONObject userInfo,int userId) {
+        User user = userDao.findById(userId);
+//        user.
+        //TODO 更新用户信息，返回用户最新信息
+        return false;
     }
 
 }

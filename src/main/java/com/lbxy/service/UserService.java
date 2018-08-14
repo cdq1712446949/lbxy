@@ -17,4 +17,6 @@ public interface UserService {
     Page<User> findByPhone(String phoneNumber);
 
     JSONObject login(String code);
+
+    boolean updateUserInfo(JSONObject userInfo,int userId);
 }

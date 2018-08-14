@@ -20,17 +20,28 @@ public class JWTUtil {
     private final static String SIGN_CLASS = "com.lbxy.utils.JWTUtil";
     private static JWTVerifier verifier = null;
 
-    public static String createToken() {
+    /**
+     * 签发签名，其中带入userid参数
+     * @param userId
+     * @return
+     */
+    public static String createToken(int userId) {
         String token = JWT.create()
                 .withIssuer(ISSUER)
                 .withIssuedAt(new Date())
                 .withSubject(SUBJECT)
                 .withClaim("signClass", SIGN_CLASS)
+                .withClaim("id", userId)
                 .sign(algorithm);
         return token;
     }
 
-    public static boolean verifyToken(String token) {
+    /**
+     * 验证，验证成功之后返回当前user的id，如果失败返回-1
+     * @param token
+     * @return
+     */
+    public static int verifyToken(String token) {
         if (verifier == null) {
             synchronized (JWTUtil.class) {
                 if (verifier == null) {
@@ -46,10 +57,10 @@ public class JWTUtil {
         try {
 
             DecodedJWT jwt = verifier.verify(token);
-            return true;
+            return jwt.getClaim("id").asInt();
         } catch (JWTVerificationException e) {
             e.printStackTrace();
-            return false;
+            return -1;
         }
     }
 }

@@ -16,4 +16,8 @@ public class MessageVoUtil {
     public static MessageVo error(String msg) {
         return new MessageVo().setStatus(ResponseStatus.error).setMessage(msg);
     }
+
+    public static MessageVo needLogin() {
+        return new MessageVo().setStatus(ResponseStatus.unLogin).setMessage("未登录！");
+    }
 }
