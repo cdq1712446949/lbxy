@@ -1,5 +1,6 @@
 package com.lbxy;
 
+import com.lbxy.model.User;
 import com.lbxy.utils.LoggerUtil;
 import com.lbxy.utils.NetWorkUtil;
 import com.lbxy.utils.RandomAvatarUtil;
@@ -16,6 +17,7 @@ import java.io.FileNotFoundException;
 class UtilTest {
     @Test
     void test() {
-            RandomAvatarUtil.generateAvatarUrl();
+        User.dao.find("select * from User where id = ?",1);
+        System.out.println();
     }
 }

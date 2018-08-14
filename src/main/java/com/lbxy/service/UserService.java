@@ -15,5 +15,5 @@ public interface UserService {
 
     Page<User> findByPhone(String phoneNumber);
 
-    int login(String code);
+    User login(String code);
 }

@@ -3,11 +3,21 @@ package com.lbxy.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.lbxy.dao.UserDao;
 import com.lbxy.model.User;
 import com.lbxy.service.UserService;
 import com.lbxy.weixin.utils.WeixinUtil;
 
 public class UserServiceImpl implements UserService {
+    public static int SUCCESS = 0;
+    public static int ERROR = 1;
+
+    private UserDao userDao;
+
+    public UserServiceImpl() {
+        userDao = new UserDao();
+    }
+
     public User findById(int id) {
         return User.dao.findById(id);
     }
@@ -35,9 +45,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int login(String code) {
+    public User login(String code) {
         JSONObject result = WeixinUtil.login(code);
-
-        return 0;
+        User user = userDao.findByOpenid(result.getString("openid"));
+        if (user != null) {
+            //更新sessionKey
+            user.set("sessionKey", result.getString("session_key"));
+            userDao.update(user);
+        } else {
+            user = new User();
+            user.set("openId", result.getString("openid"));
+            user.set("sessionKey", result.getString("session_key"));
+            userDao.insert(user);
+        }
+        return user;
     }
 }

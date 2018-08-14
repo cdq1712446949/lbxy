@@ -28,7 +28,7 @@ public class OrderController extends BaseController {
 
     public void createdOrder() {
         Order order = new Order();
-        getJsonParam(order);
+        getJsonParamToModel(order);
         order.set("createdDate", new Date());
         boolean i = order.save();
         if (i) {

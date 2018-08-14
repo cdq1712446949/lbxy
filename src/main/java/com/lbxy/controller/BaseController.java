@@ -8,7 +8,7 @@ import com.jfinal.plugin.activerecord.Model;
 
 public class BaseController extends Controller {
 
-    public void getJsonParam(Model type) {
+    public void getJsonParamToModel(Model type) {
         String jsonString = HttpKit.readData(getRequest());
         JSONObject jsonObject = JSON.parseObject(jsonString);
         jsonObject.keySet().forEach((key)->{

@@ -35,7 +35,7 @@ public class CommunityController extends BaseController {
     public void save() {
 
         Community community = new Community();
-        getJsonParam(community);
+        getJsonParamToModel(community);
         community.set("postDate", new Date());
         boolean i = community.save();
         if (i) {
