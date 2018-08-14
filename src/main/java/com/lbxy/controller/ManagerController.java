@@ -74,6 +74,7 @@ public class ManagerController extends BaseController {
             return;
         }
         if (i == 2) {
+            setAttr("userName",ManagerServiceImpl.MANAGER.getStr("userName"));
             render("index.html");
             return;
         }

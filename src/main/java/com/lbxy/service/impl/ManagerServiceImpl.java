@@ -10,6 +10,8 @@ import java.util.List;
 
 public class ManagerServiceImpl implements ManagerService {
 
+    public static Manager MANAGER;
+
     public int  login(String username, String password) {
         int i=0;//0表示账号不存在，1表示密码不正确，2表示登陆成功
         List<Manager> list = Manager.dao.find("select * from Manager where userName=?", username);
@@ -19,6 +21,7 @@ public class ManagerServiceImpl implements ManagerService {
         }else {
             String hash = list.get(0).getStr("passWord");
             if (  PasswordUtil.validatePassword(password, hash)){
+                MANAGER=list.get(0);
                 System.out.println("登陆成功");
                 i=2;
             }else {
