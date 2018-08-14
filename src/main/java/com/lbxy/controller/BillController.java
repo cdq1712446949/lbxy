@@ -37,12 +37,6 @@ public class BillController extends BaseController {
         } else {
             renderJson(new MessageVo().setStatus(ResponseStatus.success).setMessage("账单记录生成失败"));
         }
-//        int orderid=param.getIntValue("orderId");
-//        int  userId=param.getIntValue("userId");
-//        int money=param.getIntValue("money");
-//        int status=param.getIntValue("status");
-
-//        renderJson(String.valueOf(orderid)+String.valueOf(userId)+String.valueOf(money)+String.valueOf(status));
     }
 
 

@@ -71,6 +71,7 @@ public class Config extends JFinalConfig {
         arp.addMapping("User",User.class);
         arp.addMapping("Bill",Bill.class);
         arp.addMapping("Manager",Manager.class);
+        arp.addMapping("TreeHole",)
 
         Engine engine = arp.getEngine();
 
