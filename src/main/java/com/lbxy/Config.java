@@ -9,6 +9,7 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
 import com.jfinal.template.source.ClassPathSourceFactory;
 import com.lbxy.controller.*;
+import com.lbxy.interceptors.GlobalParamInterceptor;
 import com.lbxy.model.*;
 
 /**
@@ -87,7 +88,7 @@ public class Config extends JFinalConfig {
 	 * 配置全局拦截器
 	 */
 	public void configInterceptor(Interceptors me) {
-		
+		me.addGlobalActionInterceptor(new GlobalParamInterceptor());
 	}
 	
 	/**

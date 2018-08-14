@@ -16,11 +16,12 @@ public class UserController extends BaseController {
 
 
     public void login(String code) {
-        if (code == null) {
-            renderJson(MessageVoUtil.error("请输入参数！"));
-        }
 
         JSONObject result = userService.login(code);
         renderJson(MessageVoUtil.success(result));
+    }
+
+    public void updateUserInfo(String userInfo) {
+        //TODO
     }
 }
