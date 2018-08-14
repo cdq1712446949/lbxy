@@ -38,9 +38,6 @@ public class Config extends JFinalConfig {
 	 * 配置常量
 	 */
 	public void configConstant(Constants me) {
-		// 加载少量必要配置，随后可用PropKit.get(...)获取值
-//		PropKit.use("a_little_config.txt");
-//        me.setJsonFactory(new FastJsonFactory());
 		me.setDevMode(true);
         me.setJsonFactory(new JFinalJsonFactory());
 	}
@@ -58,10 +55,6 @@ public class Config extends JFinalConfig {
 	
 	public void configEngine(Engine me) {
 	    me.setDevMode(true);
-
-//        me.setBaseTemplatePath(null);
-//        me.setSourceFactory(new ClassPathSourceFactory());
-
 	}
 	
 	/**
