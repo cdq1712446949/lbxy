@@ -8,4 +8,6 @@ public interface TreeHoleService {
 
     Page<TreeHole> getAllTreeHole(int pn);
 
+    boolean deleteTreeHole(int id);
+
 }

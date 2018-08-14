@@ -10,7 +10,7 @@
     <script type="text/javascript" src="scripts/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
     <link rel="stylesheet" type="text/css" href="style/authority/jquery.fancybox-1.3.4.css" media="screen"></link>
     <script type="text/javascript" src="scripts/artDialog/artDialog.js?skin=default"></script>
-    <title>后台管理系统</title>
+    <title>乐帮校园后台系统</title>
     <script type="text/javascript">
 
         /** 删除 **/
@@ -93,6 +93,7 @@
                         <th>发帖时间</th>
                         <th>状态</th>
                         <th>图片路径</th>
+                        <th>操作</th>
                     </tr>
                     #for(x:lostFoundPage.list)
                     <tr>
@@ -103,8 +104,11 @@
                         <td>#(x.pId)</td>
                         <td>#(x.content)</td>
                         <td>#(x.postDate)</td>
-                        <td>#(x.status)</td>
+                        <td>#(x.status==0?"正常":"已删除")</td>
                         <td>#(x.pictureUrl)</td>
+                        <td>
+                            <a href="/back/deleteLostFound?id=#(x.id)">删除</a>
+                        </td>
                     </tr>
                     #end
 

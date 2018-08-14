@@ -7,4 +7,6 @@ public interface LostFoundService {
 
     Page<LostFound> getAllLostFound(int pn);
 
+    boolean deleteLostFound(int id);
+
 }

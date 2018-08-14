@@ -9,4 +9,8 @@ public class LostFounDao {
         return LostFound.dao.paginate(pn,10,"select *","from LostFound");
     }
 
+    public boolean update(LostFound lostFound){
+        return  lostFound.update();
+    }
+
 }

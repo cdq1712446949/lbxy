@@ -87,28 +87,26 @@
                         <th width="30"><input type="checkbox" id="all" onclick="selectOrClearAllCheckbox(this);"/>
                         </th>
                         <th>id</th>
-                        <th>发帖人id</th>
-                        <th>被回复者id</th>
-                        <th>所属帖子id</th>
-                        <th>内容</th>
-                        <th>发帖时间</th>
+                        <th>管理员id</th>
                         <th>状态</th>
+                        <th>发布时间</th>
+                        <th>标题</th>
+                        <th>内容</th>
                         <th>图片路径</th>
                         <th>操作</th>
                     </tr>
-                    #for(x:fleaPage.list)
+                    #for(x:noticePage.list)
                     <tr>
                         <td><input type="checkbox" name="IDCheck" value="14458579642011" class="acb"/></td>
                         <td>#(x.id)</td>
                         <td>#(x.userId)</td>
-                        <td>#(x.pUserId)</td>
-                        <td>#(x.pId)</td>
-                        <td>#(x.content)</td>
-                        <td>#(x.postDate)</td>
                         <td>#(x.status==0?"正常":"已删除")</td>
+                        <td>#(x.postDate)</td>
+                        <td>#(x.title)</td>
+                        <td>#(x.content)</td>
                         <td>#(x.pictureUrl)</td>
                         <td>
-                            <a href="/back/deleteFlea?id=#(x.id)">删除</a>
+                            <a href="/back/deleteNotice?id=#(x.id)">删除</a>
                         </td>
                     </tr>
                     #end
@@ -118,16 +116,16 @@
             <div class="ui_tb_h30">
                 <div class="ui_flt" style="height: 30px; line-height: 30px;">
                     共有
-                    <span class="ui_txt_bold04">#(fleaPage.totalRow)</span>
+                    <span class="ui_txt_bold04">#(noticePage.totalRow)</span>
                     条记录，当前第
-                    <span class="ui_txt_bold04">#(fleaPage.pageNumber)/#(fleaPage.totalPage)</span>
+                    <span class="ui_txt_bold04">#(noticePage.pageNumber)/#(noticePage.totalPage)</span>
                     页
                 </div>
                 <div class="ui_frt">
                     <!--    如果是第一页，则只显示下一页、尾页 -->
 
-                    <a href="/back/fleaList?pn=#(fleaPage.pageNumber-1)" class="ui_input_btn01">上一页</a>
-                    <a href="/back/fleaList?pn=#(fleaPage.pageNumber+1)" class="ui_input_btn01">下一页</a>
+                    <a href="/back/noticeList?pn=#(noticePage.pageNumber-1)" class="ui_input_btn01">上一页</a>
+                    <a href="/back/noticeList?pn=#(noticePage.pageNumber+1)" class="ui_input_btn01">下一页</a>
 
                     <!--     如果是最后一页，则只显示首页、上一页 -->
 
