@@ -1,5 +1,6 @@
 package com.lbxy.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.model.User;
 
@@ -15,5 +16,5 @@ public interface UserService {
 
     Page<User> findByPhone(String phoneNumber);
 
-    User login(String code);
+    JSONObject login(String code);
 }

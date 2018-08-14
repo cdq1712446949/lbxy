@@ -1,5 +1,6 @@
 package com.lbxy.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.model.User;
 import com.lbxy.service.UserService;
@@ -19,7 +20,7 @@ public class UserController extends BaseController {
             renderJson(MessageVoUtil.error("请输入参数！"));
         }
 
-        User result = userService.login(code);
-        renderJson(result);
+        JSONObject result = userService.login(code);
+        renderJson(MessageVoUtil.success(result));
     }
 }
