@@ -83,22 +83,28 @@
             <div class="ui_tb">
                 <table class="table" cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
                     <tr>
-                        <th width="30"><input type="checkbox" id="all" onclick="selectOrClearAllCheckbox(this);"/>
+                        <th width="30"><input type="checkbox"  />
                         </th>
                         <th>id</th>
-                        <th>手机号</th>
-                        <th>姓名</th>
-                        <th>余额</th>
-                        <th>是否认证</th>
+                        <th>发帖人id</th>
+                        <th>被回复者id</th>
+                        <th>所属帖子id</th>
+                        <th>内容</th>
+                        <th>发帖时间</th>
+                        <th>状态</th>
+                        <th>图片路径</th>
                     </tr>
-                    #for(x:data.list)
+                    #for(x:lostFoundPage.list)
                     <tr>
                         <td><input type="checkbox" name="IDCheck" value="14458579642011" class="acb"/></td>
                         <td>#(x.id)</td>
-                        <td>#(x.phoneNumber)</td>
-                        <td>#(x.username)</td>
-                        <td>#(x.balance)</td>
-                        <td>#(x.status==1?"是":"否")</td>
+                        <td>#(x.userId)</td>
+                        <td>#(x.pUserId)</td>
+                        <td>#(x.pId)</td>
+                        <td>#(x.content)</td>
+                        <td>#(x.postDate)</td>
+                        <td>#(x.status)</td>
+                        <td>#(x.pictureUrl)</td>
                     </tr>
                     #end
 
@@ -107,16 +113,16 @@
             <div class="ui_tb_h30">
                 <div class="ui_flt" style="height: 30px; line-height: 30px;">
                     共有
-                    <span class="ui_txt_bold04">#(data.totalRow)</span>
+                    <span class="ui_txt_bold04">#(lostFoundPage.totalRow)</span>
                     条记录，当前第
-                    <span class="ui_txt_bold04">#(data.pageNumber)/#(data.totalPage)</span>
+                    <span class="ui_txt_bold04">#(lostFoundPage.pageNumber)/#(lostFoundPage.totalPage)</span>
                     页
                 </div>
                 <div class="ui_frt">
                     <!--    如果是第一页，则只显示下一页、尾页 -->
 
-                    <a href="/back/userList?pn=#(data.pageNumber-1)" class="ui_input_btn01">上一页</a>
-                    <a href="/back/userList?pn=#(data.pageNumber+1)" class="ui_input_btn01">下一页</a>
+                    <a href="/back/lostFoundList?pn=#(lostFoundPage.pageNumber-1)" class="ui_input_btn01">上一页</a>
+                    <a href="/back/lostFoundList?pn=#(lostFoundPage.pageNumber+1)" class="ui_input_btn01">下一页</a>
 
                     <!--     如果是最后一页，则只显示首页、上一页 -->
 

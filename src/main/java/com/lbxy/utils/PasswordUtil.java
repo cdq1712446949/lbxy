@@ -186,52 +186,5 @@ public class PasswordUtil {
             return hex;
     }
 
-    /**
-     * Tests the basic functionality of the PasswordHash class
-     *
-     * @param   args        ignored
-     */
-    public static void main(String[] args) {
-        String hash = PasswordUtil.createHash("980814");
-        System.out.println(hash);
-        System.out.println(PasswordUtil.validatePassword("980814", hash));
-//        try
-////        {
-////            // Print out 10 hashes
-////            for(int i = 0; i < 10; i++)
-////                System.out.println(PasswordUtil.createHash("980184"));
-////
-////            // Test password validation
-////            boolean failure = false;
-////            System.out.println("Running tests...");
-////            for(int i = 0; i < 100; i++)
-////            {
-////                String password = ""+i;
-////                String hash = createHash(password);
-////                String secondHash = createHash(password);
-////                if(hash.equals(secondHash)) {
-////                    System.out.println("FAILURE: TWO HASHES ARE EQUAL!");
-////                    failure = true;
-////                }
-////                String wrongPassword = ""+(i+1);
-////                if(validatePassword(wrongPassword, hash)) {
-////                    System.out.println("FAILURE: WRONG PASSWORD ACCEPTED!");
-////                    failure = true;
-////                }
-////                if(!validatePassword(password, hash)) {
-////                    System.out.println("FAILURE: GOOD PASSWORD NOT ACCEPTED!");
-////                    failure = true;
-////                }
-////            }
-////            if(failure)
-////                System.out.println("TESTS FAILED!");
-////            else
-////                System.out.println("TESTS PASSED!");
-////        }
-////        catch(Exception ex)
-////        {
-////            System.out.println("ERROR: " + ex);
-////        }
-    }
 
 }

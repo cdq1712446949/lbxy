@@ -1,14 +1,9 @@
 package com.lbxy.controller;
 
 import com.jfinal.plugin.activerecord.Page;
-import com.lbxy.model.Order;
-import com.lbxy.model.User;
-import com.lbxy.service.ManagerService;
-import com.lbxy.service.OrderService;
-import com.lbxy.service.UserService;
-import com.lbxy.service.impl.ManagerServiceImpl;
-import com.lbxy.service.impl.OrderServiceImpl;
-import com.lbxy.service.impl.UserServiceImpl;
+import com.lbxy.model.*;
+import com.lbxy.service.*;
+import com.lbxy.service.impl.*;
 import org.apache.commons.lang3.StringUtils;
 
 public class ManagerController extends BaseController {
@@ -19,10 +14,19 @@ public class ManagerController extends BaseController {
 
     private OrderService orderService;
 
+    private TreeHoleService treeHoleService;
+
+    private FleaService fleaService;
+
+    private LostFoundService lostFoundService;
+
     public ManagerController() {
         userService = new UserServiceImpl();
         managerService = new ManagerServiceImpl();
-        orderService =new OrderServiceImpl();
+        orderService = new OrderServiceImpl();
+        treeHoleService = new TreeHoleServiceImpl();
+        fleaService = new FleaServiceImpl();
+        lostFoundService = new LostFoundServiceImpl();
     }
 
     public void index() {
@@ -74,14 +78,14 @@ public class ManagerController extends BaseController {
             return;
         }
         if (i == 2) {
-            setAttr("userName",ManagerServiceImpl.MANAGER.getStr("userName"));
+            setAttr("userName", ManagerServiceImpl.MANAGER.getStr("userName"));
             render("index.html");
             return;
         }
         System.out.println(username + password);
     }
 
-    public void orderList(){
+    public void orderList() {
         int pn = 1;
         try {
             pn = getParaToInt("pn");
@@ -91,6 +95,42 @@ public class ManagerController extends BaseController {
         Page<Order> orderPage = orderService.getAllOrder(pn);
         setAttr("orderpage", orderPage);
         render("order_list.html");
+    }
+
+    public void treeHoleList() {
+        int pn = 1;
+        try {
+            pn = getParaToInt(pn);
+        } catch (Exception e) {
+            System.out.println(" pageNumber is invalid");
+        }
+        Page<TreeHole> treeHolePage = treeHoleService.getAllTreeHole(pn);
+        setAttr("treeHolePage", treeHolePage);
+        render("treehole_list.html");
+    }
+
+    public void fleaList() {
+        int pn = 1;
+        try {
+            pn = getParaToInt(pn);
+        } catch (Exception e) {
+            System.out.println(" pageNumber is invalid");
+        }
+        Page<Flea> fleaPage = fleaService.getAllFlea(pn);
+        setAttr("fleaPage", fleaPage);
+        render("flea_list.html");
+    }
+
+    public void lostFoundList(){
+        int pn = 1;
+        try {
+            pn = getParaToInt(pn);
+        } catch (Exception e) {
+            System.out.println(" pageNumber is invalid");
+        }
+        Page<LostFound> lostFoundPage = lostFoundService.getAllLostFound(pn);
+        setAttr("lostFoundPage", lostFoundPage);
+        render("lostfound_list.html");
     }
 
 }
