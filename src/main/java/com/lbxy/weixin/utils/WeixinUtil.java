@@ -1,7 +1,7 @@
 package com.lbxy.weixin.utils;
 
 import com.alibaba.fastjson.JSONObject;
-import com.lbxy.utils.NetWorkUtil;
+import com.lbxy.core.utils.NetWorkUtil;
 import com.lbxy.weixin.exception.WeixinLoginException;
 import com.lbxy.weixin.properties.Api;
 import com.lbxy.weixin.properties.AuthKey;

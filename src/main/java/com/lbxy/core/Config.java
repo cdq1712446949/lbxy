@@ -1,4 +1,4 @@
-package com.lbxy;
+package com.lbxy.core;
 
 import com.jfinal.config.*;
 import com.jfinal.core.JFinal;
@@ -9,7 +9,8 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
 import com.jfinal.template.source.ClassPathSourceFactory;
 import com.lbxy.controller.*;
-import com.lbxy.interceptors.GlobalParamInterceptor;
+import com.lbxy.core.interceptors.GlobalParamInterceptor;
+import com.lbxy.core.interceptors.ParamValidateInterceptor;
 import com.lbxy.model.*;
 
 /**
@@ -88,7 +89,8 @@ public class Config extends JFinalConfig {
 	 * 配置全局拦截器
 	 */
 	public void configInterceptor(Interceptors me) {
-		me.addGlobalActionInterceptor(new GlobalParamInterceptor());
+//		me.addGlobalActionInterceptor(new GlobalParamInterceptor());  //自定义参数校验，所有字段不能为空
+		me.addGlobalActionInterceptor(new ParamValidateInterceptor());  // 使用hibernate-validator参数校验
 	}
 	
 	/**

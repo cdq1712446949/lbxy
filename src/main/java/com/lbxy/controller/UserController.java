@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
 import com.lbxy.common.response.MessageVoUtil;
-import com.lbxy.interceptors.CheckLoginInterceptor;
+import com.lbxy.core.interceptors.CheckLoginInterceptor;
 import com.lbxy.service.UserService;
 import com.lbxy.service.impl.UserServiceImpl;
 
@@ -28,4 +28,5 @@ public class UserController extends BaseController {
         userService.updateUserInfo(jsonObject, userId);
         renderJson(userId);
     }
+
 }
