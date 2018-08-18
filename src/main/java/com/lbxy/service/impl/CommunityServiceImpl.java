@@ -2,7 +2,7 @@ package com.lbxy.service.impl;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-import com.lbxy.common.Status;
+import com.lbxy.common.status.CommonStatus;
 import com.lbxy.model.Community;
 import com.lbxy.service.CommunityService;
 
@@ -24,7 +24,7 @@ public class CommunityServiceImpl implements CommunityService {
 
     public boolean deleteById(int id) {
         Community community = dao.findById(id);
-        community.set("status", Status.DELETED);
+        community.set("status", CommonStatus.DELETED);
         Db.update("update Community set status = ? where pid = ?", 1, id);
         return community.update();
     }

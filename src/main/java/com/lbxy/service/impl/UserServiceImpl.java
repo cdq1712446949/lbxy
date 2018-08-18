@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-import com.lbxy.common.Status;
 import com.lbxy.common.exception.InvalidRequestParamException;
 import com.lbxy.common.request.UserInfoBean;
 import com.lbxy.common.request.VerificationBean;
@@ -14,12 +13,10 @@ import com.lbxy.model.User;
 import com.lbxy.service.UserService;
 import com.lbxy.weixin.utils.WeixinUtil;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 public class UserServiceImpl implements UserService {
-    public static int SUCCESS = 0;
-    public static int ERROR = 1;
-
     private UserDao userDao;
 
     public UserServiceImpl() {
@@ -27,7 +24,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public User findById(int id) {
-        return User.dao.findById(id);
+        return userDao.findById(id);
     }
 
     public Page<User> getAllUsers(int pn) {
@@ -112,11 +109,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean throughAuthencation(int id,int status) {
+    public boolean throughAuthentication(int id, int status) {
         User user=new User();
         user.set("id",id);
         user.set("status",status);
         return userDao.userSave(user);
+    }
+
+    @Override
+    public BigDecimal getUserAccountBalance(int userId) {
+         return userDao.getUserBalance(userId);
     }
 
 }

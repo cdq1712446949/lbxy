@@ -1,7 +1,6 @@
 package com.lbxy.controller;
 
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.ehcache.CacheKit;
 import com.lbxy.model.*;
 import com.lbxy.service.*;
 import com.lbxy.service.impl.*;
@@ -266,7 +265,7 @@ public class ManagerController extends BaseController {
     }
 
     public void throughAuthencation(int id,int status){
-        userService.throughAuthencation(id,status);
+        userService.throughAuthentication(id,status);
         userList();
     }
 

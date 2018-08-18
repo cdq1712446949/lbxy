@@ -1,6 +1,10 @@
 package com.lbxy.dao;
 
+import com.jfinal.plugin.activerecord.Db;
+import com.lbxy.common.status.OrderStatus;
 import com.lbxy.model.User;
+
+import java.math.BigDecimal;
 
 /**
  * @author lmy
@@ -9,6 +13,10 @@ import com.lbxy.model.User;
  */
 public class UserDao {
 
+
+    public BigDecimal getUserBalance(int userId) {
+        return Db.queryBigDecimal("select balance from User where id=?", userId);
+    }
 
     public int insert(User user) {
         user.save();
@@ -27,7 +35,7 @@ public class UserDao {
         return user.update();
     }
 
-    public boolean userSave(User user){
+    public boolean userSave(User user) {
         return user.update();
     }
 

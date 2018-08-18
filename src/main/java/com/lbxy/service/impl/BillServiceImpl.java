@@ -5,6 +5,7 @@ import com.lbxy.dao.BillDao;
 import com.lbxy.model.Bill;
 import com.lbxy.service.BillService;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,11 @@ public class BillServiceImpl implements BillService {
     @Override
     public Page<Bill> getAllBill(int pn) {
         return billDao.findBillPn(pn);
+    }
+
+    @Override
+    public BigDecimal get7DaysTotalIncome(int userId) {
+        return billDao.get7DaysTotalIncome(userId);
     }
 
 }

@@ -6,6 +6,8 @@ import com.lbxy.common.request.UserInfoBean;
 import com.lbxy.common.request.VerificationBean;
 import com.lbxy.model.User;
 
+import java.math.BigDecimal;
+
 /**
  * @author lmy
  * @description UserServiceImpl
@@ -26,5 +28,7 @@ public interface UserService {
 
     User saveUserInfo(JSONObject userInfo, int userId);
 
-    boolean throughAuthencation(int id,int status);
+    boolean throughAuthentication(int id, int status);
+
+    BigDecimal getUserAccountBalance(int userId);
 }

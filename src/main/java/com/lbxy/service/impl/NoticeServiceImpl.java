@@ -1,7 +1,7 @@
 package com.lbxy.service.impl;
 
 import com.jfinal.plugin.activerecord.Page;
-import com.lbxy.common.Status;
+import com.lbxy.common.status.CommonStatus;
 import com.lbxy.dao.NoticeDao;
 import com.lbxy.model.Notice;
 import com.lbxy.service.NoticeService;
@@ -23,7 +23,7 @@ public class NoticeServiceImpl implements NoticeService {
     public boolean deleteNotice(int id) {
         Notice notice=new Notice();
         notice.set("id",id);
-        notice.set("status",Status.DELETED);
+        notice.set("status", CommonStatus.DELETED);
         return notice.update();
     }
 

@@ -1,7 +1,7 @@
 package com.lbxy.service.impl;
 
 import com.jfinal.plugin.activerecord.Page;
-import com.lbxy.common.Status;
+import com.lbxy.common.status.CommonStatus;
 import com.lbxy.dao.LostFounDao;
 import com.lbxy.model.LostFound;
 import com.lbxy.service.LostFoundService;
@@ -23,7 +23,7 @@ public class LostFoundServiceImpl implements LostFoundService {
     public boolean deleteLostFound(int id) {
         LostFound lostFound=new LostFound();
         lostFound.set("id",id);
-        lostFound.set("status",Status.DELETED);
+        lostFound.set("status", CommonStatus.DELETED);
         return lostFounDao.update(lostFound);
     }
 }
