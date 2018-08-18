@@ -1,6 +1,7 @@
 package com.lbxy.service;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.lbxy.common.request.CreateOrderBean;
 import com.lbxy.model.Order;
 
 import java.math.BigDecimal;
@@ -24,4 +25,6 @@ public interface OrderService {
     Page<Order> getAllOrder(int pn);
 
     BigDecimal getWaitSettledReward(int acceptUserId);
+
+    boolean createOrder(int userId, CreateOrderBean orderInfo);
 }

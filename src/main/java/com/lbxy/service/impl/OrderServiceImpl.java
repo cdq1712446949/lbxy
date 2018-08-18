@@ -2,6 +2,7 @@ package com.lbxy.service.impl;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.lbxy.common.request.CreateOrderBean;
 import com.lbxy.common.status.CommonStatus;
 import com.lbxy.common.status.OrderStatus;
 import com.lbxy.dao.OrderDao;
@@ -9,6 +10,7 @@ import com.lbxy.model.Order;
 import com.lbxy.service.OrderService;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -74,5 +76,22 @@ public class OrderServiceImpl implements OrderService {
 
     public BigDecimal getWaitSettledReward(int acceptUserId) {
         return orderDao.getWaitCompletedOrdersTotalRewardByAcceptUserId(acceptUserId);
+    }
+
+    @Override
+    public boolean createOrder(int userId, CreateOrderBean orderInfo) {
+        Order order = new Order();
+        order.set("createdDate", LocalDateTime.now());
+        order.set("reward", orderInfo.getReward());
+        order.set("userId", userId);
+        order.set("userName", orderInfo.getUserName());
+        order.set("userPhoneNumber", orderInfo.getUserPhoneNumber());
+        order.set("fromAddress", orderInfo.getFromAddress());
+        order.set("toAddress", orderInfo.getToAddress());
+        order.set("remark", orderInfo.getReward());
+        order.set("detail", orderInfo.getDetail());
+        order.set("availableDate", orderInfo.getAvailableData());
+
+        return order.save();
     }
 }
