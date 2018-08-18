@@ -42,6 +42,7 @@ public class Config extends JFinalConfig {
 		me.setDevMode(true);
         me.setJsonFactory(new JFinalJsonFactory());
         me.setJsonDatePattern("yyyy-MM-dd HH:mm:ss");
+        me.setBaseUploadPath("/ubuntu/lbxy/upload");
 	}
 	
 	/**
@@ -52,7 +53,7 @@ public class Config extends JFinalConfig {
         me.add("/community",CommunityController.class);
         me.add("/bill",BillController.class);
         me.add("/back",ManagerController.class);
-		me.add("/user", UserController.class);
+        me.add("/user", UserController.class);
     }
 	
 	public void configEngine(Engine me) {

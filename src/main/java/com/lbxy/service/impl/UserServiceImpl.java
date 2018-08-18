@@ -6,6 +6,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.exception.InvalidRequestParamException;
 import com.lbxy.common.request.UserInfoBean;
+import com.lbxy.common.request.VerificationBean;
 import com.lbxy.core.utils.JWTUtil;
 import com.lbxy.dao.UserDao;
 import com.lbxy.model.User;
@@ -80,13 +81,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUserInfo(UserInfoBean userInfo, int userId) throws InvalidRequestParamException {
+    public User updateBaseUserInfo(UserInfoBean userInfo, int userId) throws InvalidRequestParamException {
         Map<String, String> param = userInfo.getUpdateUserInfo();
         Map.Entry<String,String> paramEntry = param.entrySet().iterator().next();
         User user = userDao.findById(userId);
         user.set(paramEntry.getKey(), paramEntry.getValue());
         user.update();
         return user;
+    }
+
+    @Override
+    public User updateVerificationUserInfo(VerificationBean verification, int userId) {
+        User currentUser = this.findById(userId);
+        currentUser.set("realName", verification.getRealName());
+        currentUser.set("studentNumber", verification.getStudentNumber());
+        currentUser.set("stuNoPic", verification.getStuNoPic());
+        currentUser.update();
+        return currentUser;
     }
 
     @Override

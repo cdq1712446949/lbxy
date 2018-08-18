@@ -3,6 +3,7 @@ package com.lbxy.service;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.request.UserInfoBean;
+import com.lbxy.common.request.VerificationBean;
 import com.lbxy.model.User;
 
 /**
@@ -19,7 +20,9 @@ public interface UserService {
 
     JSONObject login(String code);
 
-    User updateUserInfo(UserInfoBean userInfo, int userId);
+    User updateBaseUserInfo(UserInfoBean userInfo, int userId);
+
+    User updateVerificationUserInfo(VerificationBean verification, int userId);
 
     User saveUserInfo(JSONObject userInfo, int userId);
 }

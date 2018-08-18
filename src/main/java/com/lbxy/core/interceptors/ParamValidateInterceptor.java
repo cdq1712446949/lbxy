@@ -4,6 +4,7 @@ package com.lbxy.core.interceptors;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
+import com.jfinal.core.paragetter.Para;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.core.validator.ValidParam;
 
@@ -42,13 +43,21 @@ public class ParamValidateInterceptor implements Interceptor {
         for (int i = 0; i < annotations.length; i++) {
             for (Annotation annotation : annotations[i]) {
                 if (annotation instanceof ValidParam) {
+                    Para para = this.containsAnnotations(annotations[i], Para.class);
                     Class<?> validBean = inv.getArg(i).getClass();
                     Class<?>[] groups = ((ValidParam) annotation).groups();
                     if (groups.length > 0) {
                         //支持分组校验
-                        constraintViolations = validator.validate(invController.getBean(validBean), groups);
+                        if (para != null) {
+                            constraintViolations = validator.validate(invController.getBean(validBean, para.value()), groups);
+                        } else {
+                            constraintViolations = validator.validate(invController.getBean(validBean, method.getParameters()[i].getName()), groups);
+                        }
                     } else {
-                        constraintViolations = validator.validate(invController.getBean(validBean));
+                        if (para != null) {
+                            constraintViolations = validator.validate(invController.getBean(validBean, para.value()));
+                        } else
+                            constraintViolations = validator.validate(invController.getBean(validBean, method.getParameters()[i].getName()));
                     }
                 } else {
                     String AnnotationPackage = annotation.annotationType().getPackage().getName();
@@ -81,13 +90,13 @@ public class ParamValidateInterceptor implements Interceptor {
         inv.invoke();
     }
 
-    private boolean containsAnnotations(Annotation[] annotations, Class<?> targetAnnotation) {
+    private <T extends Annotation> T containsAnnotations(Annotation[] annotations, Class<T> targetAnnotation) {
         for (Annotation annotation : annotations) {
             if (targetAnnotation.isInstance(annotation)) {
-                return true;
+                return (T) annotation;
             }
         }
-        return false;
+        return null;
     }
 }
 
