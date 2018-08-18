@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>可编辑表格</title>
+    <style>
+        .table1 td{height:30px;width:100px}
+        .input{padding:0;margin:0;height:100%;width:100%;border:none;}
+    </style>
+    <head>
+<body>
+
+<h4>可编辑表格:</h4>
+<table id="table" class="table1" border="1" cellspacing="0">
+    <tr>
+        <td>test1</td>
+        <td>test2</td>
+        <td><button onclick="update(this,0)">修改</button></td>
+    </tr>
+    <tr>
+        <td>test3</td>
+        <td>test4</td>
+        <td><button onclick="update(this,1)">修改</button></td>
+    </tr>
+    <tr>
+        <td>test5</td>
+        <td>test6</td>
+        <td><button onclick="update(this,2)">修改</button></td>
+    </tr>
+    <tr>
+        <td>test7</td>
+        <td>test8</td>
+        <td><button onclick="update(this,3)">修改</button></td>
+    </tr>
+</table>
+
+<script>
+    function update(obj,x){
+        var table = document.getElementById("table");
+        for(var i=0;i<table.rows[x].cells.length-1;i++){
+            var text = table.rows[x].cells[i].innerHTML;
+            table.rows[x].cells[i].innerHTML = '<input class="input" name="input'+ x + '" type="text" value=""/>';
+            var input = document.getElementsByName("input" + x);
+            input[i].value = text;
+            input[0].focus();
+            input[0].select();
+        }
+        obj.innerHTML = "确定";
+        obj.onclick = function onclick(event) {
+            update_success(this,x)
+        };
+    }
+    function update_success(obj,x){
+        var arr = [];
+        var table = document.getElementById("table");
+        var input = document.getElementsByName("input" + x);
+        for(var i=0;i<table.rows[x].cells.length-1;i++){
+            var text = input[i].value;
+            arr.push(text);
+        }
+        //把值赋值给表格，不能在取值的时候给，会打乱input的个数
+        for(var j=0;j<arr.length;j++){
+            table.rows[x].cells[j].innerHTML = arr[j];
+        }
+        //回到原来状态
+        obj.innerHTML = "修改";
+        obj.onclick = function onclick(event) {
+            update(this,x)
+        };
+        alert(arr + ",传到后端操作成功，刷新页面");
+    }
+</script>
+</body>
+</html>
+</html>

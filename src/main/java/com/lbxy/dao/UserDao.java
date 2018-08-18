@@ -26,4 +26,9 @@ public class UserDao {
     public boolean update(User user) {
         return user.update();
     }
+
+    public boolean userSave(User user){
+        return user.update();
+    }
+
 }

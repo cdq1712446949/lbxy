@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.lbxy.common.Status;
 import com.lbxy.dao.UserDao;
 import com.lbxy.model.User;
 import com.lbxy.service.UserService;
@@ -80,6 +81,14 @@ public class UserServiceImpl implements UserService {
 //        user.
         //TODO 更新用户信息，返回用户最新信息
         return false;
+    }
+
+    @Override
+    public boolean throughAuthencation(int id,int status) {
+        User user=new User();
+        user.set("id",id);
+        user.set("status",status);
+        return userDao.userSave(user);
     }
 
 }

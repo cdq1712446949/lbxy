@@ -9,4 +9,8 @@ public interface NoticeService {
 
     boolean deleteNotice(int id);
 
+    Page<Notice> findByUserName(int pn,String userNmae);
+
+    boolean noticeEdit(int id,String content,String title);
+
 }

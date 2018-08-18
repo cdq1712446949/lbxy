@@ -1,6 +1,7 @@
 package com.lbxy.service;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.lbxy.model.Manager;
 import com.lbxy.model.User;
 
 /**
@@ -12,4 +13,7 @@ public interface ManagerService {
     int login(String username, String password);
 
     Page<User> getUser(int pn);
+
+    Manager getManager(String username);
+
 }

@@ -25,11 +25,6 @@ public class CommunityController extends BaseController {
         }catch (Exception e){
             renderJson(new MessageVo().setStatus(ResponseStatus.error).setMessage("未传递参数"));
         }
-//        if (getJsonParamToInt("pn") < 1) {
-//
-//        }else {
-//            renderJson(new MessageVo().setStatus(ResponseStatus.error).setMessage("获取帖子失败"));
-//        }
     }
 
     public void save() {

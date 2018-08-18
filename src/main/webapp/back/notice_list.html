@@ -55,6 +55,77 @@
             }
         }
 
+        function update(obj, x) {
+            var table = document.getElementById("table");
+            for (var i = 3; i < 5; i++) {
+                var text = table.rows[x].cells[i].innerHTML;
+                table.rows[x].cells[i].innerHTML = '<input class="ui_input_txt02" name="input' + x + '" type="text" value=""/>';
+                var input = document.getElementsByName("input" + x);
+                input[i - 3].value = text;
+                // input[4].focus();
+                // input[4].select();
+            }
+            obj.innerHTML = "确定";
+            obj.onclick = function onclick(event) {
+                update_success(this, x)
+            };
+        }
+
+        function update_success(obj, x) {
+            var arr = [];
+            var table = document.getElementById("table");
+            var input = document.getElementsByName("input" + x);
+            for (var i = 0; i < 2; i++) {
+                var text = input[i].value;
+                arr.push(text);
+            }
+            //把值赋值给表格，不能在取值的时候给，会打乱input的个数
+            var content;
+            var title;
+            for (var j = 0; j < arr.length; j++) {
+                table.rows[x].cells[j + 3].innerHTML = arr[j];
+                var id = table.rows[x].cells[0].innerHTML;
+                content = arr[0];
+                title = arr[1];
+            }
+            //同步请求服务器端
+            var xmlhttp;
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            } else {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    document.getElementById("btn_change").innerHTML = xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("GET", "/back/noticeEdit?id="+id+"&content="+content+"&title="+title+"", false);
+            xmlhttp.send();
+            //回到原来状态
+            obj.innerHTML = "修改";
+            obj.onclick = function onclick(event) {
+                update(this, x)
+            };
+            alert(table.rows[0].cells[4].innerHTML + "、" + table.rows[0].cells[5].innerHTML + ",传到后端操作成功，刷新页面");
+        }
+
+        //同步请求服务器端action
+        function loadXMLDoc(id, content, title) {
+            var xmlhttp;
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            } else {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    document.getElementById("btn_change").innerHTML = xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("GET", "/back/test?", false);
+            xmlhttp.send();
+        }
 
     </script>
     <style>
@@ -65,76 +136,75 @@
 </head>
 <body>
 
-    <div id="container">
-        <div class="ui_content">
-            <div class="ui_text_indent">
-                <div id="box_border">
-                    <div id="box_top">搜索</div>
-                    <form action="/back/search" method="post">
-                        <div id="box_center">
-                            手机号&nbsp;&nbsp;<input type="number" name="phoneNumber" class="ui_input_txt02"/>
-                            <button id="search_btn" type="submit" class="ui_input_btn01"  >查询</button>
-                            <div>#(error_search)</div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="ui_content">
-            <div class="ui_tb">
-                <table class="table" cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
-                    <tr>
-                        <th width="30"><input type="checkbox" id="all" onclick="selectOrClearAllCheckbox(this);"/>
-                        </th>
-                        <th>id</th>
-                        <th>管理员id</th>
-                        <th>状态</th>
-                        <th>发布时间</th>
-                        <th>标题</th>
-                        <th>内容</th>
-                        <th>图片路径</th>
-                        <th>操作</th>
-                    </tr>
-                    #for(x:noticePage.list)
-                    <tr>
-                        <td><input type="checkbox" name="IDCheck" value="14458579642011" class="acb"/></td>
-                        <td>#(x.id)</td>
-                        <td>#(x.userId)</td>
-                        <td>#(x.status==0?"正常":"已删除")</td>
-                        <td>#(x.postDate)</td>
-                        <td>#(x.title)</td>
-                        <td>#(x.content)</td>
-                        <td>#(x.pictureUrl)</td>
-                        <td>
-                            <a href="/back/deleteNotice?id=#(x.id)">删除</a>
-                        </td>
-                    </tr>
-                    #end
-
-                </table>
-            </div>
-            <div class="ui_tb_h30">
-                <div class="ui_flt" style="height: 30px; line-height: 30px;">
-                    共有
-                    <span class="ui_txt_bold04">#(noticePage.totalRow)</span>
-                    条记录，当前第
-                    <span class="ui_txt_bold04">#(noticePage.pageNumber)/#(noticePage.totalPage)</span>
-                    页
-                </div>
-                <div class="ui_frt">
-                    <!--    如果是第一页，则只显示下一页、尾页 -->
-
-                    <a href="/back/noticeList?pn=#(noticePage.pageNumber-1)" class="ui_input_btn01">上一页</a>
-                    <a href="/back/noticeList?pn=#(noticePage.pageNumber+1)" class="ui_input_btn01">下一页</a>
-
-                    <!--     如果是最后一页，则只显示首页、上一页 -->
-
-                    转到第<input type="text" name="inputPageNum" id="jumpNumTxt" class="ui_input_txt01"/>页
-                    <input type="button" class="ui_input_btn01" value="跳转" onclick="jumpInputPage(9);"/>
-                </div>
+<div id="container">
+    <div class="ui_content">
+        <div class="ui_text_indent">
+            <div id="box_border">
+                <div id="box_top">搜索</div>
+                <form action="/back/noticeList" method="post">
+                    <div id="box_center">
+                        管理员账号&nbsp;&nbsp;<input type="text" name="userName" value="#(username)" class="ui_input_txt02"/>
+                        <button id="search_btn" type="submit" class="ui_input_btn01">查询</button>
+                        <div>#(error_search)</div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+    <div class="ui_content">
+        <div class="ui_tb">
+            <table id="table" class="table" cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
+                <tr>
+                    <th>id</th>
+                    <th>管理员账号</th>
+                    <th>状态</th>
+                    <th>内容</th>
+                    <th>标题</th>
+                    <th>发布时间</th>
+                    <th>图片路径</th>
+                    <th>操作</th>
+                    <th>修改</th>
+                </tr>
+                #for(x:noticePage.list)
+                <tr>
+                    <td>#(x.id)</td>
+                    <td>#(x.userId)</td>
+                    <td>#(x.status==0?"正常":"已删除")</td>
+                    <td>#(x.content)</td>
+                    <td>#(x.title)</td>
+                    <td>#(x.postDate)</td>
+                    <td>#(x.pictureUrl)</td>
+                    <td>
+                        <a href="/back/deleteNotice?id=#(x.id)">删除</a>
+                    </td>
+                    <td>
+                        <button id="btn_change"  onclick="update(this,'#(x.id)')">修改</button>
+                    </td>
+                </tr>
+                #end
+
+            </table>
+        </div>
+        <div class="ui_tb_h30">
+            <div class="ui_flt" style="height: 30px; line-height: 30px;">
+                共有
+                <span class="ui_txt_bold04">#(noticePage.totalRow)</span>
+                条记录，当前第
+                <span class="ui_txt_bold04">#(noticePage.pageNumber)/#(noticePage.totalPage)</span>
+                页
+            </div>
+            <div class="ui_frt">
+                <!--    如果是第一页，则只显示下一页、尾页 -->
+
+                <a href="/back/noticeList?pn=#(noticePage.pageNumber-1)&user=#(username)" class="ui_input_btn01">上一页</a>
+                <a href="/back/noticeList?pn=#(noticePage.pageNumber-1)&user=#(username)" class="ui_input_btn01">下一页</a>
+
+                转到第<input type="text" name="inputPageNum" id="jumpNumTxt" class="ui_input_txt01"/>页
+                <input type="button" class="ui_input_btn01" value="跳转" onclick="jumpInputPage(9);"/>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 </body>

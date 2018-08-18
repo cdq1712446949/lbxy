@@ -19,4 +19,7 @@ public interface UserService {
     JSONObject login(String code);
 
     boolean updateUserInfo(JSONObject userInfo,int userId);
+
+    boolean throughAuthencation(int id,int status);
+
 }

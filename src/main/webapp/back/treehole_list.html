@@ -19,7 +19,7 @@
             // 非空判断
             if (id == '') return;
             if (confirm("您确定要删除吗？")) {
-                href="/back/deleteTreeHole?id="+id;
+                href="/upload";
             }
         }
 
@@ -85,8 +85,6 @@
             <div class="ui_tb">
                 <table class="table" cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
                     <tr>
-                        <th width="30"><input type="checkbox" id="all" onclick="selectOrClearAllCheckbox(this);"/>
-                        </th>
                         <th>id</th>
                         <th>发帖人id</th>
                         <th>被回复者id</th>
@@ -99,7 +97,6 @@
                     </tr>
                     #for(x:treeHolePage.list)
                     <tr>
-                        <td><input type="checkbox" name="IDCheck" value="14458579642011" class="acb"/></td>
                         <td>#(x.id)</td>
                         <td>#(x.userId)</td>
                         <td>#(x.pUserId)</td>

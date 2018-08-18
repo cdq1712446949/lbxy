@@ -40,8 +40,6 @@
         <div class="ui_tb">
             <table class="table" cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
                 <tr>
-                    <th width="30"><input type="checkbox" id="all"/>
-                    </th>
                     <th>id</th>
                     <th>完成状态</th>
                     <th>发单时间</th>
@@ -57,7 +55,6 @@
                 </tr>
                 #for(x:orderpage.list)
                 <tr>
-                    <td><input type="checkbox" name="IDCheck" value="14458579642011" class="acb"/></td>
                     <td>#(x.id)</td>
                     <td>#if(x.status==0)
                         #("可接单")

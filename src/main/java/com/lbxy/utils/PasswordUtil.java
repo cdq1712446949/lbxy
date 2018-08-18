@@ -186,5 +186,8 @@ public class PasswordUtil {
             return hex;
     }
 
+    public static void main(String[]  args){
+        System.out.println(createHash("123456"));
+    }
 
 }

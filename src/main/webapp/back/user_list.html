@@ -22,68 +22,90 @@
 </head>
 <body>
 
-    <div id="container">
-        <div class="ui_content">
-            <div class="ui_text_indent">
-                <div id="box_border">
-                    <div id="box_top">搜索</div>
-                    <form action="/back/search" method="post">
-                        <div id="box_center">
-                            手机号&nbsp;&nbsp;<input type="number" name="phoneNumber" class="ui_input_txt02"/>
-                            <button id="search_btn" type="submit" class="ui_input_btn01"  >查询</button>
-                            <div>#(error_search)</div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="ui_content">
-            <div class="ui_tb">
-                <table class="table" cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
-                    <tr>
-                        <th width="30"><input type="checkbox" id="all" onclick="selectOrClearAllCheckbox(this);"/>
-                        </th>
-                        <th>id</th>
-                        <th>手机号</th>
-                        <th>姓名</th>
-                        <th>余额</th>
-                        <th>是否认证</th>
-                    </tr>
-                    #for(x:data.list)
-                    <tr>
-                        <td><input type="checkbox" name="IDCheck" value="14458579642011" class="acb"/></td>
-                        <td>#(x.id)</td>
-                        <td>#(x.phoneNumber)</td>
-                        <td>#(x.username)</td>
-                        <td>#(x.balance)</td>
-                        <td>#(x.status==1?"是":"否")</td>
-                    </tr>
-                    #end
-
-                </table>
-            </div>
-            <div class="ui_tb_h30">
-                <div class="ui_flt" style="height: 30px; line-height: 30px;">
-                    共有
-                    <span class="ui_txt_bold04">#(data.totalRow)</span>
-                    条记录，当前第
-                    <span class="ui_txt_bold04">#(data.pageNumber)/#(data.totalPage)</span>
-                    页
-                </div>
-                <div class="ui_frt">
-                    <!--    如果是第一页，则只显示下一页、尾页 -->
-
-                    <a href="/back/userList?pn=#(data.pageNumber-1)" class="ui_input_btn01">上一页</a>
-                    <a href="/back/userList?pn=#(data.pageNumber+1)" class="ui_input_btn01">下一页</a>
-
-                    <!--     如果是最后一页，则只显示首页、上一页 -->
-
-                    转到第<input type="text" name="inputPageNum" id="jumpNumTxt" class="ui_input_txt01"/>页
-                    <input type="button" class="ui_input_btn01" value="跳转" onclick="jumpInputPage(9);"/>
-                </div>
+<div id="container">
+    <div class="ui_content">
+        <div class="ui_text_indent">
+            <div id="box_border">
+                <div id="box_top">搜索</div>
+                <form action="/back/search" method="post">
+                    <div id="box_center">
+                        手机号&nbsp;&nbsp;<input type="number" name="phoneNumber" class="ui_input_txt02"/>
+                        <button id="search_btn" type="submit" class="ui_input_btn01">查询</button>
+                        <div>#(error_search)</div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+    <div class="ui_content">
+        <div class="ui_tb">
+            <table class="table" cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
+                <tr>
+                    <th>id</th>
+                    <th>手机号</th>
+                    <th>姓名</th>
+                    <th>余额</th>
+                    <th>是否认证</th>
+                    <th>身份证</th>
+                    <th>校园卡</th>
+                    <th>操作</th>
+                </tr>
+                #for(x:data.list)
+                <tr>
+                    <td>#(x.id)</td>
+                    <td>#(x.phoneNumber)</td>
+                    <td>#(x.username)</td>
+                    <td>#(x.balance)</td>
+                    <td>#if(x.status==0)
+                        #("未申请认证")
+                        #end
+                        #if(x.status==8)
+                        #("待审核")
+                        #end
+                        #if(x.status==9)
+                        #("认证通过")
+                        #end
+                    </td>
+                    <td>
+                        <a  href="/upload?id=#(x.id)" target="_blank">查看照片</a>
+                    </td>
+                    <td>
+                        <a  href="/upload/stuNoPic?id=#(x.id)" target="_blank">查看照片</a>
+                    </td>
+                    <td>
+                        <a href="/back/throughAuthencation?id=#(x.id)&status=9"> #if(x.status==8)
+                            给予认证
+                            #end</a>
+                        <a href="/back/throughAuthencation?id=#(x.id)&status=0"> #if(x.status==9)
+                            取消认证
+                            #end</a>
+                    </td>
+                </tr>
+                #end
+            </table>
+        </div>
+        <div class="ui_tb_h30">
+            <div class="ui_flt" style="height: 30px; line-height: 30px;">
+                共有
+                <span class="ui_txt_bold04">#(data.totalRow)</span>
+                条记录，当前第
+                <span class="ui_txt_bold04">#(data.pageNumber)/#(data.totalPage)</span>
+                页
+            </div>
+            <div class="ui_frt">
+                <!--    如果是第一页，则只显示下一页、尾页 -->
+
+                <a href="/back/userList?pn=#(data.pageNumber-1)" class="ui_input_btn01">上一页</a>
+                <a href="/back/userList?pn=#(data.pageNumber+1)" class="ui_input_btn01">下一页</a>
+
+                <!--     如果是最后一页，则只显示首页、上一页 -->
+
+                转到第<input type="text" name="inputPageNum" id="jumpNumTxt" class="ui_input_txt01"/>页
+                <input type="button" class="ui_input_btn01" value="跳转" onclick="jumpInputPage(9);"/>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 </body>

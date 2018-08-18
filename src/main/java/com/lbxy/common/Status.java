@@ -8,4 +8,7 @@ public class Status {
     public static int PAY=4;//表示金额支出
     public static int INCOME=5;//表示金额收入
     public static  int MANAGER=6;//表示权相为管理员
+    public static int BLACK=7;//表示用户被拉黑
+    public static  int NOANTHENTICATION=8;//表示用户待审核
+    public static  int THROUGH=9;//用户已经通过审核
 }

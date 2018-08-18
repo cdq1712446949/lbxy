@@ -26,4 +26,18 @@ public class NoticeServiceImpl implements NoticeService {
         notice.set("status",Status.DELETED);
         return notice.update();
     }
+
+    @Override
+    public Page<Notice> findByUserName(int pn,String userNmae) {
+        return noticeDao.findNoticeByUserName(pn,userNmae);
+    }
+
+    @Override
+    public boolean noticeEdit(int id, String content, String title) {
+        Notice notice=new Notice();
+        notice.set("id",id);
+        notice.set("content",content);
+        notice.set("title",title);
+        return noticeDao.noticeEdit(notice);
+    }
 }
