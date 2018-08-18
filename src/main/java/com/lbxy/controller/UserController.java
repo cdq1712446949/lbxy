@@ -49,7 +49,7 @@ public class UserController extends BaseController {
     }
 
     @Before(POST.class)
-    public void auth(int userId, @ValidParam @Para("") VerificationBean verification, UploadFile img) {
+    public void auth(UploadFile img, int userId, @ValidParam @Para("") VerificationBean verification) {
         //TODO 部署之后还要调试上传路径
         verification.setStuNoPic(img.getUploadPath() + File.separator + img.getFileName());
         User result = userService.updateVerificationUserInfo(verification, userId);
