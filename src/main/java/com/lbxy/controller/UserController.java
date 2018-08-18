@@ -2,7 +2,6 @@ package com.lbxy.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.paragetter.Para;
@@ -14,6 +13,7 @@ import com.lbxy.common.request.VerificationBean;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.core.interceptors.CheckLoginInterceptor;
 import com.lbxy.core.validator.ValidParam;
+import com.lbxy.model.Bill;
 import com.lbxy.model.User;
 import com.lbxy.service.BillService;
 import com.lbxy.service.OrderService;
@@ -24,6 +24,7 @@ import com.lbxy.service.impl.UserServiceImpl;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Before(CheckLoginInterceptor.class)
 public class UserController extends BaseController {
@@ -34,8 +35,7 @@ public class UserController extends BaseController {
 
     private BillService billService;
 
-    public UserController()
-    {
+    public UserController() {
         billService = new BillServiceImpl();
         orderService = new OrderServiceImpl();
         userService = new UserServiceImpl();
@@ -79,6 +79,12 @@ public class UserController extends BaseController {
         result.put("balance", balance);
         result.put("waitSettle", waitSettle);
         result.put("weeklyIncome", weeklyIncome);
-        renderJson(result);
+        renderJson(MessageVoUtil.success("请求成功", result));
+    }
+
+    @Before(GET.class)
+    public void accountDetail(int userId) {
+        List<Bill> bills = billService.getAllByUserId(userId);
+        renderJson(MessageVoUtil.success("请求成功", bills));
     }
 }

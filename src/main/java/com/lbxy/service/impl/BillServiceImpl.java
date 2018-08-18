@@ -38,4 +38,8 @@ public class BillServiceImpl implements BillService {
         return billDao.get7DaysTotalIncome(userId);
     }
 
+    @Override
+    public List<Bill> getAllByUserId(int userId) {
+        return billDao.getAllByUserId(userId);
+    }
 }

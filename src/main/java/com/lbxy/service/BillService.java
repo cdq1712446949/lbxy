@@ -19,4 +19,6 @@ public interface BillService {
     Page<Bill> getAllBill(int pn);
 
     BigDecimal get7DaysTotalIncome(int userId);
+
+    List<Bill> getAllByUserId(int userId);
 }
