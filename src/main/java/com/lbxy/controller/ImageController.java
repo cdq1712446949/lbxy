@@ -26,8 +26,5 @@ public class ImageController extends BaseController {
         render("/back/image_show.html");
     }
 
-    public void throughAuthencation(int id,int status){
-        userService.throughAuthencation(id,status);
-    }
 
 }

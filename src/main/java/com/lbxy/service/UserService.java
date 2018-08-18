@@ -25,4 +25,6 @@ public interface UserService {
     User updateVerificationUserInfo(VerificationBean verification, int userId);
 
     User saveUserInfo(JSONObject userInfo, int userId);
+
+    boolean throughAuthencation(int id,int status);
 }

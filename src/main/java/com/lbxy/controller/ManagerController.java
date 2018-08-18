@@ -105,7 +105,7 @@ public class ManagerController extends BaseController {
         }
         if (i == 2) {
             String sid=getSession().getId();
-            CacheKit.put("LoginUserCache", sid,managerService.getManager(username) ); // 将用户信息保存到缓存，用作超时判断
+//            CacheKit.put("LoginUserCache", sid,managerService.getManager(username) ); // 将用户信息保存到缓存，用作超时判断
             setAttr("userName", ManagerServiceImpl.MANAGER.getStr("userName"));
             render("index.html");
             return;
