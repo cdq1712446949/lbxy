@@ -1,4 +1,4 @@
-package com.lbxy.utils;
+package com.lbxy.core.utils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -17,7 +17,7 @@ public class JWTUtil {
     private final static Algorithm algorithm = Algorithm.HMAC256("X8FYY5O51k7w");
     private final static String ISSUER = "laumgjyu";
     private final static String SUBJECT = "wechat_app_lbxy";
-    private final static String SIGN_CLASS = "com.lbxy.utils.JWTUtil";
+    private final static String SIGN_CLASS = "com.lbxy.core.utils.JWTUtil";
     private static JWTVerifier verifier = null;
 
     /**

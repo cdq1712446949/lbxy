@@ -1,10 +1,10 @@
-package com.lbxy.interceptors;
+package com.lbxy.core.interceptors;
 
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.lbxy.common.InterceptorConst;
 import com.lbxy.common.response.MessageVoUtil;
-import com.lbxy.utils.JWTUtil;
+import com.lbxy.core.utils.JWTUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Method;

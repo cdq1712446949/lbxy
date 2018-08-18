@@ -1,4 +1,4 @@
-package com.lbxy.utils;
+package com.lbxy.core.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

@@ -1,4 +1,4 @@
-package com.lbxy.interceptors;
+package com.lbxy.core.interceptors;
 
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
@@ -6,7 +6,6 @@ import com.jfinal.core.Controller;
 import com.lbxy.common.InterceptorConst;
 import com.lbxy.common.response.MessageVoUtil;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 
 /**

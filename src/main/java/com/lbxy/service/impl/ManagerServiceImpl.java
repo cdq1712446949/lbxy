@@ -5,7 +5,7 @@ import com.lbxy.dao.ManagerDao;
 import com.lbxy.model.Manager;
 import com.lbxy.model.User;
 import com.lbxy.service.ManagerService;
-import com.lbxy.utils.PasswordUtil;
+import com.lbxy.core.utils.PasswordUtil;
 
 import java.util.List;
 
