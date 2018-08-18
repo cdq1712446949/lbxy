@@ -19,5 +19,7 @@ public interface UserService {
 
     JSONObject login(String code);
 
-    boolean updateUserInfo(UserInfoBean userInfo, int userId);
+    User updateUserInfo(UserInfoBean userInfo, int userId);
+
+    User saveUserInfo(JSONObject userInfo, int userId);
 }

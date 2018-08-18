@@ -18,7 +18,7 @@ public class UserInfoBean {
 
     private Map<String, String> params = new LinkedHashMap<>();
 
-    public Map<String,String> getRequestUserInfo() throws InvalidRequestParamException {
+    public Map<String,String> getUpdateUserInfo() throws InvalidRequestParamException {
         params.clear();
 
         if (StringUtils.isAllBlank(realName, phoneNumber, address)) {

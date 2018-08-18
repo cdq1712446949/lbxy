@@ -80,12 +80,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateUserInfo(UserInfoBean userInfo, int userId) throws InvalidRequestParamException {
-        Map<String, String> param = userInfo.getRequestUserInfo();
+    public User updateUserInfo(UserInfoBean userInfo, int userId) throws InvalidRequestParamException {
+        Map<String, String> param = userInfo.getUpdateUserInfo();
         Map.Entry<String,String> paramEntry = param.entrySet().iterator().next();
         User user = userDao.findById(userId);
         user.set(paramEntry.getKey(), paramEntry.getValue());
-        return user.update();
+        user.update();
+        return user;
+    }
+
+    @Override
+    public User saveUserInfo(JSONObject userInfo, int userId) {
+        User currentUser = userDao.findById(userId);
+        currentUser.set("username", userInfo.get("nickName"));
+        currentUser.set("avatarUrl", userInfo.get("avatarUrl"));
+        currentUser.set("gender", userInfo.get("gender"));
+        currentUser.update();
+        return currentUser;
     }
 
 }
