@@ -6,11 +6,13 @@ import com.jfinal.json.JFinalJsonFactory;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.druid.DruidPlugin;
+import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.template.Engine;
 import com.jfinal.template.source.ClassPathSourceFactory;
 import com.lbxy.controller.*;
 import com.lbxy.core.interceptors.GlobalParamInterceptor;
 import com.lbxy.core.interceptors.ParamValidateInterceptor;
+import com.lbxy.core.interceptors.exception.ExceptionsInterceptor;
 import com.lbxy.model.*;
 
 /**
@@ -39,6 +41,7 @@ public class Config extends JFinalConfig {
 	public void configConstant(Constants me) {
 		me.setDevMode(true);
         me.setJsonFactory(new JFinalJsonFactory());
+        me.setJsonDatePattern("yyyy-MM-dd HH:mm:ss");
 	}
 	
 	/**
@@ -75,13 +78,6 @@ public class Config extends JFinalConfig {
         arp.addMapping("Flea",Flea.class);
         arp.addMapping("LostFound",LostFound.class);
         arp.addMapping("Notice",Notice.class);
-        Engine engine = arp.getEngine();
-
-        // 上面的代码获取到了用于 sql 管理功能的 Engine 对象，接着就可以开始配置了
-        engine.setSourceFactory(new ClassPathSourceFactory());
-        engine.addSharedMethod(new StrKit());
-
-        me.add(arp);
 
 	}
 	
@@ -91,6 +87,7 @@ public class Config extends JFinalConfig {
 	public void configInterceptor(Interceptors me) {
 //		me.addGlobalActionInterceptor(new GlobalParamInterceptor());  //自定义参数校验，所有字段不能为空
 		me.addGlobalActionInterceptor(new ParamValidateInterceptor());  // 使用hibernate-validator参数校验
+        me.addGlobalActionInterceptor(new ExceptionsInterceptor()); //全局异常拦截
 	}
 	
 	/**

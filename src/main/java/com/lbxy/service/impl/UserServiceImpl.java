@@ -4,11 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.lbxy.common.exception.InvalidRequestParamException;
+import com.lbxy.common.request.UserInfoBean;
 import com.lbxy.core.utils.JWTUtil;
 import com.lbxy.dao.UserDao;
 import com.lbxy.model.User;
 import com.lbxy.service.UserService;
 import com.lbxy.weixin.utils.WeixinUtil;
+
+import java.util.Map;
 
 public class UserServiceImpl implements UserService {
     public static int SUCCESS = 0;
@@ -58,6 +62,7 @@ public class UserServiceImpl implements UserService {
             userDao.update(user);
 
             userId = user.getInt("id");
+            returnValue = new JSONObject();
             returnValue.put("isNew", false);
         } else {
             user = new User();
@@ -75,10 +80,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateUserInfo(JSONObject userInfo,int userId) {
+    public boolean updateUserInfo(UserInfoBean userInfo, int userId) throws InvalidRequestParamException {
+        Map<String, String> param = userInfo.getRequestUserInfo();
+        Map.Entry<String,String> paramEntry = param.entrySet().iterator().next();
         User user = userDao.findById(userId);
-//        user.
-        return false;
+        user.set(paramEntry.getKey(), paramEntry.getValue());
+        return user.update();
     }
 
 }
