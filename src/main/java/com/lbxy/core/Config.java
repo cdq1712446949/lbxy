@@ -66,8 +66,8 @@ public class Config extends JFinalConfig {
 	 */
 	public void configPlugin(Plugins me) {
 		// 配置 druid 数据库连接池插件
-//		DruidPlugin druidPlugin = new DruidPlugin("jdbc:mysql://127.0.0.1:3306/lbxy?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull", "root", "980814");
-		DruidPlugin druidPlugin = new DruidPlugin("jdbc:mysql://127.0.0.1:3306/lbxy?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false", "root", "123456");
+		DruidPlugin druidPlugin = new DruidPlugin("jdbc:mysql://127.0.0.1:3306/lbxy?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull", "root", "980814");
+//		DruidPlugin druidPlugin = new DruidPlugin("jdbc:mysql://127.0.0.1:3306/lbxy?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false", "root", "123456");
 		me.add(druidPlugin);
         ActiveRecordPlugin arp = new ActiveRecordPlugin(druidPlugin);
         me.add(arp);

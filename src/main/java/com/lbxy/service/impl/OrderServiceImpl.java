@@ -66,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
         if (pn <= 1) {
             pn = 1;
         }
-        return Order.dao.paginate(pn, 10, "select *", " from `Order`");
+        return orderDao.findByPn(pn);
     }
 
     public BigDecimal getWaitSettledReward(int acceptUserId) {

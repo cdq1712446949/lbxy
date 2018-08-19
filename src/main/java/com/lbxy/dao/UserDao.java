@@ -1,6 +1,7 @@
 package com.lbxy.dao;
 
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.status.OrderStatus;
 import com.lbxy.model.User;
 
@@ -29,6 +30,14 @@ public class UserDao {
 
     public User findById(int id) {
         return dao.findById(id);
+    }
+
+    public Page<User> findUserByPn(int pn){
+        return User.dao.paginate(pn,10,"select *", " from User");
+    }
+
+    public Page<User> findByPhone(String phoneNumber){
+        return User.dao.paginate(1, 1, "select * ", "from User where phoneNumber=?", phoneNumber);
     }
 
     public boolean update(User user) {

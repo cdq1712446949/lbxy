@@ -27,4 +27,9 @@ public class OrderDao {
          */
         return dao.paginate(pn, PageConst.pageSize, "select u.username,u.avatarUrl,o", " from `Order` o inner join User u on o.userId = u.id");
     }
+
+    public Page<Order> findByPn( int pn ){
+        return Order.dao.paginate(pn, 10, "select *", " from `Order`");
+    }
+
 }

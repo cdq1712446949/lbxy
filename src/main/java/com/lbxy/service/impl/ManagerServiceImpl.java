@@ -21,7 +21,7 @@ public class ManagerServiceImpl implements ManagerService {
 
     public int login(String username, String password) {
         int i = 0;//0表示账号不存在，1表示密码不正确，2表示登陆成功
-        List<Manager> list = Manager.dao.find("select * from Manager where userName=?", username);
+        List<Manager> list = managerDao.findManagerByUserName(username);
         if (list.size() == 0) {
             System.out.println("账号不存在");
             return i;
