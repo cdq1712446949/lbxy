@@ -11,14 +11,11 @@ import com.lbxy.service.OrderService;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
 
     private OrderDao orderDao;
-    private Order dao = new Order().dao();
 
     public OrderServiceImpl() {
         orderDao = new OrderDao();
@@ -28,10 +25,8 @@ public class OrderServiceImpl implements OrderService {
         return Order.dao.findById(id);
     }
 
-    public Page<Order> getUserOrder(int userId, int pn) {
-        List<Order> list = new ArrayList<Order>();
-        Page<Order> page = dao.paginate(pn, 10, "select *", " from `Order` where userId=?", userId);
-        return page;
+    public Page<Order> getOrdersByPage(int pn) {
+        return orderDao.getOrdersByPage(pn);
     }
 
     public void complete(int id) {

@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 public interface OrderService {
     Order findById(int id);
 
-    Page<Order> getUserOrder(int userid, int pn);
+    Page<Order> getOrdersByPage(int pn);
 
     void complete(int id);
 

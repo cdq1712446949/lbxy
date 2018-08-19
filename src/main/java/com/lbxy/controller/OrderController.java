@@ -6,6 +6,7 @@ import com.jfinal.core.paragetter.Para;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.request.CreateOrderBean;
 import com.lbxy.common.response.MessageVo;
+import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.common.response.ResponseStatus;
 import com.lbxy.core.interceptors.CheckLoginInterceptor;
 import com.lbxy.core.validator.ValidParam;
@@ -13,7 +14,7 @@ import com.lbxy.model.Order;
 import com.lbxy.service.OrderService;
 import com.lbxy.service.impl.OrderServiceImpl;
 
-@Before(CheckLoginInterceptor.class)
+//@Before(CheckLoginInterceptor.class)
 public class OrderController extends BaseController {
 
     private OrderService orderService;
@@ -22,12 +23,9 @@ public class OrderController extends BaseController {
         orderService = new OrderServiceImpl();
     }
 
-    public void index() {
-        JSONObject param = getJsonParam();
-        int userId = param.getIntValue("userId");
-        int pn = param.getIntValue("pn");
-        Page<Order> page = orderService.getUserOrder(userId, pn);
-        renderJson(new MessageVo().setStatus(ResponseStatus.success).setMessage("获取成功").setData(page));
+    public void index(int pn) {
+        Page<Order> page = orderService.getOrdersByPage(pn);
+        renderJson(MessageVoUtil.success(page));
     }
 
     public void createOrder(int userId, @ValidParam @Para("") CreateOrderBean orderInfo) {
