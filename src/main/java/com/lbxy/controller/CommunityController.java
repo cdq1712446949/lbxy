@@ -3,7 +3,7 @@ package com.lbxy.controller;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.response.MessageVo;
 import com.lbxy.common.response.ResponseStatus;
-import com.lbxy.model.back.Community;
+import com.lbxy.model.Community;
 import com.lbxy.service.CommunityService;
 import com.lbxy.service.impl.CommunityServiceImpl;
 
