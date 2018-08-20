@@ -7,6 +7,7 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.cron4j.Cron4jPlugin;
 import com.jfinal.plugin.druid.DruidPlugin;
+import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.template.Engine;
 import com.lbxy.controller.*;
 import com.lbxy.core.interceptors.ParamValidateInterceptor;
@@ -80,6 +81,7 @@ public class Config extends JFinalConfig {
         Cron4jPlugin cp = new Cron4jPlugin(PropKit.get("cron4j.configFile"));
         me.add(cp);
 
+        me.add(new EhCachePlugin());
     }
 
     /**
