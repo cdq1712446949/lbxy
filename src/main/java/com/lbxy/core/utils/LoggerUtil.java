@@ -18,7 +18,7 @@ public class LoggerUtil {
      * @param message 输出信息
      */
     public static void debug(Class<?> clazz, String message) {
-        if (!PropKit.getBoolean("devMode", false)) return;
+        if (PropKit.getBoolean("devMode", false)) return;
         Log logger = Log.getLog(clazz);
         logger.debug(message);
     }
@@ -31,7 +31,7 @@ public class LoggerUtil {
      * @param value     输出信息value
      */
     public static void fmtDebug(Class<?> clazz, String fmtString, Object... value) {
-        if (!PropKit.getBoolean("devMode", false)) return;
+        if (PropKit.getBoolean("devMode", false)) return;
         if (StringUtils.isEmpty(fmtString)) return;
 
         if (null != value && value.length != 0)
