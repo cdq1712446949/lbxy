@@ -40,13 +40,11 @@ public class UserServiceImpl implements UserService {
         if (pn <= 1) {
             pn = 1;
         }
-        return User.dao.paginate(pn, 10, "select *", " from User");
+        return userDao.findUserByPn(pn);
     }
 
     public Page<User> findByPhone(String phoneNumber) {
-        Page<User> list = User.dao.paginate(1, 1, "select * ", "from User where phoneNumber=?", phoneNumber);
-
-        return list;
+        return userDao.findByPhone(phoneNumber);
     }
 
     @Override

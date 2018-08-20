@@ -15,9 +15,7 @@ public class BillServiceImpl implements BillService {
 
 
     public List<Bill> getBill(int userId) {
-        List<Bill> list = new ArrayList<Bill>();
-        list = Bill.dao.find("select * from Bill where userId=?", userId);
-        return list;
+        return billDao.findByUserId(userId);
     }
 
     public boolean add(Bill bill) {
