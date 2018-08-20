@@ -5,7 +5,6 @@ import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.PageConst;
 import com.lbxy.common.status.OrderStatus;
 import com.lbxy.model.Order;
-import com.lbxy.model.User;
 
 import java.math.BigDecimal;
 
@@ -15,7 +14,6 @@ import java.math.BigDecimal;
  * @date 2018/8/18
  */
 public class OrderDao {
-    private Order dao = Order.dao;
 
     public BigDecimal getWaitCompletedOrdersTotalRewardByAcceptUserId(int acceptUserId) {
         return Db.queryBigDecimal("select sum(reward) from `Order` where acceptUserId=? and status=?", acceptUserId, OrderStatus.WAIT_COMPLETE);
@@ -23,8 +21,8 @@ public class OrderDao {
 
     public Page<Order> getOrdersByPage(int pn) {
         /*
-        o.createdDate,o.reward,o.userName,o.userPhoneNumber,o.fromAddress,o.toAddress,o.remark,o.detail
+        .createdDate,o.reward,o.userName,o.userPhoneNumber,o.fromAddress,o.toAddress,o.remark,o.detail
          */
-        return dao.paginate(pn, PageConst.pageSize, "select u.username,u.avatarUrl,o", " from `Order` o inner join User u on o.userId = u.id");
+        return Order.dao.paginate(pn, PageConst.pageSize, "select u.username,u.avatarUrl,o", " from `Order` o inner join User u on o.userId = u.id");
     }
 }

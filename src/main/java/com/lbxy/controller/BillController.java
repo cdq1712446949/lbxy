@@ -3,7 +3,7 @@ package com.lbxy.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.lbxy.common.response.MessageVo;
 import com.lbxy.common.response.ResponseStatus;
-import com.lbxy.model.Bill;
+import com.lbxy.model.back.Bill;
 import com.lbxy.service.BillService;
 import com.lbxy.service.impl.BillServiceImpl;
 

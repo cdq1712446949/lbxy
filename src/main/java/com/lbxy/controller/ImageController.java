@@ -1,6 +1,6 @@
 package com.lbxy.controller;
 
-import com.lbxy.model.User;
+import com.lbxy.model.back.User;
 import com.lbxy.service.UserService;
 import com.lbxy.service.impl.UserServiceImpl;
 

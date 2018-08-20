@@ -8,11 +8,7 @@ import com.lbxy.service.NoticeService;
 
 public class NoticeServiceImpl implements NoticeService {
 
-    private NoticeDao noticeDao;
-
-    public NoticeServiceImpl() {
-        noticeDao = new NoticeDao();
-    }
+    private static final NoticeDao noticeDao= new NoticeDao();
 
     @Override
     public Page<Notice> getAllNotice(int pn) {

@@ -3,7 +3,7 @@ package com.lbxy.service.impl;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.status.CommonStatus;
 import com.lbxy.dao.TreeHoleDao;
-import com.lbxy.model.TreeHole;
+import com.lbxy.model.Treehole;
 import com.lbxy.service.TreeHoleService;
 
 public class TreeHoleServiceImpl implements TreeHoleService {
@@ -15,13 +15,13 @@ public class TreeHoleServiceImpl implements TreeHoleService {
     }
 
     @Override
-    public Page<TreeHole> getAllTreeHole(int pn) {
+    public Page<Treehole> getAllTreeHole(int pn) {
         return treeHoleDao.findAllTreeHole(pn);
     }
 
     @Override
     public boolean deleteTreeHole(int id) {
-        TreeHole treeHole=new TreeHole();
+        Treehole treeHole=new Treehole();
         treeHole.set("id",id);
         treeHole.set("status", CommonStatus.DELETED);
         return treeHoleDao.update(treeHole);

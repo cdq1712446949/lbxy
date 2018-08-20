@@ -11,11 +11,8 @@ import java.util.List;
 
 public class BillServiceImpl implements BillService {
 
-    private BillDao billDao;
+    private static final BillDao billDao = new BillDao();
 
-    public BillServiceImpl() {
-        billDao = new BillDao();
-    }
 
     public List<Bill> getBill(int userId) {
         List<Bill> list = new ArrayList<Bill>();

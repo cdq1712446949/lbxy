@@ -24,8 +24,6 @@ public class ManagerController extends BaseController {
 
     private BillService billService;
 
-    private String userNmae = "null";
-
     public ManagerController() {
         userService = new UserServiceImpl();
         managerService = new ManagerServiceImpl();
@@ -103,9 +101,9 @@ public class ManagerController extends BaseController {
             return;
         }
         if (i == 2) {
-            String sid=getSession().getId();
+            String sid = getSession().getId();
 //            CacheKit.put("LoginUserCache", sid,managerService.getManager(username) ); // 将用户信息保存到缓存，用作超时判断
-            setAttr("userName", ManagerServiceImpl.MANAGER.getStr("userName"));
+            setAttr("userName", username);
             render("index.html");
             return;
         }
@@ -131,7 +129,7 @@ public class ManagerController extends BaseController {
         } catch (Exception e) {
             System.out.println(" pageNumber is invalid");
         }
-        Page<TreeHole> treeHolePage = treeHoleService.getAllTreeHole(pn);
+        Page<Treehole> treeHolePage = treeHoleService.getAllTreeHole(pn);
         setAttr("treeHolePage", treeHolePage);
         render("treehole_list.html");
     }
@@ -155,22 +153,23 @@ public class ManagerController extends BaseController {
         } catch (Exception e) {
             System.out.println(" pageNumber is invalid");
         }
-        Page<LostFound> lostFoundPage = lostFoundService.getAllLostFound(pn);
+        Page<Lostfound> lostFoundPage = lostFoundService.getAllLostFound(pn);
         setAttr("lostFoundPage", lostFoundPage);
         render("lostfound_list.html");
     }
 
     public void noticeList() {
+        String userName = null;
         if (getPara("userName") == null) {
             if (getPara("user") == null) {
                 System.out.println("判断username值为null");
             } else {
-                userNmae = getPara("user");
+                userName = getPara("user");
             }
         } else {
-            userNmae = getPara("userName");
+            userName = getPara("userName");
         }
-        if (userNmae.equals("null")) {
+        if (userName == null) {
             int pn = 1;
             try {
                 pn = getParaToInt(pn);
@@ -186,9 +185,9 @@ public class ManagerController extends BaseController {
             } catch (Exception e) {
                 System.out.println(" pageNumber is invalid");
             }
-            Page<Notice> noticePage = noticeService.findByUserName(pn, userNmae);
+            Page<Notice> noticePage = noticeService.findByUserName(pn, userName);
             setAttr("noticePage", noticePage);
-            setAttr("username", userNmae);
+            setAttr("username", userName);
         }
         render("notice_list.html");
     }
@@ -264,8 +263,8 @@ public class ManagerController extends BaseController {
         }
     }
 
-    public void throughAuthencation(int id,int status){
-        userService.throughAuthentication(id,status);
+    public void throughAuthencation(int id, int status) {
+        userService.throughAuthentication(id, status);
         userList();
     }
 

@@ -15,11 +15,7 @@ import java.util.Date;
 
 public class OrderServiceImpl implements OrderService {
 
-    private OrderDao orderDao;
-
-    public OrderServiceImpl() {
-        orderDao = new OrderDao();
-    }
+    private static final OrderDao orderDao = new OrderDao();
 
     public Order findById(int id) {
         return Order.dao.findById(id);

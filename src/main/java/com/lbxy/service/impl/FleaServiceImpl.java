@@ -8,11 +8,7 @@ import com.lbxy.service.FleaService;
 
 public class FleaServiceImpl implements FleaService {
 
-    private FleaDao fleaDao;
-
-    public FleaServiceImpl(){
-        fleaDao=new FleaDao();
-    }
+    private static final FleaDao fleaDao=new FleaDao();
 
     @Override
     public Page<Flea> getAllFlea(int pn) {

@@ -2,28 +2,24 @@ package com.lbxy.service.impl;
 
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.status.CommonStatus;
-import com.lbxy.dao.LostFounDao;
-import com.lbxy.model.LostFound;
+import com.lbxy.dao.LostFoundDao;
+import com.lbxy.model.Lostfound;
 import com.lbxy.service.LostFoundService;
 
 public class LostFoundServiceImpl implements LostFoundService {
 
-    private LostFounDao lostFounDao;
-
-    public LostFoundServiceImpl(){
-        lostFounDao=new LostFounDao();
-    }
+    private static final LostFoundDao lostFoundDao = new LostFoundDao();
 
     @Override
-    public Page<LostFound> getAllLostFound(int pn) {
-        return  lostFounDao.findLostFounByPn(pn);
+    public Page<Lostfound> getAllLostFound(int pn) {
+        return lostFoundDao.findLostFounByPn(pn);
     }
 
     @Override
     public boolean deleteLostFound(int id) {
-        LostFound lostFound=new LostFound();
-        lostFound.set("id",id);
+        Lostfound lostFound = new Lostfound();
+        lostFound.set("id", id);
         lostFound.set("status", CommonStatus.DELETED);
-        return lostFounDao.update(lostFound);
+        return lostFoundDao.update(lostFound);
     }
 }

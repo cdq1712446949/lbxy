@@ -1,12 +1,11 @@
 package com.lbxy.service;
 
 import com.jfinal.plugin.activerecord.Page;
-import com.lbxy.model.TreeHole;
-import sun.security.krb5.internal.PAData;
+import com.lbxy.model.Treehole;
 
 public interface TreeHoleService {
 
-    Page<TreeHole> getAllTreeHole(int pn);
+    Page<Treehole> getAllTreeHole(int pn);
 
     boolean deleteTreeHole(int id);
 
