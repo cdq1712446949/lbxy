@@ -9,7 +9,7 @@ import com.lbxy.common.response.MessageVo;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.common.response.ResponseStatus;
 import com.lbxy.core.interceptors.CheckLoginInterceptor;
-import com.lbxy.core.validator.ValidParam;
+import com.lbxy.core.annotation.ValidParam;
 import com.lbxy.model.Order;
 import com.lbxy.service.OrderService;
 import com.lbxy.service.impl.OrderServiceImpl;

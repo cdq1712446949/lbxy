@@ -6,7 +6,7 @@ import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
 import com.jfinal.core.paragetter.Para;
 import com.lbxy.common.response.MessageVoUtil;
-import com.lbxy.core.validator.ValidParam;
+import com.lbxy.core.annotation.ValidParam;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -61,7 +61,7 @@ public class ParamValidateInterceptor implements Interceptor {
                     }
                 } else {
                     String AnnotationPackage = annotation.annotationType().getPackage().getName();
-                    if ("javax.validation.constraints".equals(AnnotationPackage) || "org.hibernate.validator.constraints".equals(AnnotationPackage)) {
+                    if ("javax.validation.constraints".equals(AnnotationPackage) || "org.hibernate.annotation.constraints".equals(AnnotationPackage)) {
                         Parameter[] parameters = method.getParameters();
                         Map<String, Object> paramValueMap = new LinkedHashMap<>();
                         for (int j = 0; j < parameters.length; j++) {

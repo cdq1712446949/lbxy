@@ -12,7 +12,7 @@ import com.lbxy.common.request.UserInfoBean;
 import com.lbxy.common.request.VerificationBean;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.core.interceptors.CheckLoginInterceptor;
-import com.lbxy.core.validator.ValidParam;
+import com.lbxy.core.annotation.ValidParam;
 import com.lbxy.model.Bill;
 import com.lbxy.model.User;
 import com.lbxy.service.BillService;

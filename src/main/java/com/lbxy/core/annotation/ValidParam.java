@@ -1,4 +1,4 @@
-package com.lbxy.core.validator;
+package com.lbxy.core.annotation;
 
 import java.lang.annotation.*;
 
