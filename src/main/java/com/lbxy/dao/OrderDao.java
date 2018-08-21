@@ -4,6 +4,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.PageConst;
 import com.lbxy.common.status.OrderStatus;
+import com.lbxy.core.annotation.Repository;
 import com.lbxy.model.Order;
 
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
  * @description OrderDao
  * @date 2018/8/18
  */
+@Repository
 public class OrderDao {
 
     public BigDecimal getWaitCompletedOrdersTotalRewardByAcceptUserId(int acceptUserId) {

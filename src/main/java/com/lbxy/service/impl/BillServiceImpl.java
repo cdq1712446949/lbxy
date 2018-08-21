@@ -1,17 +1,21 @@
 package com.lbxy.service.impl;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.lbxy.core.annotation.Service;
 import com.lbxy.dao.BillDao;
 import com.lbxy.model.Bill;
 import com.lbxy.service.BillService;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service("billService")
 public class BillServiceImpl implements BillService {
 
-    private static final BillDao billDao = new BillDao();
+    @Resource
+    private BillDao billDao;
 
 
     public List<Bill> getBill(int userId) {

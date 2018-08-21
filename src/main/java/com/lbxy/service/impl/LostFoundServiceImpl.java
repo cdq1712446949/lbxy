@@ -2,13 +2,18 @@ package com.lbxy.service.impl;
 
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.status.CommonStatus;
+import com.lbxy.core.annotation.Service;
 import com.lbxy.dao.LostFoundDao;
 import com.lbxy.model.Lostfound;
 import com.lbxy.service.LostFoundService;
 
+import javax.annotation.Resource;
+
+@Service("lostFoundService")
 public class LostFoundServiceImpl implements LostFoundService {
 
-    private static final LostFoundDao lostFoundDao = new LostFoundDao();
+    @Resource
+    private LostFoundDao lostFoundDao;
 
     @Override
     public Page<Lostfound> getAllLostFound(int pn) {

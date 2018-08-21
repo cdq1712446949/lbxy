@@ -1,8 +1,10 @@
 package com.lbxy.dao;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.lbxy.core.annotation.Repository;
 import com.lbxy.model.Lostfound;
 
+@Repository
 public class LostFoundDao {
 
     public Page<Lostfound> findLostFounByPn(int pn){

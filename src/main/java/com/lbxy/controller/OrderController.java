@@ -14,14 +14,13 @@ import com.lbxy.model.Order;
 import com.lbxy.service.OrderService;
 import com.lbxy.service.impl.OrderServiceImpl;
 
+import javax.annotation.Resource;
+
 @Before(CheckLoginInterceptor.class)
 public class OrderController extends BaseController {
 
+    @Resource
     private OrderService orderService;
-
-    public OrderController() {
-        orderService = new OrderServiceImpl();
-    }
 
     public void index(int pn) {
         Page<Order> page = orderService.getOrdersByPage(pn);

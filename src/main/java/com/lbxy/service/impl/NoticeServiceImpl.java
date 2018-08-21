@@ -2,13 +2,18 @@ package com.lbxy.service.impl;
 
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.status.CommonStatus;
+import com.lbxy.core.annotation.Service;
 import com.lbxy.dao.NoticeDao;
 import com.lbxy.model.Notice;
 import com.lbxy.service.NoticeService;
 
+import javax.annotation.Resource;
+
+@Service("noticeService")
 public class NoticeServiceImpl implements NoticeService {
 
-    private static final NoticeDao noticeDao= new NoticeDao();
+    @Resource
+    private NoticeDao noticeDao;
 
     @Override
     public Page<Notice> getAllNotice(int pn) {

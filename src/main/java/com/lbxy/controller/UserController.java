@@ -11,17 +11,15 @@ import com.jfinal.upload.UploadFile;
 import com.lbxy.common.request.UserInfoBean;
 import com.lbxy.common.request.VerificationBean;
 import com.lbxy.common.response.MessageVoUtil;
-import com.lbxy.core.interceptors.CheckLoginInterceptor;
 import com.lbxy.core.annotation.ValidParam;
+import com.lbxy.core.interceptors.CheckLoginInterceptor;
 import com.lbxy.model.Bill;
 import com.lbxy.model.User;
 import com.lbxy.service.BillService;
 import com.lbxy.service.OrderService;
 import com.lbxy.service.UserService;
-import com.lbxy.service.impl.BillServiceImpl;
-import com.lbxy.service.impl.OrderServiceImpl;
-import com.lbxy.service.impl.UserServiceImpl;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
@@ -29,17 +27,18 @@ import java.util.List;
 @Before(CheckLoginInterceptor.class)
 public class UserController extends BaseController {
 
+    @Resource
     private UserService userService;
-
+    @Resource
     private OrderService orderService;
-
+    @Resource
     private BillService billService;
 
-    public UserController() {
-        billService = new BillServiceImpl();
-        orderService = new OrderServiceImpl();
-        userService = new UserServiceImpl();
-    }
+//    public UserController() {
+//        billService = new BillServiceImpl();
+//        orderService = new OrderServiceImpl();
+//        userService = new UserServiceImpl();
+//    }
 
 
     @Clear(CheckLoginInterceptor.class)

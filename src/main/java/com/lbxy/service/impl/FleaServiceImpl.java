@@ -2,13 +2,18 @@ package com.lbxy.service.impl;
 
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.status.CommonStatus;
+import com.lbxy.core.annotation.Service;
 import com.lbxy.dao.FleaDao;
 import com.lbxy.model.Flea;
 import com.lbxy.service.FleaService;
 
+import javax.annotation.Resource;
+
+@Service("fleaService")
 public class FleaServiceImpl implements FleaService {
 
-    private static final FleaDao fleaDao=new FleaDao();
+    @Resource
+    private FleaDao fleaDao;
 
     @Override
     public Page<Flea> getAllFlea(int pn) {
@@ -17,9 +22,9 @@ public class FleaServiceImpl implements FleaService {
 
     @Override
     public boolean deleteFlea(int id) {
-        Flea flea=new Flea();
-        flea.set("id",id);
+        Flea flea = new Flea();
+        flea.set("id", id);
         flea.set("status", CommonStatus.DELETED);
-        return  fleaDao.update(flea);
+        return fleaDao.update(flea);
     }
 }

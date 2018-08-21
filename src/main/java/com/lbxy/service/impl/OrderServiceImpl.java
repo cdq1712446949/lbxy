@@ -5,17 +5,21 @@ import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.request.CreateOrderBean;
 import com.lbxy.common.status.CommonStatus;
 import com.lbxy.common.status.OrderStatus;
+import com.lbxy.core.annotation.Service;
 import com.lbxy.dao.OrderDao;
 import com.lbxy.model.Order;
 import com.lbxy.service.OrderService;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+@Service("orderService")
 public class OrderServiceImpl implements OrderService {
 
-    private static final OrderDao orderDao = new OrderDao();
+    @Resource
+    private OrderDao orderDao ;
 
     public Order findById(int id) {
         return Order.dao.findById(id);

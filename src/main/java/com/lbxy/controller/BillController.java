@@ -7,16 +7,14 @@ import com.lbxy.model.Bill;
 import com.lbxy.service.BillService;
 import com.lbxy.service.impl.BillServiceImpl;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
 public class BillController extends BaseController {
 
+    @Resource
     private BillService billService;
-
-    public BillController() {
-        billService = new BillServiceImpl();
-    }
 
     public void index() {
         List<Bill> list = billService.getBill(getJsonParamToInt("userId"));

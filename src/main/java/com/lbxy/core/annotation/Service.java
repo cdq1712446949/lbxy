@@ -12,4 +12,6 @@ import java.lang.annotation.*;
 @Documented
 public @interface Service {
     String value() default "";
+
+    boolean enableTransaction() default false;
 }

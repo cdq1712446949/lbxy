@@ -3,12 +3,14 @@ package com.lbxy.dao;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.status.BillStatus;
+import com.lbxy.core.annotation.Repository;
 import com.lbxy.model.Bill;
 import com.sun.org.apache.regexp.internal.RE;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+@Repository
 public class BillDao {
 
     public Page<Bill> findBillPn(int pn) {

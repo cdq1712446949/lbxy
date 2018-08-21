@@ -2,17 +2,18 @@ package com.lbxy.service.impl;
 
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.status.CommonStatus;
+import com.lbxy.core.annotation.Service;
 import com.lbxy.dao.TreeHoleDao;
 import com.lbxy.model.Treehole;
 import com.lbxy.service.TreeHoleService;
 
+import javax.annotation.Resource;
+
+@Service("treeHoleService")
 public class TreeHoleServiceImpl implements TreeHoleService {
 
+    @Resource
     private TreeHoleDao treeHoleDao;
-
-    public TreeHoleServiceImpl(){
-        treeHoleDao=new TreeHoleDao();
-    }
 
     @Override
     public Page<Treehole> getAllTreeHole(int pn) {
