@@ -49,32 +49,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public JSONObject login(String code) {
-        return new JSONObject();
-//        JSONObject result = WeixinUtil.login(code);
-//        User user = userDao.findByOpenid(result.getString("openid"));
-//        JSONObject returnValue = null;
-//        int userId = -1;
-//        if (user != null) {
-//            //更新sessionKey
-//            user.set("sessionKey", result.getString("session_key"));
-//            userDao.update(user);
-//
-//            userId = user.getInt("id");
-//            returnValue = new JSONObject();
-//            returnValue.put("isNew", false);
-//        } else {
-//            user = new User();
-//            user.set("openId", result.getString("openid"));
-//            user.set("sessionKey", result.getString("session_key"));
-//            userId = userDao.insert(user);
-//
-//            returnValue = JSON.parseObject(user.toJson());
-//            returnValue.put("isNew", true);
-//        }
-//
-//        returnValue.put("token", JWTUtil.createToken(userId));
-//        returnValue.put("user", user);
-//        return returnValue;
+        JSONObject result = WeixinUtil.login(code);
+        User user = userDao.findByOpenid(result.getString("openid"));
+        JSONObject returnValue = null;
+        int userId = -1;
+        if (user != null) {
+            //更新sessionKey
+            user.set("sessionKey", result.getString("session_key"));
+            userDao.update(user);
+
+            userId = user.getInt("id");
+            returnValue = new JSONObject();
+            returnValue.put("isNew", false);
+        } else {
+            user = new User();
+            user.set("openId", result.getString("openid"));
+            user.set("sessionKey", result.getString("session_key"));
+            userId = userDao.insert(user);
+
+            returnValue = JSON.parseObject(user.toJson());
+            returnValue.put("isNew", true);
+        }
+
+        returnValue.put("token", JWTUtil.createToken(userId));
+        returnValue.put("user", user);
+        return returnValue;
     }
 
     @Override

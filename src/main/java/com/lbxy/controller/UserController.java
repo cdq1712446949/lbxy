@@ -20,6 +20,7 @@ import com.lbxy.service.OrderService;
 import com.lbxy.service.UserService;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotBlank;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
@@ -34,16 +35,9 @@ public class UserController extends BaseController {
     @Resource
     private BillService billService;
 
-//    public UserController() {
-//        billService = new BillServiceImpl();
-//        orderService = new OrderServiceImpl();
-//        userService = new UserServiceImpl();
-//    }
-
-
     @Clear(CheckLoginInterceptor.class)
     @Before(POST.class)
-    public void login(String code) {
+    public void login(@NotBlank String code) {
         JSONObject result = userService.login(code);
         renderJson(MessageVoUtil.success(result));
     }

@@ -12,7 +12,6 @@ import javax.annotation.Resource;
 @Service("communityService")
 public class CommunityServiceImpl implements CommunityService {
 
-    @Resource
     private Community dao;
 
     public Page<Community> getCommunity(int pn) {

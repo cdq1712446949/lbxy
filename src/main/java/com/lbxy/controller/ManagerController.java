@@ -26,16 +26,6 @@ public class ManagerController extends BaseController {
     @Resource
     private BillService billService;
 
-//    public ManagerController() {
-//        userService = new UserServiceImpl();
-//        managerService = new ManagerServiceImpl();
-//        orderService = new OrderServiceImpl();
-//        treeHoleService = new TreeHoleServiceImpl();
-//        fleaService = new FleaServiceImpl();
-//        lostFoundService = new LostFoundServiceImpl();
-//        noticeService = new NoticeServiceImpl();
-//        billService = new BillServiceImpl();
-//    }
 
     public void index() {
         setAttr("error", "");

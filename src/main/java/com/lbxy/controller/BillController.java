@@ -36,6 +36,4 @@ public class BillController extends BaseController {
             renderJson(new MessageVo().setStatus(ResponseStatus.success).setMessage("账单记录生成失败"));
         }
     }
-
-
 }
