@@ -2,6 +2,8 @@ package com.lbxy.controller;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.paragetter.Para;
+import com.jfinal.ext.interceptor.GET;
+import com.jfinal.ext.interceptor.POST;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.request.CreateOrderBean;
 import com.lbxy.common.response.MessageVo;
@@ -14,7 +16,6 @@ import com.lbxy.service.OrderService;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotBlank;
-import java.sql.ResultSet;
 
 @Before(CheckLoginInterceptor.class)
 public class OrderController extends BaseController {
@@ -22,15 +23,18 @@ public class OrderController extends BaseController {
     @Resource
     private OrderService orderService;
 
+    @Before(GET.class)
     public void index(int pn) {
         Page<Order> page = orderService.getOrdersByPage(pn);
         renderJson(MessageVoUtil.success(page));
     }
 
+    @Before(GET.class)
     public void getOrderById(int orderId) {
         renderJson(MessageVoUtil.success("请求成功", orderService.findById(orderId)));
     }
 
+    @Before(POST.class)
     public void createOrder(int userId, @ValidParam @Para("") CreateOrderBean orderInfo) {
         boolean i = orderService.createOrder(userId, orderInfo);
         if (i) {
@@ -40,6 +44,7 @@ public class OrderController extends BaseController {
         }
     }
 
+    @Before(POST.class)
     public void acceptOrder(int userId, @NotBlank int orderId) {
         int result = orderService.accept(orderId, userId);
         if (result == OrderService.SUCCESS) {
@@ -58,16 +63,19 @@ public class OrderController extends BaseController {
         }
     }
 
+    @Before(GET.class)
     public void ownerPostOrders(int pn, int userId) {
         Page<Order> result = orderService.getOwnerPostOrders(pn, userId);
         renderJson(MessageVoUtil.success("请求成功", result));
     }
 
+    @Before(GET.class)
     public void ownerAcceptOrders(int pn, int userId) {
         Page<Order> result = orderService.getOwnerAcceptOrders(pn, userId);
         renderJson(MessageVoUtil.success("请求成功", result));
     }
 
+    @Before(POST.class)
     public void cancelOrder(int orderId) {
         int result = orderService.cancelOrder(orderId);
         if (result != 0) {
@@ -77,6 +85,7 @@ public class OrderController extends BaseController {
         }
     }
 
+    @Before(POST.class)
     public void settleOrder(int orderId) throws Exception {
         int result = orderService.settleOrder(orderId);
         if (result != 0) {
@@ -86,6 +95,7 @@ public class OrderController extends BaseController {
         }
     }
 
+    @Before(POST.class)
     public void completeOrder(int orderId) {
         boolean result = orderService.complete(orderId);
         if (result) {
@@ -95,6 +105,7 @@ public class OrderController extends BaseController {
         }
     }
 
+    @Before(POST.class)
     public void deleteOrder(int orderId) {
         boolean result = orderService.delete(orderId);
         if (result) {
