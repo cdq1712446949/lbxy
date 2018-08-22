@@ -7,6 +7,7 @@ import com.jfinal.aop.Clear;
 import com.jfinal.core.paragetter.Para;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 import com.lbxy.common.request.UserInfoBean;
 import com.lbxy.common.request.VerificationBean;
@@ -23,7 +24,6 @@ import javax.annotation.Resource;
 import javax.validation.constraints.NotBlank;
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.List;
 
 @Before(CheckLoginInterceptor.class)
 public class UserController extends BaseController {
@@ -76,8 +76,8 @@ public class UserController extends BaseController {
     }
 
     @Before(GET.class)
-    public void accountDetail(int userId) {
-        List<Bill> bills = billService.getAllByUserId(userId);
+    public void accountDetail(int pn, int userId) {
+        Page<Bill> bills = billService.getAllByUserId(pn, userId);
         renderJson(MessageVoUtil.success("请求成功", bills));
     }
 }

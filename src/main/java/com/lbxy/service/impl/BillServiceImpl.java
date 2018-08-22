@@ -8,7 +8,6 @@ import com.lbxy.service.BillService;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service("billService")
@@ -37,8 +36,7 @@ public class BillServiceImpl implements BillService {
         return billDao.get7DaysTotalIncome(userId);
     }
 
-    @Override
-    public List<Bill> getAllByUserId(int userId) {
-        return billDao.getAllByUserId(userId);
+    public Page<Bill> getAllByUserId(int pn, int userId) {
+        return billDao.getAllByUserId(pn,userId);
     }
 }
