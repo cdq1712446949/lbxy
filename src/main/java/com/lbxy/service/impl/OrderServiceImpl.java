@@ -3,11 +3,12 @@ package com.lbxy.service.impl;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.request.CreateOrderBean;
-import com.lbxy.common.status.CommonStatus;
 import com.lbxy.common.status.OrderStatus;
 import com.lbxy.core.annotation.Service;
 import com.lbxy.dao.OrderDao;
+import com.lbxy.dao.UserDao;
 import com.lbxy.model.Order;
+import com.lbxy.model.User;
 import com.lbxy.service.OrderService;
 
 import javax.annotation.Resource;
@@ -19,38 +20,80 @@ import java.util.Date;
 public class OrderServiceImpl implements OrderService {
 
     @Resource
-    private OrderDao orderDao ;
+    private OrderDao orderDao;
 
+    @Resource
+    private UserDao userDao;
+
+    @Override
     public Order findById(int id) {
-        return Order.dao.findById(id);
+        return orderDao.findById(id);
     }
 
     public Page<Order> getOrdersByPage(int pn) {
-        return orderDao.getOrdersByPage(pn);
+        return orderDao.getUnCompletedOrdersByPage(pn);
     }
 
-    public void complete(int id) {
-        Order order = new Order();
-        order.set("id", id);
-        order.set("status", OrderStatus.COMPLETED);
-        order.set("completedDate", new Date());
-        order.update();
+    public boolean complete(int orderId) {
+        Order order = orderDao.findById(orderId);
+        order.setCompletedDate(new Date());
+        order.setStatus(OrderStatus.COMPLETED);
+        return order.update();
     }
 
-    public void accept(int id, int userId, String acceptUserPhoneNumber) {
-        Order order = new Order();
-        order.set("id", id);
-        order.set("status", OrderStatus.WAIT_COMPLETE);
-        order.set("acceptUserId", userId);
-        order.set("acceptUserPhoneNumber", acceptUserPhoneNumber);
+    public int accept(int orderId, int userId) {
+        User user = userDao.findById(userId);
+        if (user == null) {
+            return ERROR_USERID;
+        }
+        if (user.getPhoneNumber() == null || user.getReadName() == null) {
+            return NEED_MORE_INFO;
+        }
+
+        Order order = orderDao.findById(orderId);
+        if (order.getUserId() == userId) {
+            return CANT_ACCEPT_OWN_ORDER;
+        }
+        order.setAcceptUserId(userId);
+        order.setAcceptUserPhoneNumber(user.getPhoneNumber());
+        order.setAcceptDate(new Date());
+        order.setStatus(OrderStatus.WAIT_COMPLETE);
         order.update();
+        return SUCCESS;
     }
 
-    public void delete(int id) {
-        Order order = new Order();
-        order.set("id", id);
-        order.set("status", CommonStatus.DELETED);
-        order.update();
+    public Page<Order> getOwnerPostOrders(int pn, int userId) {
+        return orderDao.findByUserId(userId, pn);
+    }
+
+    public Page<Order> getOwnerAcceptOrders(int pn, int userId) {
+        return orderDao.findByAcceptUserId(userId, pn);
+    }
+
+    @Override
+    public int cancelOrder(int orderId) {
+        return orderDao.updateOrderStatus(orderId, OrderStatus.CANCELED);
+    }
+
+    @Override
+    public int settleOrder(int orderId) throws Exception {
+        Order order = orderDao.findById(orderId);
+        int acceptUserId = order.getAcceptUserId();
+        BigDecimal reward = order.getReward();
+
+        User acceptUser = userDao.findById(acceptUserId);
+        BigDecimal balance = acceptUser.getBalance();
+        acceptUser.setBalance(balance.add(reward));
+        boolean result = acceptUser.save();
+        if (result) {
+            return orderDao.updateOrderStatus(orderId, OrderStatus.SETTLED);
+        } else {
+            throw new Exception("订单结算失败，orderId：" + orderId);
+        }
+    }
+
+    public boolean delete(int id) {
+        return orderDao.deleteById(id);
     }
 
     public Page<Order> getAllOrder(int pn) {
