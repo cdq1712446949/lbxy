@@ -45,13 +45,13 @@ public abstract class BaseOrder<M extends BaseOrder<M>> extends Model<M> impleme
 		return get("completedDate");
 	}
 
-	public M setAcceptUserId(java.lang.Long acceptUserId) {
+	public M setAcceptUserId(java.lang.Integer acceptUserId) {
 		set("acceptUserId", acceptUserId);
 		return (M)this;
 	}
 	
-	public java.lang.Long getAcceptUserId() {
-		return getLong("acceptUserId");
+	public int getAcceptUserId() {
+		return getInt("acceptUserId");
 	}
 
 	public M setAcceptUserPhoneNumber(java.lang.String acceptUserPhoneNumber) {

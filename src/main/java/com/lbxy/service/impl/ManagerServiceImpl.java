@@ -5,13 +5,16 @@ import com.lbxy.dao.ManagerDao;
 import com.lbxy.model.Manager;
 import com.lbxy.service.ManagerService;
 
+import javax.annotation.Resource;
+
 public class ManagerServiceImpl implements ManagerService {
 
-    private static final ManagerDao managerDao = new ManagerDao();
+    @Resource
+    private ManagerDao managerDao;
 
     public int login(String username, String password) {
         Manager manager = managerDao.findManagerByUserName(username);
-        if (manager==null) {
+        if (manager != null) {
             System.out.println("账号不存在");
             return ManagerService.NOT_EXIST;
         } else {

@@ -8,9 +8,13 @@ import com.lbxy.service.NoticeService;
 
 import java.util.Date;
 
+import javax.annotation.Resource;
+
+
 public class NoticeServiceImpl implements NoticeService {
 
-    private static final NoticeDao noticeDao= new NoticeDao();
+    @Resource
+    private NoticeDao noticeDao;
 
     @Override
     public Page<Notice> getAllNotice(int pn) {

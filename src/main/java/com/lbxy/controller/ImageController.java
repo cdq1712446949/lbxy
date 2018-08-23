@@ -4,13 +4,12 @@ import com.lbxy.model.User;
 import com.lbxy.service.UserService;
 import com.lbxy.service.impl.UserServiceImpl;
 
+import javax.annotation.Resource;
+
 public class ImageController extends BaseController {
 
+    @Resource
     private UserService userService;
-
-    public ImageController() {
-        userService = new UserServiceImpl();
-    }
 
     public void index(int id) {
         User user=userService.findById(id);

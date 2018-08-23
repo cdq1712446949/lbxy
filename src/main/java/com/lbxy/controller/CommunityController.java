@@ -7,15 +7,13 @@ import com.lbxy.model.Community;
 import com.lbxy.service.CommunityService;
 import com.lbxy.service.impl.CommunityServiceImpl;
 
+import javax.annotation.Resource;
 import java.util.Date;
 
 public class CommunityController extends BaseController {
 
-    public CommunityService communityService;
-
-    public CommunityController() {
-        communityService = new CommunityServiceImpl();
-    }
+    @Resource
+    private CommunityService communityService;
 
     public void index() {
         Page<Community> list = new Page<Community>();

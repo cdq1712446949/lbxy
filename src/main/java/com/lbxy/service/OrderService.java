@@ -12,19 +12,33 @@ import java.math.BigDecimal;
  * @date 2018/8/14
  */
 public interface OrderService {
+    int SUCCESS = 0;
+    int ERROR_USERID = 1;
+    int ORDER_NOT_EXIST = 2;
+    int NEED_MORE_INFO = 3;
+    int CANT_ACCEPT_OWN_ORDER = 4;
+
     Order findById(int id);
 
     Page<Order> getOrdersByPage(int pn);
 
-    void complete(int id);
+    boolean complete(int id);
 
-    void accept(int id, int userId, String acceptUserPhoneNumber);
+    int accept(int orderId, int userId);
 
-    void delete(int id);
+    boolean delete(int id);
 
     Page<Order> getAllOrder(int pn);
 
     BigDecimal getWaitSettledReward(int acceptUserId);
 
     boolean createOrder(int userId, CreateOrderBean orderInfo);
+
+    Page<Order> getOwnerPostOrders(int pn, int userId);
+
+    Page<Order> getOwnerAcceptOrders(int pn, int userId);
+
+    int cancelOrder(int orderId);
+
+    int settleOrder(int orderId) throws Exception;
 }
