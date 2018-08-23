@@ -13,6 +13,21 @@
     <title>乐帮校园后台系统</title>
     <script type="text/javascript">
 
+        function GoPage(total) {
+            var pn = document.getElementById("ai").value
+            if (pn > total) {
+                alert("请输入有效值")
+                pn = 1
+            } else {
+                if (pn < 1) {
+                    alert("请输入有效值")
+                    pn = 1
+                }
+            }
+            window.location.href = "/back/userList?pn=" + pn;
+        }
+
+
     </script>
     <style>
         .alt td {
@@ -32,6 +47,13 @@
                         手机号&nbsp;&nbsp;<input type="number" name="phoneNumber" class="ui_input_txt02"/>
                         <button id="search_btn" type="submit" class="ui_input_btn01">查询</button>
                         <div>#(error_search)</div>
+                    </div>
+                    <div id="box_bottom">
+                        <form name="formpage">
+                            第<input name='SkipPage' id="ai" class="ui_input_txt01">页
+                            <input name='submitSkip' type='button' onClick="GoPage('#(data.totalPage)')"
+                                   value='转到'>
+                        </form>
                     </div>
                 </form>
             </div>
@@ -67,10 +89,10 @@
                         #end
                     </td>
                     <td>
-                        <a  href="/upload?id=#(x.id)" target="_blank">查看照片</a>
+                        <a href="/upload?id=#(x.id)" target="_blank">查看照片</a>
                     </td>
                     <td>
-                        <a  href="/upload/stuNoPic?id=#(x.id)" target="_blank">查看照片</a>
+                        <a href="/upload/stuNoPic?id=#(x.id)" target="_blank">查看照片</a>
                     </td>
                     <td>
                         <a href="/back/throughAuthencation?id=#(x.id)&status=9"> #if(x.status==8)
@@ -95,18 +117,14 @@
             <div class="ui_frt">
                 <!--    如果是第一页，则只显示下一页、尾页 -->
 
+                <a href="/back/userList?pn=1" class="ui_input_btn01">首页</a>
                 <a href="/back/userList?pn=#(data.pageNumber-1)" class="ui_input_btn01">上一页</a>
                 <a href="/back/userList?pn=#(data.pageNumber+1)" class="ui_input_btn01">下一页</a>
+                <a href="/back/userList?pn=#(data.totalPage)" class="ui_input_btn01">尾页</a>
 
-                <!--     如果是最后一页，则只显示首页、上一页 -->
-
-                转到第<input type="text" name="inputPageNum" id="jumpNumTxt" class="ui_input_txt01"/>页
-                <input type="button" class="ui_input_btn01" value="跳转" onclick="jumpInputPage(9);"/>
             </div>
         </div>
     </div>
 </div>
-
-
 </body>
 </html>
