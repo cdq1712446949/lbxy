@@ -2,6 +2,7 @@ package com.lbxy.dao;
 
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.PageConst;
+import com.lbxy.common.status.CommonStatus;
 import com.lbxy.core.annotation.Repository;
 import com.lbxy.model.Treehole;
 
@@ -18,16 +19,17 @@ public class TreeHoleDao {
         boolean i = treeHole.update();
         return i;
     }
+
     public boolean save(Treehole treehole) {
         return treehole.save();
     }
 
     public Page<Treehole> getMainByPage(int pn) {
-        return Treehole.dao.paginate(pn, PageConst.pageSize, "select f.*,u.username", "from treehole f inner join user u on f.userId = u.id where f.pId is null order by f.postDate desc");
+        return Treehole.dao.paginate(pn, PageConst.pageSize, "select f.*,u.username", "from treehole f inner join user u on f.userId = u.id where f.pId is null and f.status = ? order by f.postDate desc", CommonStatus.NORMAL);
     }
 
     public List<Treehole> getReplyByPId(int pid) {
-        return Treehole.dao.find("select f.*,u.username from treehole f inner join user u on f.userId = u.id where f.pId = ? order by f.postDate asc", pid);
+        return Treehole.dao.find("select f.*,u.username from treehole f inner join user u on f.userId = u.id where f.pId = ? and f.status = ? order by f.postDate asc", pid,CommonStatus.NORMAL);
     }
 }
 

@@ -2,6 +2,7 @@ package com.lbxy.dao;
 
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.PageConst;
+import com.lbxy.common.status.CommonStatus;
 import com.lbxy.core.annotation.Repository;
 import com.lbxy.model.Flea;
 
@@ -23,10 +24,10 @@ public class FleaDao {
     }
 
     public Page<Flea> getMainByPage(int pn) {
-        return Flea.dao.paginate(pn, PageConst.pageSize, "select f.*,u.username", "from flea f inner join user u on f.userId = u.id where f.pId is null order by f.postDate desc");
+        return Flea.dao.paginate(pn, PageConst.pageSize, "select f.*,u.username", "from flea f inner join user u on f.userId = u.id where f.pId is null and f.status = ? order by f.postDate desc", CommonStatus.NORMAL);
     }
 
     public List<Flea> getReplyByPId(int pid) {
-        return Flea.dao.find("select f.*,u.username from flea f inner join user u on f.userId = u.id where f.pId = ? order by f.postDate asc", pid);
+        return Flea.dao.find("select f.*,u.username from flea f inner join user u on f.userId = u.id where f.pId = ? and f.status = ? order by f.postDate asc", pid, CommonStatus.NORMAL);
     }
 }

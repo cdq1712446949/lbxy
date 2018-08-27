@@ -32,7 +32,7 @@ public class LostFoundServiceImpl implements LostFoundService {
 
     @Override
     public Page<Lostfound> getAllLostFound(int pn) {
-        return lostFoundDao.findLostFounByPn(pn);
+        return lostFoundDao.findLostFoundByPn(pn);
     }
 
     @Override
