@@ -24,10 +24,6 @@ public class FleaServiceImpl implements FleaService {
     @Resource
     private FleaDao fleaDao;
 
-    public FleaServiceImpl() {
-        fleaDao = new FleaDao();
-    }
-
     @Resource
     private UserDao userDao;
 

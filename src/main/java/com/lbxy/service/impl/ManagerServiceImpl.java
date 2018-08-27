@@ -1,5 +1,6 @@
 package com.lbxy.service.impl;
 
+import com.lbxy.core.annotation.Service;
 import com.lbxy.core.utils.PasswordUtil;
 import com.lbxy.dao.ManagerDao;
 import com.lbxy.model.Manager;
@@ -7,14 +8,11 @@ import com.lbxy.service.ManagerService;
 
 import javax.annotation.Resource;
 
+@Service("managerService")
 public class ManagerServiceImpl implements ManagerService {
 
     @Resource
     private ManagerDao managerDao;
-
-    public ManagerServiceImpl() {
-        managerDao = new ManagerDao();
-    }
 
     public int login(String username, String password) {
         Manager manager = new Manager();

@@ -1,6 +1,7 @@
 package com.lbxy.service.impl;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.lbxy.core.annotation.Repository;
 import com.lbxy.core.annotation.Service;
 import com.lbxy.dao.BillDao;
 import com.lbxy.model.Bill;
@@ -15,10 +16,6 @@ public class BillServiceImpl implements BillService {
 
     @Resource
     private BillDao billDao;
-
-    public BillServiceImpl() {
-        billDao = new BillDao();
-    }
 
     public List<Bill> getBill(int userId) {
         return billDao.findByUserId(userId);

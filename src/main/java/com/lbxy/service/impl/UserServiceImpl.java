@@ -23,10 +23,6 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserDao userDao;
 
-    public UserServiceImpl() {
-        userDao = new UserDao();
-    }
-
     public User findById(int id) {
         return userDao.findById(id);
     }

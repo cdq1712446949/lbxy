@@ -25,11 +25,6 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     private UserDao userDao;
 
-    public OrderServiceImpl(){
-        orderDao=new OrderDao();
-        userDao=new UserDao();
-    }
-
     @Override
     public Order findById(int id) {
         return orderDao.findById(id);

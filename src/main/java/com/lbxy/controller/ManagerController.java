@@ -1,41 +1,41 @@
 package com.lbxy.controller;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.lbxy.core.annotation.Service;
 import com.lbxy.model.*;
 import com.lbxy.service.*;
 import com.lbxy.service.impl.*;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.annotation.Resource;
+
 public class ManagerController extends BaseController {
 
+    @Resource
     private ManagerService managerService;
 
+    @Resource
     private UserService userService;
 
+    @Resource
     private OrderService orderService;
 
+    @Resource
     private TreeHoleService treeHoleService;
 
+    @Resource
     private FleaService fleaService;
 
+    @Resource
     private NoticeService noticeService;
 
+    @Resource
     private LostFoundService lostFoundService;
 
+    @Resource
     private BillService billService;
 
     private String userNmae = "null";
-
-    public ManagerController() {
-        userService = new UserServiceImpl();
-        managerService = new ManagerServiceImpl();
-        orderService = new OrderServiceImpl();
-        treeHoleService = new TreeHoleServiceImpl();
-        fleaService = new FleaServiceImpl();
-        lostFoundService = new LostFoundServiceImpl();
-        noticeService = new NoticeServiceImpl();
-        billService = new BillServiceImpl();
-    }
 
     public void index() {
         setAttr("error", "");
