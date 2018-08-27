@@ -12,9 +12,14 @@ public class ManagerServiceImpl implements ManagerService {
     @Resource
     private ManagerDao managerDao;
 
+    public ManagerServiceImpl() {
+        managerDao = new ManagerDao();
+    }
+
     public int login(String username, String password) {
-        Manager manager = managerDao.findManagerByUserName(username);
-        if (manager != null) {
+        Manager manager = new Manager();
+        manager = managerDao.findManagerByUserName(username);
+        if (manager == null) {
             System.out.println("账号不存在");
             return ManagerService.NOT_EXIST;
         } else {

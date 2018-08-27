@@ -13,6 +13,20 @@
     <title>乐帮校园后台系统</title>
     <script type="text/javascript">
 
+        function GoPage(total) {
+            var pn = document.getElementById("ai").value
+            if (pn > total) {
+                alert("请输入有效值")
+                pn = 1
+            } else {
+                if (pn < 1) {
+                    alert("请输入有效值")
+                    pn = 1
+                }
+            }
+            window.location.href = "/back/orderList?pn=" + pn;
+        }
+
     </script>
     <style>
         .alt td {
@@ -31,6 +45,13 @@
                     <div id="box_center">
                         手机号&nbsp;&nbsp;<input type="number" name="phoneNumber" class="ui_input_txt02"/>
                         <button id="search_btn" type="submit" class="ui_input_btn01">查询</button>
+                    </div>
+                    <div id="box_bottom">
+                        <form name="formpage">
+                            第<input name='SkipPage' id="ai" class="ui_input_txt01">页
+                            <input name='submitSkip' type='button' onClick="GoPage('#(orderPage.totalPage)')"
+                                   value='转到'>
+                        </form>
                     </div>
                 </form>
             </div>
@@ -53,7 +74,7 @@
                     <th>配送时间段</th>
                     <th>备注</th>
                 </tr>
-                #for(x:orderpage.list)
+                #for(x:orderPage.list)
                 <tr>
                     <td>#(x.id)</td>
                     <td>#if(x.status==0)
@@ -70,7 +91,7 @@
                     <td>#(x.completedDate)</td>
                     <td>#(x.acceptUserPhoneNumber)</td>
                     <td>#(x.userPhoneNumber)</td>
-                    <td>#(x.reward)</td>
+                    <td>￥#(x.reward)</td>
                     <td>#(x.fromAddress)</td>
                     <td>#(x.toAddress)</td>
                     <td>#(x.detail)</td>
@@ -84,21 +105,18 @@
         <div class="ui_tb_h30">
             <div class="ui_flt" style="height: 30px; line-height: 30px;">
                 共有
-                <span class="ui_txt_bold04">#(orderpage.totalRow)</span>
+                <span class="ui_txt_bold04">#(orderPage.totalRow)</span>
                 条记录，当前第
-                <span class="ui_txt_bold04">#(orderpage.pageNumber)/#(orderpage.totalPage)</span>
+                <span class="ui_txt_bold04">#(orderPage.pageNumber)/#(orderPage.totalPage)</span>
                 页
             </div>
             <div class="ui_frt">
                 <!--    如果是第一页，则只显示下一页、尾页 -->
+                <a href="/back/orderList?pn=1" class="ui_input_btn01">首页</a>
+                <a href="/back/orderList?pn=#(orderPage.pageNumber-1)" class="ui_input_btn01">上一页</a>
+                <a href="/back/orderList?pn=#(orderPage.pageNumber+1)" class="ui_input_btn01">下一页</a>
+                <a href="/back/orderList?pn=#(orderPage.totalPage)" class="ui_input_btn01">尾页</a>
 
-                <a href="/back/orderList?pn=#(orderpage.pageNumber-1)" class="ui_input_btn01">上一页</a>
-                <a href="/back/orderList?pn=#(orderpage.pageNumber+1)" class="ui_input_btn01">下一页</a>
-
-                <!--     如果是最后一页，则只显示首页、上一页 -->
-
-                转到第<input type="text" name="inputPageNum" id="jumpNumTxt" class="ui_input_txt01"/>页
-                <input type="button" class="ui_input_btn01" value="跳转" onclick="jumpInputPage(9);"/>
             </div>
         </div>
     </div>

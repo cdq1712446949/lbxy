@@ -16,6 +16,9 @@ public class BillServiceImpl implements BillService {
     @Resource
     private BillDao billDao;
 
+    public BillServiceImpl() {
+        billDao = new BillDao();
+    }
 
     public List<Bill> getBill(int userId) {
         return billDao.findByUserId(userId);
@@ -37,6 +40,11 @@ public class BillServiceImpl implements BillService {
     }
 
     public Page<Bill> getAllByUserId(int pn, int userId) {
-        return billDao.getAllByUserId(pn,userId);
+        return billDao.getAllByUserId(pn, userId);
+    }
+
+    @Override
+    public Page<Bill> getBillByPhoneNumber(int pn, String phoneNumber) {
+        return billDao.findBillByPhoneNumber(pn,phoneNumber);
     }
 }

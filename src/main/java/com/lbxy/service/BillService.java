@@ -21,4 +21,7 @@ public interface BillService {
     BigDecimal get7DaysTotalIncome(int userId);
 
     Page<Bill> getAllByUserId(int pn, int userId);
+
+    Page<Bill> getBillByPhoneNumber(int pn,String phoneNumber);
+
 }

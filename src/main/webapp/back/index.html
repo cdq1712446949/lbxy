@@ -16,18 +16,16 @@
             }
         }
 
-        /**获得当前日期**/
-        function getDate01() {
-            var time = new Date();
-            var myYear = time.getFullYear();
-            var myMonth = time.getMonth() + 1;
-            var myDay = time.getDate();
-            if (myMonth < 10) {
-                myMonth = "0" + myMonth;
-            }
-            document.getElementById("yue_fen").innerHTML = myYear + "." + myMonth;
-            document.getElementById("day_day").innerHTML = myYear + "." + myMonth + "." + myDay;
+
+        function showTime() {
+            nowtime = new Date();
+            year = nowtime.getFullYear();
+            month = nowtime.getMonth() + 1;
+            date = nowtime.getDate();
+            document.getElementById("day_day").innerText = year + "年" + month + "月" + date + " " + nowtime.toLocaleTimeString();
         }
+
+        setInterval("showTime()", 1000);
 
     </script>
     <script type="text/javascript">
@@ -146,7 +144,7 @@
             if (treeNode.isParent) {
                 $('#here_area').html('当前位置：' + treeNode.getParentNode().resourceName + '&nbsp;>&nbsp;<span style="color:#1A5CC6">' + treeNode.resourceName + '</span>');
             } else {
-                $('#here_area').html('当前位置：系统&nbsp;>&nbsp;<span style="color:#1A5CC6">' + treeNode.resourceName + '</span>');
+                $('#here_area').html('当前位置：&nbsp;<span style="color:#1A5CC6">' + treeNode.resourceName + '</span>');
             }
         };
 
@@ -342,7 +340,7 @@
         }
     </script>
 </head>
-<body onload="getDate01()">
+<body onload="showTime()">
 <div id="top">
     <div id="top_logo">
         <img alt="logo" src="images/common/logolbxy.png" width="274" height="49" style="vertical-align:middle;">
@@ -353,10 +351,6 @@
                 <li>
                     <img alt="当前用户" src="images/common/user.jpg">：
                     <span>#(userName)</span>
-                </li>
-                <li>
-                    <img alt="事务月份" src="images/common/month.jpg">：
-                    <span id="yue_fen"></span>
                 </li>
                 <li>
                     <img alt="今天是" src="images/common/date.jpg">：
@@ -434,7 +428,7 @@
 </script>
 <!-- side menu start -->
 <div id="top_nav">
-    <span id="here_area">当前位置：系统&nbsp;>&nbsp;系统介绍</span>
+    <span id="here_area">当前位置：&nbsp;系统介绍</span>
 </div>
 <div id="main">
     <iframe name="right" id="rightMain" src="/back/userList" frameborder="no" scrolling="auto" width="100%"

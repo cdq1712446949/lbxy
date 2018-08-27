@@ -25,11 +25,11 @@ public class BillDao {
         return Db.queryBigDecimal("select sum(money) from Bill where userId=? and status=?", userId, BillStatus.INCOME);
     }
 
-    public Page<Bill> getAllByUserId(int pn,int userId) {
+    public Page<Bill> getAllByUserId(int pn, int userId) {
         return Bill.dao.paginate(pn, PageConst.pageSize, "select b.status,b.money,b.createdDate,o.fromAddress,o.toAddress ", "from Bill b inner join `order` o on b.orderId = o.id where b.userId=?", userId);
-//        return Db.query("select b.status,b.money,b.createdDate,o.fromAddress,o.toAddress " +
-//                "from Bill b " +
-//                "inner join" +
-//                " `order` o on b.orderId = o.id where b.userId=?", userId);
+    }
+
+    public Page<Bill> findBillByPhoneNumber(int pn, String phoneNumber) {
+        return Bill.dao.paginate(pn, 10, "select b.*", "from Bill b inner join User u on b.userId=u.id where u.phoneNumber = ?", phoneNumber);
     }
 }

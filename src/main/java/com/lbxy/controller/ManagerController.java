@@ -71,44 +71,60 @@ public class ManagerController extends BaseController {
         render("user_list.html");
     }
 
-    //查询公告
-//    public void searchNotice(){
-//        String userName = getPara("userName");
-//        if (StringUtils.isBlank(userName)) {
-//            Page<Notice> noticePage = noticeService.getAllNotice(1);
-//            setAttr("noticePage", noticePage);
-//        } else {
-//            Page<Notice> noticePage=noticeService.findByUserName();
-//            if (noticePage.getList().size() == 0) {
-//                System.out.println("改手机号不存在");
-//                setAttr("error_search", "该手机号不存在");
-//            } else {
-//                setAttr("noticePage", noticePage);
-//            }
-//        }
-//        render("notice_list.html");
-//    }
+    //查询树洞帖子
+    public void searchTreeHole(){
 
-    public void login() {
-        String username = getPara("username");
-        String password = getPara("password");
+    }
+
+    //查询用户交易记录
+    public void searchBill(String phoneNumber){
+        if (phoneNumber==null||phoneNumber.equals("")){
+            billList();
+        }else{
+            setAttr("billPage", billService.getBillByPhoneNumber(1,phoneNumber));
+            render("bill_list.html");
+        }
+    }
+
+    //查询公告
+    public void searchNotice(){
+        int pn=getParaToInt("pn");
+        String userName = getPara("userName");
+        if (StringUtils.isBlank(userName)) {
+            Page<Notice> noticePage = noticeService.getAllNotice(1);
+            setAttr("noticePage", noticePage);
+        } else {
+            Page<Notice> noticePage=noticeService.findByUserName(pn,userNmae);
+            if (noticePage.getList().size() == 0) {
+                System.out.println("改手机号不存在");
+                setAttr("error_search", "该手机号不存在");
+            } else {
+                setAttr("noticePage", noticePage);
+            }
+        }
+        render("notice_list.html");
+    }
+
+    public void login(String username,String password) {
         int i = managerService.login(username, password);
         if (i == 0) {
+            System.out.println("账号不存在");
             setAttr("error", "账号不存在");
             return;
         }
         if (i == 1) {
+            System.out.println("密码错误");
             setAttr("error", "密码错误");
             render("login.html");
             return;
         }
         if (i == 2) {
+            System.out.println("登陆成功");
             String userName= managerService.getManager(username).get("userName");
             setAttr("userName",userName);
             render("index.html");
             return;
         }
-        System.out.println(username + password);
     }
 
     public void orderList() {
@@ -119,7 +135,7 @@ public class ManagerController extends BaseController {
             System.out.println(" pageNumber is invalid");
         }
         Page<Order> orderPage = orderService.getAllOrder(pn);
-        setAttr("orderpage", orderPage);
+        setAttr("orderPage", orderPage);
         render("order_list.html");
     }
 
@@ -192,7 +208,7 @@ public class ManagerController extends BaseController {
         } else {
             int pn = 1;
             try {
-                pn = getParaToInt(pn);
+                pn = getParaToInt("pn");
                 pn = checkPn(pn);
             } catch (Exception e) {
                 System.out.println(" pageNumber is invalid");

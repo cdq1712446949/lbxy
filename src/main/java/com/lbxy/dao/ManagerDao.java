@@ -7,7 +7,7 @@ import com.lbxy.model.Manager;
 public class ManagerDao {
 
     public Manager findManagerByUserName(String username) {
-        return Manager.dao.findFirst("select * from Manager where userName=?", username);
+        return Manager.dao.find("select * from Manager where userName=?", username).get(0);
     }
 
 }

@@ -15,6 +15,10 @@ public class LostFoundServiceImpl implements LostFoundService {
     @Resource
     private LostFoundDao lostFoundDao;
 
+    public LostFoundServiceImpl(){
+        lostFoundDao=new LostFoundDao();
+    }
+
     @Override
     public Page<Lostfound> getAllLostFound(int pn) {
         return lostFoundDao.findLostFounByPn(pn);

@@ -15,6 +15,10 @@ public class FleaServiceImpl implements FleaService {
     @Resource
     private FleaDao fleaDao;
 
+    public FleaServiceImpl() {
+        fleaDao = new FleaDao();
+    }
+
     @Override
     public Page<Flea> getAllFlea(int pn) {
         return fleaDao.findFleaByPn(pn);

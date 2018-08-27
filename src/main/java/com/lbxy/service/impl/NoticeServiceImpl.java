@@ -16,6 +16,10 @@ public class NoticeServiceImpl implements NoticeService {
     @Resource
     private NoticeDao noticeDao;
 
+    public NoticeServiceImpl (){
+        noticeDao=new NoticeDao();
+    }
+
     @Override
     public Page<Notice> getAllNotice(int pn) {
         return noticeDao.findNoticeByPn(pn);
