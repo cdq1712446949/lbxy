@@ -26,23 +26,23 @@ public class OrderDao {
         /*
         .createdDate,o.reward,o.userName,o.userPhoneNumber,o.fromAddress,o.toAddress,o.remark,o.detail
          */
-        return Order.dao.paginate(pn, PageConst.pageSize, "select u.username,u.avatarUrl,o.*", " from `order` o inner join User u on o.userId = u.id where o.status=?", OrderStatus.UN_COMPLETED);
+        return Order.DAO.paginate(pn, PageConst.PAGE_SIZE, "select u.username,u.avatarUrl,o.*", " from `order` o inner join User u on o.userId = u.id where o.status=?", OrderStatus.UN_COMPLETED);
     }
 
     public Page<Order> findByPn(int pn) {
-        return Order.dao.paginate(pn, 10, "select *", " from `Order`");
+        return Order.DAO.paginate(pn, 10, "select *", " from `Order`");
     }
 
     public Order findById(int orderId) {
-        return Order.dao.findFirst("select u.username,u.avatarUrl,o.* from `order` o inner join user u on o.userId = u.id where o.id=?", orderId);
+        return Order.DAO.findFirst("select u.username,u.avatarUrl,o.* from `order` o inner join user u on o.userId = u.id where o.id=?", orderId);
     }
 
     public Page<Order> findByUserId(int userId, int pn) {
-        return Order.dao.paginate(pn, PageConst.pageSize, "select *", "from `order` where userId = ? and status != ?", userId, CommonStatus.DELETED);
+        return Order.DAO.paginate(pn, PageConst.PAGE_SIZE, "select *", "from `order` where userId = ? and status != ?", userId, CommonStatus.DELETED);
     }
 
     public Page<Order> findByAcceptUserId(int acceptUserId, int pn) {
-        return Order.dao.paginate(pn, PageConst.pageSize, "select *", "from `order` where acceptUserId = ? and status != ?", acceptUserId, CommonStatus.DELETED);
+        return Order.DAO.paginate(pn, PageConst.PAGE_SIZE, "select *", "from `order` where acceptUserId = ? and status != ?", acceptUserId, CommonStatus.DELETED);
     }
 
     public int updateOrderStatus(int orderId, int status) {
@@ -50,6 +50,6 @@ public class OrderDao {
     }
 
     public boolean deleteById(int orderId) {
-        return Order.dao.deleteById(orderId);
+        return Order.DAO.deleteById(orderId);
     }
 }

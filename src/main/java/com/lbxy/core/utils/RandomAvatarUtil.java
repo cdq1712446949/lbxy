@@ -12,6 +12,10 @@ import java.util.List;
  */
 public class RandomAvatarUtil {
 
+    private RandomAvatarUtil() {
+
+    }
+
     /**
      * 图片的url，三个参数依次为：头像编号（随机正整数）、图片分辨率、头像风格（identicon、monsterid、wavatar、retro、robohash等）
      */

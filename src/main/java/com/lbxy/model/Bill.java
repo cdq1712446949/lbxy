@@ -7,5 +7,5 @@ import com.lbxy.model.base.BaseBill;
  */
 @SuppressWarnings("serial")
 public class Bill extends BaseBill<Bill> {
-	public static final Bill dao = new Bill().dao();
+	public static final Bill DAO = new Bill().dao();
 }

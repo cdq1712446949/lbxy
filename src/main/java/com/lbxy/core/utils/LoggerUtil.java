@@ -6,6 +6,10 @@ import org.apache.commons.lang3.StringUtils;
 
 public class LoggerUtil {
 
+    private LoggerUtil() {
+
+    }
+
     public static void info(Class<?> clazz, String message) {
         Log logger = Log.getLog(clazz);
         logger.info(message);

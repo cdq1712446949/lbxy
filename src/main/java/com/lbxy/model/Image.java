@@ -7,5 +7,5 @@ import com.lbxy.model.base.BaseImage;
  */
 @SuppressWarnings("serial")
 public class Image extends BaseImage<Image> {
-	public static final Image dao = new Image().dao();
+	public static final Image DAO = new Image().dao();
 }

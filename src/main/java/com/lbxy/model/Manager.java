@@ -7,5 +7,5 @@ import com.lbxy.model.base.BaseManager;
  */
 @SuppressWarnings("serial")
 public class Manager extends BaseManager<Manager> {
-	public static final Manager dao = new Manager().dao();
+	public static final Manager DAO = new Manager().dao();
 }

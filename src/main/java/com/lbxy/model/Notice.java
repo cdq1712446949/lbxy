@@ -7,5 +7,5 @@ import com.lbxy.model.base.BaseNotice;
  */
 @SuppressWarnings("serial")
 public class Notice extends BaseNotice<Notice> {
-	public static final Notice dao = new Notice().dao();
+	public static final Notice DAO = new Notice().dao();
 }

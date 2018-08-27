@@ -57,8 +57,9 @@ public class ParamValidateInterceptor implements Interceptor {
                     } else {
                         if (para != null) {
                             constraintViolations = validator.validate(invController.getBean(validBean, para.value()));
-                        } else
+                        } else {
                             constraintViolations = validator.validate(invController.getBean(validBean, method.getParameters()[i].getName()));
+                        }
                     }
                 } else {
                     //如果参数没有被ValidParam注解

@@ -7,5 +7,5 @@ import com.lbxy.model.base.BaseOrder;
  */
 @SuppressWarnings("serial")
 public class Order extends BaseOrder<Order> {
-	public static final Order dao = new Order().dao();
+	public static final Order DAO = new Order().dao();
 }

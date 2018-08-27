@@ -22,7 +22,7 @@ import java.util.Set;
  */
 public class AnnotationInjectionPlugin implements IPlugin {
 
-    private String basePackages[];
+    private String[] basePackages;
 
     public AnnotationInjectionPlugin(String... basePackage) {
         this.basePackages = basePackage;

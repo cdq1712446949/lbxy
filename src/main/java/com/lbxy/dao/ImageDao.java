@@ -17,6 +17,6 @@ public class ImageDao {
     }
 
     public List<Image> getImagesByContentIdAndType(int contentId,int type) {
-        return Image.dao.find("select * from image where contentId = ? and type = ?", contentId, type);
+        return Image.DAO.find("select * from image where contentId = ? and type = ?", contentId, type);
     }
 }

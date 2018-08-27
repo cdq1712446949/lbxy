@@ -12,7 +12,7 @@ import java.util.List;
 public class TreeHoleDao {
 
     public Page<Treehole> findAllTreeHole(int pn) {
-        return Treehole.dao.paginate(pn, 10, "select *", "from TreeHole");
+        return Treehole.DAO.paginate(pn, 10, "select *", "from TreeHole");
     }
 
     public boolean update(Treehole treeHole) {
@@ -25,11 +25,11 @@ public class TreeHoleDao {
     }
 
     public Page<Treehole> getMainByPage(int pn) {
-        return Treehole.dao.paginate(pn, PageConst.pageSize, "select f.*,u.username", "from treehole f inner join user u on f.userId = u.id where f.pId is null and f.status = ? order by f.postDate desc", CommonStatus.NORMAL);
+        return Treehole.DAO.paginate(pn, PageConst.PAGE_SIZE, "select f.*,u.username", "from treehole f inner join user u on f.userId = u.id where f.pId is null and f.status = ? order by f.postDate desc", CommonStatus.NORMAL);
     }
 
     public List<Treehole> getReplyByPId(int pid) {
-        return Treehole.dao.find("select f.*,u.username from treehole f inner join user u on f.userId = u.id where f.pId = ? and f.status = ? order by f.postDate asc", pid,CommonStatus.NORMAL);
+        return Treehole.DAO.find("select f.*,u.username from treehole f inner join user u on f.userId = u.id where f.pId = ? and f.status = ? order by f.postDate asc", pid,CommonStatus.NORMAL);
     }
 }
 

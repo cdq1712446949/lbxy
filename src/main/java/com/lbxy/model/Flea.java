@@ -7,5 +7,5 @@ import com.lbxy.model.base.BaseFlea;
  */
 @SuppressWarnings("serial")
 public class Flea extends BaseFlea<Flea> {
-	public static final Flea dao = new Flea().dao();
+	public static final Flea DAO = new Flea().dao();
 }

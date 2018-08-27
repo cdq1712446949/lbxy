@@ -7,5 +7,5 @@ import com.lbxy.model.base.BaseLostfound;
  */
 @SuppressWarnings("serial")
 public class Lostfound extends BaseLostfound<Lostfound> {
-	public static final Lostfound dao = new Lostfound().dao();
+	public static final Lostfound DAO = new Lostfound().dao();
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public class LostFoundDao {
 
     public Page<Lostfound> findLostFoundByPn(int pn) {
-        return Lostfound.dao.paginate(pn, 10, "select *", "from LostFound");
+        return Lostfound.DAO.paginate(pn, 10, "select *", "from LostFound");
     }
 
     public boolean update(Lostfound lostFound) {
@@ -24,10 +24,10 @@ public class LostFoundDao {
     }
 
     public Page<Lostfound> getMainByPage(int pn) {
-        return Lostfound.dao.paginate(pn, PageConst.pageSize, "select f.*,u.username", "from lostfound f inner join user u on f.userId = u.id where f.pId is null and f.status = ? order by f.postDate desc", CommonStatus.NORMAL);
+        return Lostfound.DAO.paginate(pn, PageConst.PAGE_SIZE, "select f.*,u.username", "from lostfound f inner join user u on f.userId = u.id where f.pId is null and f.status = ? order by f.postDate desc", CommonStatus.NORMAL);
     }
 
     public List<Lostfound> getReplyByPId(int pid) {
-        return Lostfound.dao.find("select f.*,u.username from lostfound f inner join user u on f.userId = u.id where f.pId = ? and f.status = ? order by f.postDate asc", pid, CommonStatus.NORMAL);
+        return Lostfound.DAO.find("select f.*,u.username from lostfound f inner join user u on f.userId = u.id where f.pId = ? and f.status = ? order by f.postDate asc", pid, CommonStatus.NORMAL);
     }
 }

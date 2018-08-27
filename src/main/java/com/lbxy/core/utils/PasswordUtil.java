@@ -41,6 +41,11 @@ import java.security.spec.InvalidKeySpecException;
  * www: http://crackstation.net/hashing-security.htm
  */
 public class PasswordUtil {
+
+    private PasswordUtil() {
+
+    }
+
     public static final String PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA1";
 
     // The following constants may be changed without breaking existing hashes.

@@ -14,11 +14,11 @@ import java.util.List;
 public class BillDao {
 
     public Page<Bill> findBillPn(int pn) {
-        return Bill.dao.paginate(pn, 10, "select *", "from Bill");
+        return Bill.DAO.paginate(pn, 10, "select *", "from Bill");
     }
 
     public List<Bill> findByUserId(int UserId) {
-        return Bill.dao.find("select * from Bill where userId=?", UserId);
+        return Bill.DAO.find("select * from Bill where userId=?", UserId);
     }
 
     public BigDecimal get7DaysTotalIncome(int userId) {
@@ -26,7 +26,7 @@ public class BillDao {
     }
 
     public Page<Bill> getAllByUserId(int pn,int userId) {
-        return Bill.dao.paginate(pn, PageConst.pageSize, "select b.status,b.money,b.createdDate,o.fromAddress,o.toAddress ", "from Bill b inner join `order` o on b.orderId = o.id where b.userId=?", userId);
+        return Bill.DAO.paginate(pn, PageConst.PAGE_SIZE, "select b.status,b.money,b.createdDate,o.fromAddress,o.toAddress ", "from Bill b inner join `order` o on b.orderId = o.id where b.userId=?", userId);
 //        return Db.query("select b.status,b.money,b.createdDate,o.fromAddress,o.toAddress " +
 //                "from Bill b " +
 //                "inner join" +
