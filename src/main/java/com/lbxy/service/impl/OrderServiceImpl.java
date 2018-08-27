@@ -41,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
         return order.update();
     }
 
-    public int accept(int orderId, int userId) {
+    public int accept(int orderId, long userId) {
         User user = userDao.findById(userId);
         if (user == null) {
             return ERROR_USERID;
@@ -78,7 +78,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int settleOrder(int orderId) throws Exception {
         Order order = orderDao.findById(orderId);
-        int acceptUserId = order.getAcceptUserId();
+        long acceptUserId = order.getAcceptUserId();
         BigDecimal reward = order.getReward();
 
         User acceptUser = userDao.findById(acceptUserId);

@@ -43,6 +43,7 @@ public class ParamValidateInterceptor implements Interceptor {
         for (int i = 0; i < annotations.length; i++) {
             for (Annotation annotation : annotations[i]) {
                 if (annotation instanceof ValidParam) {
+                    //如果是被ValidParam注解的实体类
                     Para para = this.containsAnnotations(annotations[i], Para.class);
                     Class<?> validBean = inv.getArg(i).getClass();
                     Class<?>[] groups = ((ValidParam) annotation).groups();
@@ -60,15 +61,17 @@ public class ParamValidateInterceptor implements Interceptor {
                             constraintViolations = validator.validate(invController.getBean(validBean, method.getParameters()[i].getName()));
                     }
                 } else {
+                    //如果参数没有被ValidParam注解
                     String AnnotationPackage = annotation.annotationType().getPackage().getName();
                     if ("javax.validation.constraints".equals(AnnotationPackage) || "org.hibernate.annotation.constraints".equals(AnnotationPackage)) {
+                        //如果参数的注解是用于校验的注解，那么将参数提取出来使用hibernate validator校验
                         Parameter[] parameters = method.getParameters();
                         Map<String, Object> paramValueMap = new LinkedHashMap<>();
                         for (int j = 0; j < parameters.length; j++) {
                             Parameter parameter = parameters[j];
                             paramValueMap.put(parameter.getName(), inv.getArg(j));
                         }
-                        constraintViolations = validator.forExecutables().validateParameters(invController, method, paramValueMap.values().toArray());
+                        constraintViolations = validator.forExecutables().validateParameters(invController, method, paramValueMap.values().toArray()); // 参数分别为， 要校验的方法所在的类，要校验的方法，要校验的方法参数
                     }
                 }
 

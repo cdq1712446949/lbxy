@@ -29,7 +29,7 @@ public class UserDao {
         return User.dao.findFirst("select * from User where openid = ?", openid);
     }
 
-    public User findById(int id) {
+    public User findById(long id) {
         return User.dao.findById(id);
     }
 

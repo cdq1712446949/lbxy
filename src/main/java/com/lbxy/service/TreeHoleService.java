@@ -9,6 +9,9 @@ public interface TreeHoleService {
 
     boolean deleteTreeHole(int id);
 
+    long save(String content, long userId);
 
+    Page<Treehole> getMainByPage(int pn);
 
+    boolean reply(long userId, Long pId, Long pUserId, String content);
 }

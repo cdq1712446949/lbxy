@@ -14,7 +14,6 @@ import com.lbxy.core.interceptors.InjectionInterceptor;
 import com.lbxy.core.interceptors.ParamValidateInterceptor;
 import com.lbxy.core.interceptors.exception.ExceptionsInterceptor;
 import com.lbxy.core.plugins.AnnotationInjectionPlugin;
-import com.lbxy.core.utils.LoggerUtil;
 import com.lbxy.model._MappingKit;
 
 /**
@@ -61,6 +60,9 @@ public class Config extends JFinalConfig {
         me.add("/back", ManagerController.class);
         me.add("/user", UserController.class);
         me.add("/upload", ImageController.class);
+        me.add("/flea", FleaController.class);
+        me.add("/treahole", TreeholeController.class);
+        me.add("/lostfound", LostfoundController.class);
     }
 
     public void configEngine(Engine me) {
