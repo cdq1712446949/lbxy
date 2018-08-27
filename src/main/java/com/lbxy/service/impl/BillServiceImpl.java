@@ -17,10 +17,12 @@ public class BillServiceImpl implements BillService {
     @Resource
     private BillDao billDao;
 
+    @Override
     public List<Bill> getBill(int userId) {
         return billDao.findByUserId(userId);
     }
 
+    @Override
     public boolean add(Bill bill) {
         boolean i = bill.save();
         return i;
@@ -36,6 +38,7 @@ public class BillServiceImpl implements BillService {
         return billDao.get7DaysTotalIncome(userId);
     }
 
+    @Override
     public Page<Bill> getAllByUserId(int pn, int userId) {
         return billDao.getAllByUserId(pn, userId);
     }
