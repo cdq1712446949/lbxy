@@ -55,7 +55,7 @@ public class Config extends JFinalConfig {
      */
     public void configRoute(Routes me) {
         me.add("/order", OrderController.class);
-        me.add("/community", CommunityController.class);
+//        me.add("/community", CommunityController.class);
         me.add("/bill", BillController.class);
         me.add("/back", ManagerController.class);
         me.add("/user", UserController.class);
@@ -63,6 +63,7 @@ public class Config extends JFinalConfig {
         me.add("/flea", FleaController.class);
         me.add("/treahole", TreeholeController.class);
         me.add("/lostfound", LostfoundController.class);
+        me.add("/notification", NotificationController.class);
     }
 
     public void configEngine(Engine me) {

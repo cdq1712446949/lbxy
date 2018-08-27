@@ -1,5 +1,9 @@
 package com.lbxy.service;
 
+import com.lbxy.model.Image;
+
+import java.util.List;
+
 /**
  * @author lmy
  * @description ImageService
@@ -7,4 +11,6 @@ package com.lbxy.service;
  */
 public interface ImageService {
     boolean saveImageInfo(long postId, int type, String imagePath);
+
+    List<Image> getIndexImages();
 }

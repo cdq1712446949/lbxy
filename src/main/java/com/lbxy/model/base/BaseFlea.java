@@ -54,15 +54,6 @@ public abstract class BaseFlea<M extends BaseFlea<M>> extends Model<M> implement
 		return getStr("content");
 	}
 
-	public M setPictureUrl(java.lang.String pictureUrl) {
-		set("pictureUrl", pictureUrl);
-		return (M)this;
-	}
-	
-	public java.lang.String getPictureUrl() {
-		return getStr("pictureUrl");
-	}
-
 	public M setStatus(java.lang.Integer status) {
 		set("status", status);
 		return (M)this;

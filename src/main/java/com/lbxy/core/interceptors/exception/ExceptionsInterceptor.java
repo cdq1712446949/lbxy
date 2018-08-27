@@ -18,10 +18,11 @@ public class ExceptionsInterceptor implements Interceptor {
         try {
             inv.invoke();
         } catch (Exception e) {
+            e.printStackTrace();
             if (e instanceof BaseException) {
                 ((BaseException) e).handle(invController);
             } else {
-                invController.renderJson(MessageVoUtil.error(e.getMessage()));
+                invController.renderJson(MessageVoUtil.error(e.getCause().toString() + " ; " + e.getMessage()));
             }
         }
     }

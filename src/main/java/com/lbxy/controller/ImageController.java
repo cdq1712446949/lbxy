@@ -1,7 +1,9 @@
 package com.lbxy.controller;
 
+import com.jfinal.aop.Before;
 import com.jfinal.upload.UploadFile;
 import com.lbxy.common.response.MessageVoUtil;
+import com.lbxy.core.interceptors.CheckLoginInterceptor;
 import com.lbxy.model.User;
 import com.lbxy.service.ImageService;
 import com.lbxy.service.UserService;
@@ -33,6 +35,7 @@ public class ImageController extends BaseController {
         render("/back/image_show.html");
     }
 
+    @Before(CheckLoginInterceptor.class)
     public void image(UploadFile img, @NotBlank @Range(min = 0) long id, @NotBlank @Range(min = 0, max = 2) int type) {
         //TODO 部署之后还要调试上传路径
         String imagePath = img.getUploadPath() + File.separatorChar + img.getFileName();
@@ -42,5 +45,10 @@ public class ImageController extends BaseController {
         } else {
             renderJson(MessageVoUtil.error("上传失败，请联系管理员"));
         }
+    }
+
+    @Before(CheckLoginInterceptor.class)
+    public void indexSwiper() {
+        renderJson(MessageVoUtil.success("请求成功", imageService.getIndexImages()));
     }
 }

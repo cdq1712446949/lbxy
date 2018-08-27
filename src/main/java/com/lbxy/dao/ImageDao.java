@@ -1,7 +1,9 @@
 package com.lbxy.dao;
 
+import com.lbxy.common.ImageType;
 import com.lbxy.core.annotation.Repository;
 import com.lbxy.model.Image;
+import jdk.nashorn.internal.ir.LiteralNode;
 
 import java.util.List;
 
@@ -18,5 +20,9 @@ public class ImageDao {
 
     public List<Image> getImagesByContentIdAndType(int contentId,int type) {
         return Image.DAO.find("select * from image where contentId = ? and type = ?", contentId, type);
+    }
+
+    public List<Image> getImagesByType(int type) {
+        return Image.DAO.find("select location from image where type = ?", type);
     }
 }

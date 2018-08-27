@@ -72,13 +72,4 @@ public abstract class BaseTreehole<M extends BaseTreehole<M>> extends Model<M> i
 		return getInt("status");
 	}
 
-	public M setPictureUrl(java.lang.String pictureUrl) {
-		set("pictureUrl", pictureUrl);
-		return (M)this;
-	}
-	
-	public java.lang.String getPictureUrl() {
-		return getStr("pictureUrl");
-	}
-
 }

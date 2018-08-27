@@ -1,7 +1,5 @@
 package com.lbxy.common.request;
 
-import org.hibernate.validator.constraints.Range;
-
 import javax.validation.constraints.NotBlank;
 
 /**

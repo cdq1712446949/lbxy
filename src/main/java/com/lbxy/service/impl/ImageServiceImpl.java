@@ -1,11 +1,13 @@
 package com.lbxy.service.impl;
 
+import com.lbxy.common.ImageType;
 import com.lbxy.core.annotation.Service;
 import com.lbxy.dao.ImageDao;
 import com.lbxy.model.Image;
 import com.lbxy.service.ImageService;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author lmy
@@ -25,5 +27,11 @@ public class ImageServiceImpl implements ImageService {
         image.setLocation(imagePath);
         image.setType(type);
         return imageDao.save(image);
+    }
+
+    @Override
+    public List<Image> getIndexImages() {
+
+        return imageDao.getImagesByType(ImageType.INDEX_SWIPER);
     }
 }

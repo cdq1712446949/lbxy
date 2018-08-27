@@ -23,6 +23,7 @@ public class _MappingKit {
 		arp.addMapping("lostfound", "id", Lostfound.class);
 		arp.addMapping("manager", "userName", Manager.class);
 		arp.addMapping("notice", "id", Notice.class);
+		arp.addMapping("notification", "id", Notification.class);
 		arp.addMapping("order", "id", Order.class);
 		arp.addMapping("treehole", "id", Treehole.class);
 		arp.addMapping("user", "id", User.class);

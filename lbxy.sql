@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2018-08-27 11:49:04
+Date: 2018-08-28 00:04:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -103,11 +103,13 @@ CREATE TABLE `image` (
   `location` varchar(255) DEFAULT NULL,
   `contentId` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of image
 -- ----------------------------
+INSERT INTO `image` VALUES ('1', '3', 'asdsad', null);
+INSERT INTO `image` VALUES ('2', '3', 'asdq11', null);
 
 -- ----------------------------
 -- Table structure for lostfound
@@ -171,6 +173,22 @@ CREATE TABLE `notice` (
 -- Records of notice
 -- ----------------------------
 INSERT INTO `notice` VALUES ('1', 'admin', '第一条公告', null, '1', '2018-08-14 19:09:19.000000', '公告');
+
+-- ----------------------------
+-- Table structure for notification
+-- ----------------------------
+DROP TABLE IF EXISTS `notification`;
+CREATE TABLE `notification` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `content` text,
+  `createdDate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `active` tinyint(2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of notification
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for order

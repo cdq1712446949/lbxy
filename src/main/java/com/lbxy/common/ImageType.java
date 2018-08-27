@@ -9,4 +9,5 @@ public class ImageType {
     public static int FLEA = 0;
     public static int TREEHOLE = 1;
     public static int LOSTFOUND = 2;
+    public static int INDEX_SWIPER = 3;
 }

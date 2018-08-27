@@ -72,13 +72,4 @@ public abstract class BaseLostfound<M extends BaseLostfound<M>> extends Model<M>
 		return get("postDate");
 	}
 
-	public M setPictureUrl(java.lang.String pictureUrl) {
-		set("pictureUrl", pictureUrl);
-		return (M)this;
-	}
-	
-	public java.lang.String getPictureUrl() {
-		return getStr("pictureUrl");
-	}
-
 }

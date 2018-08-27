@@ -83,6 +83,8 @@ public class LostFoundServiceImpl implements LostFoundService {
 
     @Override
     public boolean reply(long userId, Long pId, Long pUserId, String content) {
+        //TODO 通知被回复用户
+
         Lostfound lostfound = new Lostfound();
         lostfound.setUserId(userId);
         lostfound.setPId(pId);
