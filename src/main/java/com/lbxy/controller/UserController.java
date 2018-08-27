@@ -13,7 +13,7 @@ import com.lbxy.common.request.UserInfoBean;
 import com.lbxy.common.request.VerificationBean;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.core.annotation.ValidParam;
-import com.lbxy.core.interceptors.CheckLoginInterceptor;
+import com.lbxy.core.interceptors.WeixinLoginInterceptor;
 import com.lbxy.model.Bill;
 import com.lbxy.model.User;
 import com.lbxy.service.BillService;
@@ -25,7 +25,7 @@ import javax.validation.constraints.NotBlank;
 import java.io.File;
 import java.math.BigDecimal;
 
-@Before(CheckLoginInterceptor.class)
+@Before(WeixinLoginInterceptor.class)
 public class UserController extends BaseController {
 
     @Resource
@@ -35,7 +35,7 @@ public class UserController extends BaseController {
     @Resource
     private BillService billService;
 
-    @Clear(CheckLoginInterceptor.class)
+    @Clear(WeixinLoginInterceptor.class)
     @Before(POST.class)
     public void login(@NotBlank String code) {
         JSONObject result = userService.login(code);

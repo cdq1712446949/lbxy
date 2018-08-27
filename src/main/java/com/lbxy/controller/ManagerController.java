@@ -1,14 +1,16 @@
 package com.lbxy.controller;
 
+import com.jfinal.aop.Before;
+import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Page;
-import com.lbxy.core.annotation.Service;
+import com.lbxy.core.interceptors.ManagerLoginInterceptor;
 import com.lbxy.model.*;
 import com.lbxy.service.*;
-import com.lbxy.service.impl.*;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Resource;
 
+@Before(ManagerLoginInterceptor.class)
 public class ManagerController extends BaseController {
 
     @Resource
@@ -37,6 +39,7 @@ public class ManagerController extends BaseController {
 
     private String userNmae = "null";
 
+    @Clear({ManagerLoginInterceptor.class})
     public void index() {
         setAttr("error", "");
         render("login.html");
@@ -72,29 +75,29 @@ public class ManagerController extends BaseController {
     }
 
     //查询树洞帖子
-    public void searchTreeHole(){
+    public void searchTreeHole() {
 
     }
 
     //查询用户交易记录
-    public void searchBill(String phoneNumber){
-        if (phoneNumber==null||phoneNumber.equals("")){
+    public void searchBill(String phoneNumber) {
+        if (phoneNumber == null || phoneNumber.equals("")) {
             billList();
-        }else{
-            setAttr("billPage", billService.getBillByPhoneNumber(1,phoneNumber));
+        } else {
+            setAttr("billPage", billService.getBillByPhoneNumber(1, phoneNumber));
             render("bill_list.html");
         }
     }
 
     //查询公告
-    public void searchNotice(){
-        int pn=getParaToInt("pn");
+    public void searchNotice() {
+        int pn = getParaToInt("pn");
         String userName = getPara("userName");
         if (StringUtils.isBlank(userName)) {
             Page<Notice> noticePage = noticeService.getAllNotice(1);
             setAttr("noticePage", noticePage);
         } else {
-            Page<Notice> noticePage=noticeService.findByUserName(pn,userNmae);
+            Page<Notice> noticePage = noticeService.findByUserName(pn, userNmae);
             if (noticePage.getList().size() == 0) {
                 System.out.println("改手机号不存在");
                 setAttr("error_search", "该手机号不存在");
@@ -105,23 +108,23 @@ public class ManagerController extends BaseController {
         render("notice_list.html");
     }
 
-    public void login(String username,String password) {
+    public void login(String username, String password) {
         int i = managerService.login(username, password);
-        if (i == 0) {
+        if (i == ManagerService.NOT_EXIST) {
             System.out.println("账号不存在");
             setAttr("error", "账号不存在");
             return;
         }
-        if (i == 1) {
+        if (i == ManagerService.INVALID_PASSWORD) {
             System.out.println("密码错误");
             setAttr("error", "密码错误");
             render("login.html");
             return;
         }
-        if (i == 2) {
+        if (i == ManagerService.SUCCESS) {
             System.out.println("登陆成功");
-            String userName= managerService.getManager(username).get("userName");
-            setAttr("userName",userName);
+            setSessionAttr("userName.login", username);
+            setAttr("userName", username);
             render("index.html");
             return;
         }

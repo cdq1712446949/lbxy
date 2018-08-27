@@ -7,7 +7,7 @@ import com.lbxy.common.request.PostBean;
 import com.lbxy.common.request.ReplyBean;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.core.annotation.ValidParam;
-import com.lbxy.core.interceptors.CheckLoginInterceptor;
+import com.lbxy.core.interceptors.WeixinLoginInterceptor;
 import com.lbxy.service.FleaService;
 
 import javax.annotation.Resource;
@@ -17,7 +17,7 @@ import javax.annotation.Resource;
  * @description FleaController
  * @date 2018/8/26
  */
-@Before(CheckLoginInterceptor.class)
+@Before(WeixinLoginInterceptor.class)
 public class FleaController extends Controller {
 
     @Resource

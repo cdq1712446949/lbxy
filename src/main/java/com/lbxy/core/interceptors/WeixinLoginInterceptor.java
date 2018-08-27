@@ -12,11 +12,11 @@ import java.lang.reflect.Parameter;
 
 /**
  * @author lmy
- * @description CheckLoginInterceptor 检查微信小程序的用户是否登陆，如果登陆将被调用方法的第一个参数设置为从token中解析出来的userid
+ * @description WeixinLoginInterceptor 检查微信小程序的用户是否登陆，如果登陆将被调用方法的第一个参数设置为从token中解析出来的userid
  * 被此拦截器拦截的方法的第一个参数一定要为user id
  * @date 2018/8/14
  */
-public class CheckLoginInterceptor implements Interceptor {
+public class WeixinLoginInterceptor implements Interceptor {
     @Override
     public void intercept(Invocation inv) {
         String token = inv.getController().getHeader("token");

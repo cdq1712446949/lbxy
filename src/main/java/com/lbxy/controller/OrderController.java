@@ -10,14 +10,14 @@ import com.lbxy.common.response.MessageVo;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.common.response.ResponseStatus;
 import com.lbxy.core.annotation.ValidParam;
-import com.lbxy.core.interceptors.CheckLoginInterceptor;
+import com.lbxy.core.interceptors.WeixinLoginInterceptor;
 import com.lbxy.model.Order;
 import com.lbxy.service.OrderService;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotBlank;
 
-@Before(CheckLoginInterceptor.class)
+@Before(WeixinLoginInterceptor.class)
 public class OrderController extends BaseController {
 
     @Resource
