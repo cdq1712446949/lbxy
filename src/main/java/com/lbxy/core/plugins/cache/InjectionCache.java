@@ -9,13 +9,13 @@ import java.util.Map;
  * @date 2018/8/21
  */
 public class InjectionCache {
-    private static final Map<String, Object> serviceMap = new HashMap<>();
+    private static final Map<String, Object> SERVICE_MAP = new HashMap<>();
 
     public static Object put(String key, Object value) {
-        return serviceMap.put(key, value);
+        return SERVICE_MAP.put(key, value);
     }
 
     public static Object get(String key) {
-        return serviceMap.get(key);
+        return SERVICE_MAP.get(key);
     }
 }

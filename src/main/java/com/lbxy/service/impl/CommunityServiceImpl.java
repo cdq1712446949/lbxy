@@ -7,8 +7,6 @@ import com.lbxy.core.annotation.Service;
 import com.lbxy.model.Community;
 import com.lbxy.service.CommunityService;
 
-import javax.annotation.Resource;
-
 @Service("communityService")
 public class CommunityServiceImpl implements CommunityService {
 
@@ -18,7 +16,7 @@ public class CommunityServiceImpl implements CommunityService {
     public Page<Community> getCommunity(int pn) {
 
         Page<Community> page;
-        page = Community.dao.paginate(pn, 10, "select * ", " from Community");
+        page = Community.DAO.paginate(pn, 10, "select * ", " from Community");
 
         return page;
     }

@@ -7,5 +7,5 @@ import com.lbxy.model.base.BaseTreehole;
  */
 @SuppressWarnings("serial")
 public class Treehole extends BaseTreehole<Treehole> {
-	public static final Treehole dao = new Treehole().dao();
+	public static final Treehole DAO = new Treehole().dao();
 }

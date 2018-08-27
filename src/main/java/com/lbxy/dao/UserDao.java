@@ -2,7 +2,6 @@ package com.lbxy.dao;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-import com.lbxy.common.status.OrderStatus;
 import com.lbxy.core.annotation.Repository;
 import com.lbxy.model.User;
 
@@ -26,19 +25,19 @@ public class UserDao {
     }
 
     public User findByOpenid(String openid) {
-        return User.dao.findFirst("select * from User where openid = ?", openid);
+        return User.DAO.findFirst("select * from User where openid = ?", openid);
     }
 
-    public User findById(int id) {
-        return User.dao.findById(id);
+    public User findById(long id) {
+        return User.DAO.findById(id);
     }
 
     public Page<User> findUserByPn(int pn){
-        return User.dao.paginate(pn,10,"select *", " from User");
+        return User.DAO.paginate(pn,10,"select *", " from User");
     }
 
     public Page<User> findByPhone(String phoneNumber){
-        return User.dao.paginate(1, 1, "select * ", "from User where phoneNumber=?", phoneNumber);
+        return User.DAO.paginate(1, 1, "select * ", "from User where phoneNumber=?", phoneNumber);
     }
 
     public boolean update(User user) {

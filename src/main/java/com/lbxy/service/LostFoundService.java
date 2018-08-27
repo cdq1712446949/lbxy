@@ -9,4 +9,9 @@ public interface LostFoundService {
 
     boolean deleteLostFound(int id);
 
+    long save(String content, long userId);
+
+    Page<Lostfound> getMainByPage(int pn);
+
+    boolean reply(long userId, Long pId, Long pUserId, String content);
 }

@@ -9,4 +9,9 @@ public interface FleaService {
 
     boolean deleteFlea(int id);
 
+    long save(String content,long userId);
+
+    Page<Flea> getMainByPage(int pn);
+
+    boolean reply(long userId,Long pId, Long pUserId, String content);
 }

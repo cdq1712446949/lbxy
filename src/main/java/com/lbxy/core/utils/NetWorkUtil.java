@@ -35,6 +35,10 @@ import java.util.Map;
  */
 public class NetWorkUtil {
 
+    private NetWorkUtil() {
+
+    }
+
     private static final Class CLAZZ = NetWorkUtil.class;
 
     private static HttpGet preDoGet(String uri) {
@@ -62,12 +66,14 @@ public class NetWorkUtil {
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse response = null;
+        FileOutputStream fos = null;
         try {
             response = httpClient.execute(get);
 
             if (response.getStatusLine().getStatusCode() == 200) {
                 LoggerUtil.debug(CLAZZ, "got response success " );
-                response.getEntity().writeTo(new FileOutputStream(savePath));
+                fos = new FileOutputStream(savePath);
+                response.getEntity().writeTo(fos);
             } else {
                 LoggerUtil.error(CLAZZ, "something wrong happened" );
             }
@@ -76,6 +82,12 @@ public class NetWorkUtil {
         } finally {
             try {
                 httpClient.close();
+                if (response != null) {
+                    response.close();
+                }
+                if (fos != null) {
+                    fos.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

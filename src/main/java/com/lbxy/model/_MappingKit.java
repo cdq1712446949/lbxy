@@ -19,6 +19,7 @@ public class _MappingKit {
 		arp.addMapping("bill", "id", Bill.class);
 		arp.addMapping("community", "id", Community.class);
 		arp.addMapping("flea", "id", Flea.class);
+		arp.addMapping("image", "id", Image.class);
 		arp.addMapping("lostfound", "id", Lostfound.class);
 		arp.addMapping("manager", "userName", Manager.class);
 		arp.addMapping("notice", "id", Notice.class);

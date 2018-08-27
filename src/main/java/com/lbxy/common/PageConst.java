@@ -6,5 +6,5 @@ package com.lbxy.common;
  * @date 2018/8/19
  */
 public class PageConst {
-    public static final byte pageSize = 20;
+    public static final byte PAGE_SIZE = 20;
 }

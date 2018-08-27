@@ -20,11 +20,11 @@ public class NoticeDao {
     }
 
     public Page<Notice> findNoticeByPn(int pn){
-        return Notice.dao.paginate(pn,10,"select *","from Notice");
+        return Notice.DAO.paginate(pn,10,"select *","from Notice");
     }
 
     public Page<Notice> findNoticeByUserName(int pn,String userName){
-        return Notice.dao.paginate(pn,10,"select *","from Notice where userId=?",userName);
+        return Notice.DAO.paginate(pn,10,"select *","from Notice where userId=?",userName);
     }
 
 }

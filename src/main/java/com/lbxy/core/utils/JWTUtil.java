@@ -14,11 +14,22 @@ import java.util.Date;
  * @date 2018/8/14
  */
 public class JWTUtil {
-    private final static Algorithm algorithm = Algorithm.HMAC256("X8FYY5O51k7w");
+    private final static Algorithm ALGORITHM = Algorithm.HMAC256("X8FYY5O51k7w");
     private final static String ISSUER = "laumgjyu";
     private final static String SUBJECT = "wechat_app_lbxy";
     private final static String SIGN_CLASS = "com.lbxy.core.utils.JWTUtil";
-    private static JWTVerifier verifier = null;
+
+    private JWTUtil() {
+        
+    }
+
+    private static class VerifierHolder{
+        private static JWTVerifier verifier = JWT.require(ALGORITHM)
+                .withIssuer(ISSUER)
+                .withSubject(SUBJECT)
+                .withClaim("signClass", SIGN_CLASS)
+                .build(); //Reusable verifier instance;
+    }
 
     /**
      * 签发签名，其中带入userid参数
@@ -32,7 +43,7 @@ public class JWTUtil {
                 .withSubject(SUBJECT)
                 .withClaim("signClass", SIGN_CLASS)
                 .withClaim("id", userId)
-                .sign(algorithm);
+                .sign(ALGORITHM);
         return token;
     }
 
@@ -42,21 +53,9 @@ public class JWTUtil {
      * @return
      */
     public static int verifyToken(String token) {
-        if (verifier == null) {
-            synchronized (JWTUtil.class) {
-                if (verifier == null) {
-                    verifier = JWT.require(algorithm)
-                            .withIssuer(ISSUER)
-                            .withSubject(SUBJECT)
-                            .withClaim("signClass", SIGN_CLASS)
-                            .build(); //Reusable verifier instance
-                }
-            }
-        }
-
         try {
 
-            DecodedJWT jwt = verifier.verify(token);
+            DecodedJWT jwt = VerifierHolder.verifier.verify(token);
             return jwt.getClaim("id").asInt();
         } catch (JWTVerificationException e) {
             e.printStackTrace();

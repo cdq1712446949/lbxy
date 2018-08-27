@@ -7,5 +7,5 @@ import com.lbxy.model.base.BaseCommunity;
  */
 @SuppressWarnings("serial")
 public class Community extends BaseCommunity<Community> {
-	public static final Community dao = new Community().dao();
+	public static final Community DAO = new Community().dao();
 }

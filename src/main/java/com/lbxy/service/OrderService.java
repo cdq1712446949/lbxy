@@ -24,7 +24,7 @@ public interface OrderService {
 
     boolean complete(int id);
 
-    int accept(int orderId, int userId);
+    int accept(int orderId, long userId);
 
     boolean delete(int id);
 
