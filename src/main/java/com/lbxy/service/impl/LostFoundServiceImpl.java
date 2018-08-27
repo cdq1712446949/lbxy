@@ -24,19 +24,22 @@ public class LostFoundServiceImpl implements LostFoundService {
     @Resource
     private LostFoundDao lostFoundDao;
 
-    public LostFoundServiceImpl(){
-        lostFoundDao=new LostFoundDao();
-    }
-
     @Resource
     private ImageDao imageDao;
 
     @Resource
     private UserDao userDao;
 
+    public LostFoundServiceImpl() {
+        lostFoundDao = new LostFoundDao();
+        imageDao = new ImageDao();
+        userDao = new UserDao();
+    }
+
+
     @Override
     public Page<Lostfound> getAllLostFound(int pn) {
-        return lostFoundDao.findLostFounByPn(pn);
+        return lostFoundDao.findLostFoundByPn(pn);
     }
 
     @Override
