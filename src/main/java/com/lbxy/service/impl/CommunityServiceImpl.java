@@ -12,6 +12,7 @@ public class CommunityServiceImpl implements CommunityService {
 
     private Community dao;
 
+
     public Page<Community> getCommunity(int pn) {
 
         Page<Community> page;

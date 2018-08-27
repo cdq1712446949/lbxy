@@ -13,46 +13,18 @@
     <title>后台管理系统</title>
     <script type="text/javascript">
 
-        /** 删除 **/
-        function del(fyID) {
-            // 非空判断
-            if (fyID == '') return;
-            if (confirm("您确定要删除吗？")) {
-                $("#submitForm").attr("action", "/xngzf/archives/delFangyuan.action?fyID=" + fyID).submit();
-            }
-        }
-
-        /** 批量删除 **/
-        function batchDel() {
-            if ($("input[name='IDCheck']:checked").size() <= 0) {
-                art.dialog({icon: 'error', title: '友情提示', drag: false, resize: false, content: '至少选择一条', ok: true,});
-                return;
-            }
-            // 1）取出用户选中的checkbox放入字符串传给后台,form提交
-            var allIDCheck = "";
-            $("input[name='IDCheck']:checked").each(function (index, domEle) {
-                bjText = $(domEle).parent("td").parent("tr").last().children("td").last().prev().text();
-// 			alert(bjText);
-                // 用户选择的checkbox, 过滤掉“已审核”的，记住哦
-                if ($.trim(bjText) == "已审核") {
-// 				$(domEle).removeAttr("checked");
-                    $(domEle).parent("td").parent("tr").css({color: "red"});
-                    $("#resultInfo").html("已审核的是不允许您删除的，请联系管理员删除！！！");
-// 				return;
-                } else {
-                    allIDCheck += $(domEle).val() + ",";
-                }
-            });
-            // 截掉最后一个","
-            if (allIDCheck.length > 0) {
-                allIDCheck = allIDCheck.substring(0, allIDCheck.length - 1);
-                // 赋给隐藏域
-                $("#allIDCheck").val(allIDCheck);
-                if (confirm("您确定要批量删除这些记录吗？")) {
-                    // 提交form
-                    $("#submitForm").attr("action", "/xngzf/archives/batchDelFangyuan.action").submit();
+        function GoPage(total) {
+            var pn = document.getElementById("ai").value
+            if (pn > total) {
+                alert("请输入有效值")
+                pn = 1
+            } else {
+                if (pn < 1) {
+                    alert("请输入有效值")
+                    pn = 1
                 }
             }
+            window.location.href = "/back/billList?pn=" + pn;
         }
 
 
@@ -65,67 +37,81 @@
 </head>
 <body>
 
-    <div id="container">
-        <div class="ui_content">
-            <div class="ui_text_indent">
-                <div id="box_border">
-                    <div id="box_top">搜索</div>
-                    <form action="/back/search" method="post">
-                        <div id="box_center">
-                            手机号&nbsp;&nbsp;<input type="number" name="phoneNumber" class="ui_input_txt02"/>
-                            <button id="search_btn" type="submit" class="ui_input_btn01"  >查询</button>
-                            <div>#(error_search)</div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="ui_content">
-            <div class="ui_tb">
-                <table class="table" cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
-                    <tr>
-                        <th>id</th>
-                        <th>订单id</th>
-                        <th>用户id</th>
-                        <th>金额</th>
-                        <th>收支状态</th>
-                        <th>创建时间</th>
-                    </tr>
-                    #for(x:billPage.list)
-                    <tr>
-                        <td>#(x.id)</td>
-                        <td>#(x.orderId)</td>
-                        <td>#(x.userId)</td>
-                        <td>#(x.money)</td>
-                        <td>#(x.status==4?"收入":"支出")</td>
-                        <td>#(x.createdDate)</td>
-                    </tr>
-                    #end
-
-                </table>
-            </div>
-            <div class="ui_tb_h30">
-                <div class="ui_flt" style="height: 30px; line-height: 30px;">
-                    共有
-                    <span class="ui_txt_bold04">#(billPage.totalRow)</span>
-                    条记录，当前第
-                    <span class="ui_txt_bold04">#(billPage.pageNumber)/#(billPage.totalPage)</span>
-                    页
-                </div>
-                <div class="ui_frt">
-                    <!--    如果是第一页，则只显示下一页、尾页 -->
-
-                    <a href="/back/fleaList?pn=#(billPage.pageNumber-1)" class="ui_input_btn01">上一页</a>
-                    <a href="/back/fleaList?pn=#(billPage.pageNumber+1)" class="ui_input_btn01">下一页</a>
-
-                    <!--     如果是最后一页，则只显示首页、上一页 -->
-
-                    转到第<input type="text" name="inputPageNum" id="jumpNumTxt" class="ui_input_txt01"/>页
-                    <input type="button" class="ui_input_btn01" value="跳转" onclick="jumpInputPage(9);"/>
-                </div>
+<div id="container">
+    <div class="ui_content">
+        <div class="ui_text_indent">
+            <div id="box_border">
+                <div id="box_top">搜索</div>
+                <form action="/back/searchBill" method="post">
+                    <div id="box_center">
+                        用户手机号&nbsp;&nbsp;<input type="number" name="phoneNumber" class="ui_input_txt02"/>
+                        <button id="search_btn" type="submit" class="ui_input_btn01">查询</button>
+                        <div>#(error_search)</div>
+                    </div>
+                    <div id="box_bottom">
+                        <form name="formpage">
+                            第<input name='SkipPage' id="ai" class="ui_input_txt01">页
+                            <input name='submitSkip' type='button' onClick="GoPage('#(billPage.totalPage)')"
+                                   value='转到'>
+                        </form>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+    <div class="ui_content">
+        <div class="ui_tb">
+            <table class="table" cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
+                <tr>
+                    <th>id</th>
+                    <th>订单id</th>
+                    <th>用户id</th>
+                    <th>金额</th>
+                    <th>收支状态</th>
+                    <th>创建时间</th>
+                </tr>
+                #for(x:billPage.list)
+                <tr>
+                    <td>#(x.id)</td>
+                    <td>#(x.orderId)</td>
+                    <td>#(x.userId)</td>
+                    <td>#(x.money)</td>
+                    <td>#if(x.status==0)
+                        支出
+                        #end
+                        #if(x.status==1)
+                        收入
+                        #end
+                        #if(x.status==2)
+                        等待结算
+                        #end
+                    </td>
+                    <td>#(x.createdDate)</td>
+                </tr>
+                #end
+
+            </table>
+        </div>
+        <div class="ui_tb_h30">
+            <div class="ui_flt" style="height: 30px; line-height: 30px;">
+                共有
+                <span class="ui_txt_bold04">#(billPage.totalRow)</span>
+                条记录，当前第
+                <span class="ui_txt_bold04">#(billPage.pageNumber)/#(billPage.totalPage)</span>
+                页
+            </div>
+            <div class="ui_frt">
+                <!--    如果是第一页，则只显示下一页、尾页 -->
+
+                <a href="/back/billList?pn=1" class="ui_input_btn01">首页</a>
+                <a href="/back/billList?pn=#(billPage.pageNumber-1)" class="ui_input_btn01">上一页</a>
+                <a href="/back/billList?pn=#(billPage.pageNumber+1)" class="ui_input_btn01">下一页</a>
+                <a href="/back/billList?pn=#(billPage.totalPage)" class="ui_input_btn01">尾页</a>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 
 </body>

@@ -13,4 +13,6 @@ public interface NoticeService {
 
     boolean noticeEdit(int id,String content,String title);
 
+    boolean noticeSave(String userId,String content ,String title);
+
 }

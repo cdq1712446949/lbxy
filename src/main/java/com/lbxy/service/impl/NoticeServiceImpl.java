@@ -7,6 +7,8 @@ import com.lbxy.dao.NoticeDao;
 import com.lbxy.model.Notice;
 import com.lbxy.service.NoticeService;
 
+import java.util.Date;
+
 import javax.annotation.Resource;
 
 @Service("noticeService")
@@ -41,4 +43,16 @@ public class NoticeServiceImpl implements NoticeService {
         notice.set("title",title);
         return noticeDao.noticeEdit(notice);
     }
+
+    @Override
+    public boolean noticeSave(String userId,String content, String title) {
+        Notice notice=new Notice();
+        notice.set("userId",userId);
+        notice.set("content",content);
+        notice.set("title",title);
+        notice.set("postDate",new Date());
+        return noticeDao.noticeSave(notice);
+    }
+
+
 }

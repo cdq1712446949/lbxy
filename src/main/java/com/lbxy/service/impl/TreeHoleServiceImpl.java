@@ -30,7 +30,6 @@ public class TreeHoleServiceImpl implements TreeHoleService {
     @Resource
     private UserDao userDao;
 
-
     @Override
     public Page<Treehole> getAllTreeHole(int pn) {
         return treeHoleDao.findAllTreeHole(pn);
@@ -38,8 +37,8 @@ public class TreeHoleServiceImpl implements TreeHoleService {
 
     @Override
     public boolean deleteTreeHole(int id) {
-        Treehole treeHole=new Treehole();
-        treeHole.set("id",id);
+        Treehole treeHole = new Treehole();
+        treeHole.set("id", id);
         treeHole.set("status", CommonStatus.DELETED);
         return treeHoleDao.update(treeHole);
     }

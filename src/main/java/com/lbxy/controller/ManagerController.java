@@ -1,8 +1,10 @@
 package com.lbxy.controller;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.lbxy.core.annotation.Service;
 import com.lbxy.model.*;
 import com.lbxy.service.*;
+import com.lbxy.service.impl.*;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Resource;
@@ -11,21 +13,29 @@ public class ManagerController extends BaseController {
 
     @Resource
     private ManagerService managerService;
+
     @Resource
     private UserService userService;
+
     @Resource
     private OrderService orderService;
+
     @Resource
     private TreeHoleService treeHoleService;
+
     @Resource
     private FleaService fleaService;
+
     @Resource
     private NoticeService noticeService;
+
     @Resource
     private LostFoundService lostFoundService;
+
     @Resource
     private BillService billService;
 
+    private String userNmae = "null";
 
     public void index() {
         setAttr("error", "");
@@ -61,45 +71,60 @@ public class ManagerController extends BaseController {
         render("user_list.html");
     }
 
-    //查询公告
-//    public void searchNotice(){
-//        String userName = getPara("userName");
-//        if (StringUtils.isBlank(userName)) {
-//            Page<Notice> noticePage = noticeService.getAllNotice(1);
-//            setAttr("noticePage", noticePage);
-//        } else {
-//            Page<Notice> noticePage=noticeService.findByUserName();
-//            if (noticePage.getList().size() == 0) {
-//                System.out.println("改手机号不存在");
-//                setAttr("error_search", "该手机号不存在");
-//            } else {
-//                setAttr("noticePage", noticePage);
-//            }
-//        }
-//        render("notice_list.html");
-//    }
+    //查询树洞帖子
+    public void searchTreeHole(){
 
-    public void login() {
-        String username = getPara("username");
-        String password = getPara("password");
+    }
+
+    //查询用户交易记录
+    public void searchBill(String phoneNumber){
+        if (phoneNumber==null||phoneNumber.equals("")){
+            billList();
+        }else{
+            setAttr("billPage", billService.getBillByPhoneNumber(1,phoneNumber));
+            render("bill_list.html");
+        }
+    }
+
+    //查询公告
+    public void searchNotice(){
+        int pn=getParaToInt("pn");
+        String userName = getPara("userName");
+        if (StringUtils.isBlank(userName)) {
+            Page<Notice> noticePage = noticeService.getAllNotice(1);
+            setAttr("noticePage", noticePage);
+        } else {
+            Page<Notice> noticePage=noticeService.findByUserName(pn,userNmae);
+            if (noticePage.getList().size() == 0) {
+                System.out.println("改手机号不存在");
+                setAttr("error_search", "该手机号不存在");
+            } else {
+                setAttr("noticePage", noticePage);
+            }
+        }
+        render("notice_list.html");
+    }
+
+    public void login(String username,String password) {
         int i = managerService.login(username, password);
         if (i == 0) {
+            System.out.println("账号不存在");
             setAttr("error", "账号不存在");
             return;
         }
         if (i == 1) {
+            System.out.println("密码错误");
             setAttr("error", "密码错误");
             render("login.html");
             return;
         }
         if (i == 2) {
-            String sid = getSession().getId();
-//            CacheKit.put("LoginUserCache", sid,managerService.getManager(username) ); // 将用户信息保存到缓存，用作超时判断
-            setAttr("userName", username);
+            System.out.println("登陆成功");
+            String userName= managerService.getManager(username).get("userName");
+            setAttr("userName",userName);
             render("index.html");
             return;
         }
-        System.out.println(username + password);
     }
 
     public void orderList() {
@@ -110,7 +135,7 @@ public class ManagerController extends BaseController {
             System.out.println(" pageNumber is invalid");
         }
         Page<Order> orderPage = orderService.getAllOrder(pn);
-        setAttr("orderpage", orderPage);
+        setAttr("orderPage", orderPage);
         render("order_list.html");
     }
 
@@ -150,21 +175,31 @@ public class ManagerController extends BaseController {
         render("lostfound_list.html");
     }
 
-    public void noticeList() {
-        String userName = null;
-        if (getPara("userName") == null) {
-            if (getPara("user") == null) {
-                System.out.println("判断username值为null");
-            } else {
-                userName = getPara("user");
-            }
+    public int checkPn(int pn) {
+        int totalPage = getParaToInt("totalPage");
+        if (pn > totalPage) {
+            pn = 1;
         } else {
-            userName = getPara("userName");
+            if (pn < 1) {
+                pn = 1;
+            }
         }
-        if (userName == null) {
+        return pn;
+    }
+
+    public void noticeList() {
+        if (getPara("userName") == null || getPara("userName").equals("")) {
+            System.out.println("判断username值为null");
+        } else {
+            userNmae = getPara("userName");
+        }
+        if (userNmae.equals("null")) {
             int pn = 1;
             try {
-                pn = getParaToInt(pn);
+                pn = getParaToInt("pn");
+                pn = checkPn(pn);
+                Page<Notice> noticePage = noticeService.getAllNotice(pn);
+                System.out.println(pn);
             } catch (Exception e) {
                 System.out.println(" pageNumber is invalid");
             }
@@ -173,13 +208,14 @@ public class ManagerController extends BaseController {
         } else {
             int pn = 1;
             try {
-                pn = getParaToInt(pn);
+                pn = getParaToInt("pn");
+                pn = checkPn(pn);
             } catch (Exception e) {
                 System.out.println(" pageNumber is invalid");
             }
-            Page<Notice> noticePage = noticeService.findByUserName(pn, userName);
+            Page<Notice> noticePage = noticeService.findByUserName(pn, userNmae);
             setAttr("noticePage", noticePage);
-            setAttr("username", userName);
+            setAttr("username", userNmae);
         }
         render("notice_list.html");
     }
@@ -251,6 +287,17 @@ public class ManagerController extends BaseController {
             noticeList();
         } else {
             setAttr("isEdit", "false");
+            noticeList();
+        }
+    }
+
+    public void noticeSave(String userId, String content, String title) {
+        boolean isSave = noticeService.noticeSave(userId, content, title);
+        if (isSave) {
+            setAttr("isSave", "true");
+            noticeList();
+        } else {
+            setAttr("isSave", "false");
             noticeList();
         }
     }

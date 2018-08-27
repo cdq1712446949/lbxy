@@ -15,6 +15,10 @@ public class NoticeDao {
         return notice.update();
     }
 
+    public boolean noticeSave(Notice notice){
+        return notice.save();
+    }
+
     public Page<Notice> findNoticeByPn(int pn){
         return Notice.DAO.paginate(pn,10,"select *","from Notice");
     }
