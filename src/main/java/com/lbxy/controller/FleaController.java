@@ -23,7 +23,7 @@ public class FleaController extends Controller {
     @Resource
     private FleaService fleaService;
 
-    public void post(@ValidParam @Para("") PostBean postBean,long userId) {
+    public void post(@ValidParam @Para("") PostBean postBean, long userId) {
         long fleaId = fleaService.save(postBean.getContent(), userId);
         renderJson(MessageVoUtil.success("发布成功", fleaId));
     }
@@ -32,8 +32,8 @@ public class FleaController extends Controller {
         renderJson(MessageVoUtil.success("请求成功", fleaService.getMainByPage(pn)));
     }
 
-    public void reply(@ValidParam @Para("") ReplyBean replyBean,long userId) {
-        boolean result = fleaService.reply(userId,replyBean.getpId(), replyBean.getpUserId(), replyBean.getContent());
+    public void reply(@ValidParam @Para("") ReplyBean replyBean, long userId) {
+        boolean result = fleaService.reply(userId, replyBean.getpId(), replyBean.getpUserId(), replyBean.getToUserId(), replyBean.getFormId(), replyBean.getContent());
         if (result) {
             renderJson(MessageVoUtil.success("回复成功"));
         } else {

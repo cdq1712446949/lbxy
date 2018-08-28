@@ -32,7 +32,7 @@ public class TreeholeController extends Controller {
     }
 
     public void reply(@ValidParam @Para("") ReplyBean replyBean, long userId) {
-        boolean result = treeHoleService.reply(userId,replyBean.getpId(), replyBean.getpUserId(), replyBean.getContent());
+        boolean result = treeHoleService.reply(userId, replyBean.getpId(), replyBean.getpUserId(), replyBean.getToUserId(), replyBean.getFormId(), replyBean.getContent());
         if (result) {
             renderJson(MessageVoUtil.success("回复成功"));
         } else {

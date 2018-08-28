@@ -12,6 +12,7 @@ import com.lbxy.dao.LostFoundDao;
 import com.lbxy.dao.UserDao;
 import com.lbxy.model.Image;
 import com.lbxy.model.Lostfound;
+import com.lbxy.model.User;
 import com.lbxy.service.LostFoundService;
 
 import javax.annotation.Resource;
@@ -54,13 +55,18 @@ public class LostFoundServiceImpl implements LostFoundService {
     }
 
     @Override
-    public Page<Lostfound> getMainByPage(int pn) {
+    public JSONObject getMainByPage(int pn) {
 
         Page<Lostfound> page = lostFoundDao.getMainByPage(pn);
         JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(page));
         JSONArray jsonArray = jsonObject.getJSONArray("list");
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject one = jsonArray.getJSONObject(i);
+            //将用户信息放入结果集中
+            User userInMain = userDao.findById(one.getIntValue("userId"));
+            one.put("username", userInMain.getUsername());
+            one.put("userId", userInMain.getId());
+            one.put("avatarUrl", userInMain.getAvatarUrl());
 
             //将每一条回复放入结果集
             List<Lostfound> reply = lostFoundDao.getReplyByPId(one.getIntValue("id"));
@@ -68,8 +74,9 @@ public class LostFoundServiceImpl implements LostFoundService {
             for (int i1 = 0; i1 < replyArray.size(); i1++) {
                 // 将回复中的被回复者的username放入结果集
                 JSONObject replyObject = replyArray.getJSONObject(i1);
-                replyObject.put("pUsername", userDao.findById(replyObject.getIntValue("pUserId")).getUsername());
-                replyObject.put("pUserId", userDao.findById(replyObject.getIntValue("pUserId")).getId());
+                User userInReply = userDao.findById(replyObject.getIntValue("userId"));
+                replyObject.put("username", userInReply.getUsername());
+                replyObject.put("userId", userInReply.getId());
             }
 
             one.put("reply", replyArray);
@@ -78,11 +85,11 @@ public class LostFoundServiceImpl implements LostFoundService {
             List<Image> images = imageDao.getImagesByContentIdAndType(one.getIntValue("id"), ImageType.LOSTFOUND);
             one.put("images", images);
         }
-        return lostFoundDao.getMainByPage(pn);
+        return jsonObject;
     }
 
     @Override
-    public boolean reply(long userId, Long pId, Long pUserId, String content) {
+    public boolean reply(long userId, Long pId, Long pUserId, Long toUserId, String formId, String content) {
         //TODO 通知被回复用户
 
         Lostfound lostfound = new Lostfound();

@@ -12,6 +12,7 @@ import com.lbxy.dao.TreeHoleDao;
 import com.lbxy.dao.UserDao;
 import com.lbxy.model.Image;
 import com.lbxy.model.Treehole;
+import com.lbxy.model.User;
 import com.lbxy.service.TreeHoleService;
 
 import javax.annotation.Resource;
@@ -54,7 +55,7 @@ public class TreeHoleServiceImpl implements TreeHoleService {
     }
 
     @Override
-    public Page<Treehole> getMainByPage(int pn) {
+    public JSONObject getMainByPage(int pn) {
 
         Page<Treehole> page = treeHoleDao.getMainByPage(pn);
         JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(page));
@@ -62,27 +63,34 @@ public class TreeHoleServiceImpl implements TreeHoleService {
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject one = jsonArray.getJSONObject(i);
 
+            //将用户信息放入结果集中
+            User userInMain = userDao.findById(one.getIntValue("userId"));
+            one.put("username", userInMain.getUsername());
+            one.put("userId", userInMain.getId());
+            one.put("avatarUrl", userInMain.getAvatarUrl());
+
+
             //将每一条回复放入结果集
             List<Treehole> reply = treeHoleDao.getReplyByPId(one.getIntValue("id"));
             JSONArray replyArray = JSON.parseArray(JSON.toJSONString(reply));
             for (int i1 = 0; i1 < replyArray.size(); i1++) {
                 // 将回复中的被回复者的username放入结果集
                 JSONObject replyObject = replyArray.getJSONObject(i1);
-                replyObject.put("pUsername", userDao.findById(replyObject.getIntValue("pUserId")).getUsername());
-                replyObject.put("pUserId", userDao.findById(replyObject.getIntValue("pUserId")).getId());
+                User userInReply = userDao.findById(replyObject.getIntValue("userId"));
+                replyObject.put("username", userInReply.getUsername());
+                replyObject.put("userId", userInReply.getId());
             }
-
             one.put("reply", replyArray);
 
             // 将每一条的图片放入结果集
             List<Image> images = imageDao.getImagesByContentIdAndType(one.getIntValue("id"), ImageType.TREEHOLE);
             one.put("images", images);
         }
-        return treeHoleDao.getMainByPage(pn);
+        return jsonObject;
     }
 
     @Override
-    public boolean reply(long userId, Long pId, Long pUserId, String content) {
+    public boolean reply(long userId, Long pId, Long pUserId, Long toUserId, String formId, String content) {
         Treehole treehole = new Treehole();
         treehole.setUserId(userId);
         treehole.setPId(pId);

@@ -20,6 +20,12 @@ public class ReplyBean {
     @NotNull(message = "被回复的帖子id不能为空")
     private Long pId;
 
+    @NotBlank(message = "必须传递formId")
+    private String formId;
+
+    @NotNull(message = "要统治的用户id不能为空")
+    private Long toUserId;
+
     public String getContent() {
         return content;
     }
@@ -44,5 +50,19 @@ public class ReplyBean {
         this.pId = pId;
     }
 
+    public String getFormId() {
+        return formId;
+    }
 
+    public void setFormId(String formId) {
+        this.formId = formId;
+    }
+
+    public Long getToUserId() {
+        return toUserId;
+    }
+
+    public void setToUserId(Long toUserId) {
+        this.toUserId = toUserId;
+    }
 }

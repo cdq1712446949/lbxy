@@ -12,6 +12,7 @@ import com.lbxy.dao.ImageDao;
 import com.lbxy.dao.UserDao;
 import com.lbxy.model.Flea;
 import com.lbxy.model.Image;
+import com.lbxy.model.User;
 import com.lbxy.service.FleaService;
 
 import javax.annotation.Resource;
@@ -54,13 +55,18 @@ public class FleaServiceImpl implements FleaService {
     }
 
     @Override
-    public Page<Flea> getMainByPage(int pn) {
+    public JSONObject getMainByPage(int pn) {
 
         Page<Flea> page = fleaDao.getMainByPage(pn);
         JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(page));
         JSONArray jsonArray = jsonObject.getJSONArray("list");
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject one = jsonArray.getJSONObject(i);
+            //将用户信息放入结果集中
+            User userInMain = userDao.findById(one.getIntValue("userId"));
+            one.put("username", userInMain.getUsername());
+            one.put("userId", userInMain.getId());
+            one.put("avatarUrl", userInMain.getAvatarUrl());
 
             //将每一条回复放入结果集
             List<Flea> reply = fleaDao.getReplyByPId(one.getIntValue("id"));
@@ -68,8 +74,9 @@ public class FleaServiceImpl implements FleaService {
             for (int i1 = 0; i1 < replyArray.size(); i1++) {
                 // 将回复中的被回复者的username放入结果集
                 JSONObject replyObject = replyArray.getJSONObject(i1);
-                replyObject.put("pUsername", userDao.findById(replyObject.getIntValue("pUserId")).getUsername());
-                replyObject.put("pUserId", userDao.findById(replyObject.getIntValue("pUserId")).getId());
+                User userInReply = userDao.findById(replyObject.getIntValue("userId"));
+                replyObject.put("username", userInReply.getUsername());
+                replyObject.put("userId", userInReply.getId());
             }
 
             one.put("reply", replyArray);
@@ -78,11 +85,12 @@ public class FleaServiceImpl implements FleaService {
             List<Image> images = imageDao.getImagesByContentIdAndType(one.getIntValue("id"), ImageType.FLEA);
             one.put("images", images);
         }
-        return fleaDao.getMainByPage(pn);
+
+        return jsonObject;
     }
 
     @Override
-    public boolean reply(long userId, Long pId, Long pUserId, String content) {
+    public boolean reply(long userId, Long pId, Long pUserId,  Long toUserId, String formId, String content) {
         Flea flea = new Flea();
         flea.setUserId(userId);
         flea.setPId(pId);
