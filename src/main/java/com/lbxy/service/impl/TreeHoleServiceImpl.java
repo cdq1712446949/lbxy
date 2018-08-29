@@ -5,8 +5,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.ImageType;
+import com.lbxy.common.request.ReplyBean;
 import com.lbxy.common.status.CommonStatus;
 import com.lbxy.core.annotation.Service;
+import com.lbxy.core.utils.RandomAvatarUtil;
+import com.lbxy.core.utils.RandomColorUtil;
 import com.lbxy.dao.ImageDao;
 import com.lbxy.dao.TreeHoleDao;
 import com.lbxy.dao.UserDao;
@@ -50,6 +53,8 @@ public class TreeHoleServiceImpl implements TreeHoleService {
         treehole.setUserId(userId);
         treehole.setContent(content);
         treehole.setPostDate(new Date());
+        treehole.setAvatarUrl(RandomAvatarUtil.generateAvatarUrl());
+        treehole.setNameColor(RandomColorUtil.generateRandomHex());
         treeHoleDao.save(treehole);
         return treehole.getId();
     }
@@ -64,11 +69,7 @@ public class TreeHoleServiceImpl implements TreeHoleService {
             JSONObject one = jsonArray.getJSONObject(i);
 
             //将用户信息放入结果集中
-            User userInMain = userDao.findById(one.getIntValue("userId"));
-            one.put("username", userInMain.getUsername());
-            one.put("userId", userInMain.getId());
-            one.put("avatarUrl", userInMain.getAvatarUrl());
-
+            one.put("userId", one.getIntValue("userId"));
 
             //将每一条回复放入结果集
             List<Treehole> reply = treeHoleDao.getReplyByPId(one.getIntValue("id"));
@@ -90,12 +91,12 @@ public class TreeHoleServiceImpl implements TreeHoleService {
     }
 
     @Override
-    public boolean reply(long userId, Long pId, Long pUserId, Long toUserId, String formId, String content) {
+    public boolean reply(long userId, ReplyBean replyBean) {
         Treehole treehole = new Treehole();
         treehole.setUserId(userId);
-        treehole.setPId(pId);
-        treehole.setPUserId(pUserId);
-        treehole.setContent(content);
+        treehole.setPId(replyBean.getpId());
+        treehole.setPUserId(replyBean.getpUserId());
+        treehole.setContent(replyBean.getContent());
         treehole.setPostDate(new Date());
         return treeHoleDao.save(treehole);
     }

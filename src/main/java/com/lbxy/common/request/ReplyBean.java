@@ -23,8 +23,19 @@ public class ReplyBean {
     @NotBlank(message = "必须传递formId")
     private String formId;
 
-    @NotNull(message = "要统治的用户id不能为空")
+    @NotNull(message = "要通知的用户id不能为空")
     private Long toUserId;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    @Nullable
+    private String url;
 
     public String getContent() {
         return content;

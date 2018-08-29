@@ -6,6 +6,9 @@ package com.lbxy.weixin.properties;
  * @date 2018/8/14
  */
 public class AuthKey {
-    public static String APP_ID = "";
-    public static String APP_KEY = "";
+    public static final String APP_ID = "";
+    public static final String APP_SECRET = "";
+
+    public static final String PAY_MCH_ID = "";//商户id
+    public static final String PAY_APP_KEY = "";
 }

@@ -72,4 +72,22 @@ public abstract class BaseTreehole<M extends BaseTreehole<M>> extends Model<M> i
 		return getInt("status");
 	}
 
+	public M setAvatarUrl(java.lang.String avatarUrl) {
+		set("avatarUrl", avatarUrl);
+		return (M)this;
+	}
+	
+	public java.lang.String getAvatarUrl() {
+		return getStr("avatarUrl");
+	}
+
+	public M setNameColor(java.lang.String nameColor) {
+		set("nameColor", nameColor);
+		return (M)this;
+	}
+	
+	public java.lang.String getNameColor() {
+		return getStr("nameColor");
+	}
+
 }

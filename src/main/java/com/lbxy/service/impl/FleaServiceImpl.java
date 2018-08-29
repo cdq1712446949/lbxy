@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.ImageType;
+import com.lbxy.common.request.ReplyBean;
 import com.lbxy.common.status.CommonStatus;
 import com.lbxy.core.annotation.Service;
 import com.lbxy.dao.FleaDao;
@@ -14,10 +15,12 @@ import com.lbxy.model.Flea;
 import com.lbxy.model.Image;
 import com.lbxy.model.User;
 import com.lbxy.service.FleaService;
+import com.lbxy.weixin.utils.WeixinUtil;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service("fleaService")
 public class FleaServiceImpl implements FleaService {
@@ -90,12 +93,23 @@ public class FleaServiceImpl implements FleaService {
     }
 
     @Override
-    public boolean reply(long userId, Long pId, Long pUserId,  Long toUserId, String formId, String content) {
+    public boolean reply(long userId, ReplyBean replyBean) {
+        //TODO 回复待完成， 微信要求Openid和formId一一对应，之后考虑采用采集formId的形式或者使用短信
+//        User currentUser = userDao.findById(userId);
+//        User toUser = userDao.findById(replyBean.getToUserId());
+
+//        WeixinUtil.sendMessage(toUser.getOpenId(), replyBean.getFormId(), replyBean.getUrl(), currentUser.getUsername(), replyBean.getContent(), "");
+//
+//        if (Objects.nonNull(replyBean.getpUserId())) {
+//            User pUser = userDao.findById(replyBean.getpUserId());
+//             WeixinUtil.sendMessage(pUser.getOpenId(), replyBean.getFormId(), replyBean.getUrl(), currentUser.getUsername(), replyBean.getContent(), ""); //TODO 此处有问题，待完成
+//        }
+
         Flea flea = new Flea();
         flea.setUserId(userId);
-        flea.setPId(pId);
-        flea.setPUserId(pUserId);
-        flea.setContent(content);
+        flea.setPId(replyBean.getpId());
+        flea.setPUserId(replyBean.getpUserId());
+        flea.setContent(replyBean.getContent());
         flea.setPostDate(new Date());
         return fleaDao.save(flea);
     }

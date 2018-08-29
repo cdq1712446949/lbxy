@@ -33,7 +33,7 @@ public class FleaController extends Controller {
     }
 
     public void reply(@ValidParam @Para("") ReplyBean replyBean, long userId) {
-        boolean result = fleaService.reply(userId, replyBean.getpId(), replyBean.getpUserId(), replyBean.getToUserId(), replyBean.getFormId(), replyBean.getContent());
+        boolean result = fleaService.reply(userId, replyBean);
         if (result) {
             renderJson(MessageVoUtil.success("回复成功"));
         } else {
