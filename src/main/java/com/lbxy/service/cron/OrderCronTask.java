@@ -35,12 +35,12 @@ public class OrderCronTask implements Runnable {
 
                 if (order.getStatus() == OrderStatus.UN_COMPLETED) {
                     if (availableLocalDate.isBefore(LocalDate.now())) {
-                        //todo 已经过期
+                        // 已经过期
                         order.setStatus(OrderStatus.CANCELED);
                     } else if (availableLocalTime.getHour() == 0 && availableLocalTime.getMinute() == 0) {
-                        //todo  未过期
+                        //  未过期
                     } else if (availableLocalTime.plusHours(2).isBefore(LocalTime.now())) {
-                        //todo 已经过期
+                        // 已经过期
                         order.setStatus(OrderStatus.CANCELED);
                     }
                 } else if (order.getStatus() == OrderStatus.WAIT_COMPLETE) {
@@ -53,6 +53,7 @@ public class OrderCronTask implements Runnable {
                     }
                 }
 
+                order.update();
             });
 
             orderPage = orderService.getUnCompletedAndWaitCompletedOrdersByPage(orderPage.getPageNumber() + 1);
