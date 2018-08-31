@@ -171,4 +171,13 @@ public abstract class BaseOrder<M extends BaseOrder<M>> extends Model<M> impleme
 		return get("settledDate");
 	}
 
+	public M setCanPayBack(java.lang.Integer canPayBack) {
+		set("canPayBack", canPayBack);
+		return (M)this;
+	}
+	
+	public java.lang.Integer getCanPayBack() {
+		return getInt("canPayBack");
+	}
+
 }

@@ -36,23 +36,23 @@ public class OrderCronTask implements Runnable {
                 if (order.getStatus() == OrderStatus.UN_COMPLETED) {
                     if (availableLocalDate.isBefore(LocalDate.now())) {
                         // 已经过期
-                        order.setStatus(OrderStatus.CANCELED);
+                        orderService.cancelOrder(order.getId());
                     } else if (availableLocalTime.getHour() == 0 && availableLocalTime.getMinute() == 0) {
                         //  未过期
                     } else if (availableLocalTime.plusHours(2).isBefore(LocalTime.now())) {
                         // 已经过期
-                        order.setStatus(OrderStatus.CANCELED);
+                        orderService.cancelOrder(order.getId());
                     }
-                    orderService.updateModel(order);
                 } else if (order.getStatus() == OrderStatus.WAIT_COMPLETE) {
                     if (availableLocalDate.isBefore(LocalDate.now())) {
-                        //todo 已经过期
+                        // 已经过期
+                        orderService.setPayBack(order);
                     } else if (availableLocalTime.getHour() == 0 && availableLocalTime.getMinute() == 0) {
-                        //todo  未过期
+                        //  未过期
                     } else if (availableLocalTime.plusHours(2).isBefore(LocalTime.now())) {
-                        //todo 已经过期
+                        // 已经过期
+                         orderService.setPayBack(order);
                     }
-                    orderService.updateModel(order);
                 } else if (order.getStatus() == OrderStatus.COMPLETED) {
                     Date completedDate = order.getCompletedDate();
                     LocalDateTime completedLocalDateTime = LocalDateTime.ofInstant(completedDate.toInstant(), ZoneId.systemDefault());

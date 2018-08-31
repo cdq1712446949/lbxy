@@ -12,4 +12,7 @@ public class OrderStatus {
     public static final int COMPLETED = 3;//表示订单完成状态，处于待结算状态
     public static final int SETTLED = 4;//表示订单已结算
     public static final int CANCELED = 5; //取消的订单
+
+    public static final int CAN_PAY_BACK = 1; //设置completed状态下可以申请退款
+    public static final int CANT_PAY_BACK = 0;
 }

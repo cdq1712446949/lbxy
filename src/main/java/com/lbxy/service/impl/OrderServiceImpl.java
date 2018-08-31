@@ -196,4 +196,14 @@ public class OrderServiceImpl implements OrderService {
         return order.getId();
     }
 
+    /**
+     * 设置是否可以在完成状态下撤销订单
+     *
+     * @return
+     */
+    public boolean setPayBack(Order order) {
+        order.setCanPayBack(OrderStatus.CAN_PAY_BACK);
+        return orderDao.update(order);
+    }
+
 }
