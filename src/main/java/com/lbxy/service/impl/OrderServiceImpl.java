@@ -13,7 +13,6 @@ import com.lbxy.model.Bill;
 import com.lbxy.model.Order;
 import com.lbxy.model.User;
 import com.lbxy.service.OrderService;
-import org.hibernate.validator.constraints.pl.REGON;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -32,6 +31,9 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     private UserDao userDao;
 
+    @Resource
+    private BillDao billDao;
+
     @Override
     public Order findById(long id) {
         return orderDao.findById(id);
@@ -42,15 +44,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<Order> getUnCompletedAndWaitCompletedOrdersByPage(int pn) {
-        return orderDao.getUnCompletedAndWaitCompletedOrdersByPage(pn);
+    public Page<Order> getUnCompletedAndWaitCompletedAndCompletedOrdersByPage(int pn) {
+        return orderDao.getUnCompletedAndWaitCompletedAndCompletedOrdersByPage(pn);
     }
 
     public boolean complete(long orderId) {
         Order order = orderDao.findById(orderId);
         order.setCompletedDate(new Date());
         order.setStatus(OrderStatus.COMPLETED);
-        return order.update();
+        return orderDao.update(order);
     }
 
     public int accept(long orderId, long userId) {
@@ -70,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
         order.setAcceptUserPhoneNumber(user.getPhoneNumber());
         order.setAcceptDate(new Date());
         order.setStatus(OrderStatus.WAIT_COMPLETE);
-        order.update();
+        orderDao.update(order);
         return SUCCESS;
     }
 
@@ -86,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
     public int cancelOrder( long orderId) {
         Order order = orderDao.findById(orderId);
         order.setStatus(OrderStatus.CANCELED);
-        order.update();
+        orderDao.update(order);
 
         return userDao.updateUserBalance(order.getUserId(), order.getReward());
     }
@@ -100,14 +102,14 @@ public class OrderServiceImpl implements OrderService {
         User acceptUser = userDao.findById(acceptUserId);
         BigDecimal balance = acceptUser.getBalance();
         acceptUser.setBalance(balance.add(reward));
-        boolean result = acceptUser.update();
+        boolean result = userDao.update(acceptUser);
         if (result) {
             Bill bill = new Bill();
             bill.setOrderId(orderId);
             bill.setUserId(acceptUserId);
             bill.setMoney(reward);
             bill.setStatus(BillStatus.INCOME);
-            bill.save();
+            billDao.save(bill);
             return orderDao.updateOrderStatus(orderId, OrderStatus.SETTLED);
         } else {
             throw new Exception("订单结算失败，orderId：" + orderId);
@@ -182,7 +184,7 @@ public class OrderServiceImpl implements OrderService {
         Date date = Date.from(zdt.toInstant());
 
         order.setAvailableDate(date);
-        order.save();
+        orderDao.save(order);
         return order.getId();
     }
 

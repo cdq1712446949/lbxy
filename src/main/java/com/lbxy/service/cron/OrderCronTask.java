@@ -23,7 +23,7 @@ public class OrderCronTask implements Runnable {
 
     @Override
     public void run() {
-        Page<Order> orderPage = orderService.getUnCompletedAndWaitCompletedOrdersByPage(1);
+        Page<Order> orderPage = orderService.getUnCompletedAndWaitCompletedAndCompletedOrdersByPage(1);
         while (!orderPage.isLastPage()) {
             orderPage.getList().forEach(order -> {
                 Date availableDate = order.getAvailableDate();
@@ -51,12 +51,20 @@ public class OrderCronTask implements Runnable {
                     } else if (availableLocalTime.plusHours(2).isBefore(LocalTime.now())) {
                         //todo 已经过期
                     }
+                } else if (order.getStatus() == OrderStatus.COMPLETED) {
+                    if (availableLocalDate.isBefore(LocalDate.now())) {
+                        //todo 已经过期
+                    } else if (availableLocalTime.getHour() == 0 && availableLocalTime.getMinute() == 0) {
+                        //todo  未过期
+                    } else if (availableLocalTime.plusHours(2).isBefore(LocalTime.now())) {
+                        //todo 已经过期
+                    }
                 }
 
                 order.update();
             });
 
-            orderPage = orderService.getUnCompletedAndWaitCompletedOrdersByPage(orderPage.getPageNumber() + 1);
+            orderPage = orderService.getUnCompletedAndWaitCompletedAndCompletedOrdersByPage(orderPage.getPageNumber() + 1);
         }
     }
 }

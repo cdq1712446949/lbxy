@@ -22,7 +22,7 @@ public interface OrderService {
 
     Page<Order> getOrdersByPage(int pn);
 
-    Page<Order> getUnCompletedAndWaitCompletedOrdersByPage(int pn);
+    Page<Order> getUnCompletedAndWaitCompletedAndCompletedOrdersByPage(int pn);
 
     boolean complete(long id);
 
