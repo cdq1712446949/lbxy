@@ -15,8 +15,12 @@ import java.math.BigDecimal;
 @Repository
 public class UserDao {
 
-    public BigDecimal getUserBalance(int userId) {
+    public BigDecimal getUserBalance(long userId) {
         return Db.queryBigDecimal("select balance from User where id=?", userId);
+    }
+
+    public int updateUserBalance(long userId, BigDecimal money) {
+        return Db.update("update user set balance = balance + ? where id = ?", money, userId);
     }
 
     public boolean insert(User user) {

@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean throughAuthentication(int id, int status) {
+    public boolean throughAuthentication(long id, int status) {
         User user = new User();
         user.set("id", id);
         user.set("status", status);
@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BigDecimal getUserAccountBalance(int userId) {
+    public BigDecimal getUserAccountBalance(long userId) {
         return userDao.getUserBalance(userId);
     }
 

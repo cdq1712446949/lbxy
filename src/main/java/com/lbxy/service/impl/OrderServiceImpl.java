@@ -2,14 +2,18 @@ package com.lbxy.service.impl;
 
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.request.CreateOrderBean;
+import com.lbxy.common.status.BillStatus;
 import com.lbxy.common.status.CommonStatus;
 import com.lbxy.common.status.OrderStatus;
 import com.lbxy.core.annotation.Service;
+import com.lbxy.dao.BillDao;
 import com.lbxy.dao.OrderDao;
 import com.lbxy.dao.UserDao;
+import com.lbxy.model.Bill;
 import com.lbxy.model.Order;
 import com.lbxy.model.User;
 import com.lbxy.service.OrderService;
+import org.hibernate.validator.constraints.pl.REGON;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -29,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
     private UserDao userDao;
 
     @Override
-    public Order findById(int id) {
+    public Order findById(long id) {
         return orderDao.findById(id);
     }
 
@@ -42,14 +46,14 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.getUnCompletedAndWaitCompletedOrdersByPage(pn);
     }
 
-    public boolean complete(int orderId) {
+    public boolean complete(long orderId) {
         Order order = orderDao.findById(orderId);
         order.setCompletedDate(new Date());
         order.setStatus(OrderStatus.COMPLETED);
         return order.update();
     }
 
-    public int accept(int orderId, long userId) {
+    public int accept(long orderId, long userId) {
         User user = userDao.findById(userId);
         if (user == null) {
             return ERROR_USERID;
@@ -70,21 +74,25 @@ public class OrderServiceImpl implements OrderService {
         return SUCCESS;
     }
 
-    public Page<Order> getOwnerPostOrders(int pn, int userId) {
+    public Page<Order> getOwnerPostOrders(int pn, long userId) {
         return orderDao.findByUserId(userId, pn);
     }
 
-    public Page<Order> getOwnerAcceptOrders(int pn, int userId) {
+    public Page<Order> getOwnerAcceptOrders(int pn, long userId) {
         return orderDao.findByAcceptUserId(userId, pn);
     }
 
     @Override
-    public int cancelOrder(int orderId) {
-        return orderDao.updateOrderStatus(orderId, OrderStatus.CANCELED);
+    public int cancelOrder( long orderId) {
+        Order order = orderDao.findById(orderId);
+        order.setStatus(OrderStatus.CANCELED);
+        order.update();
+
+        return userDao.updateUserBalance(order.getUserId(), order.getReward());
     }
 
     @Override
-    public int settleOrder(int orderId) throws Exception {
+    public int settleOrder(long orderId) throws Exception {
         Order order = orderDao.findById(orderId);
         long acceptUserId = order.getAcceptUserId();
         BigDecimal reward = order.getReward();
@@ -92,8 +100,14 @@ public class OrderServiceImpl implements OrderService {
         User acceptUser = userDao.findById(acceptUserId);
         BigDecimal balance = acceptUser.getBalance();
         acceptUser.setBalance(balance.add(reward));
-        boolean result = acceptUser.save();
+        boolean result = acceptUser.update();
         if (result) {
+            Bill bill = new Bill();
+            bill.setOrderId(orderId);
+            bill.setUserId(acceptUserId);
+            bill.setMoney(reward);
+            bill.setStatus(BillStatus.INCOME);
+            bill.save();
             return orderDao.updateOrderStatus(orderId, OrderStatus.SETTLED);
         } else {
             throw new Exception("订单结算失败，orderId：" + orderId);
@@ -101,12 +115,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean payOrder(int orderId) {
+    public boolean payOrder(long orderId) {
         int result = orderDao.updateOrderStatus(orderId, OrderStatus.UN_COMPLETED);
         return result != 0;
     }
 
-    public boolean delete(int id) {
+    public boolean delete(long id) {
 //        return orderDao.deleteById(id); // 不采用物理删除的方法，使用逻辑删除
         int result = orderDao.updateOrderStatus(id, CommonStatus.DELETED);
         return result != 0;
@@ -128,7 +142,7 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.findByPn(pn);
     }
 
-    public BigDecimal getWaitSettledReward(int acceptUserId) {
+    public BigDecimal getWaitSettledReward(long acceptUserId) {
         return orderDao.getWaitCompletedOrdersTotalRewardByAcceptUserId(acceptUserId);
     }
 

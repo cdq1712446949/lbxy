@@ -18,31 +18,31 @@ public interface OrderService {
     int NEED_MORE_INFO = 3;
     int CANT_ACCEPT_OWN_ORDER = 4;
 
-    Order findById(int id);
+    Order findById(long id);
 
     Page<Order> getOrdersByPage(int pn);
 
     Page<Order> getUnCompletedAndWaitCompletedOrdersByPage(int pn);
 
-    boolean complete(int id);
+    boolean complete(long id);
 
-    int accept(int orderId, long userId);
+    int accept(long orderId, long userId);
 
-    boolean delete(int id);
+    boolean delete(long id);
 
     Page<Order> getAllOrder(int pn);
 
-    BigDecimal getWaitSettledReward(int acceptUserId);
+    BigDecimal getWaitSettledReward(long acceptUserId);
 
     long createOrder(long userId, CreateOrderBean orderInfo);
 
-    Page<Order> getOwnerPostOrders(int pn, int userId);
+    Page<Order> getOwnerPostOrders(int pn, long userId);
 
-    Page<Order> getOwnerAcceptOrders(int pn, int userId);
+    Page<Order> getOwnerAcceptOrders(int pn, long userId);
 
-    int cancelOrder(int orderId);
+    int cancelOrder(long orderId);
 
-    int settleOrder(int orderId) throws Exception;
+    int settleOrder(long orderId) throws Exception;
 
-    boolean payOrder(int orderId);
+    boolean payOrder(long orderId);
 }

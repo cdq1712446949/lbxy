@@ -1,14 +1,11 @@
 package com.lbxy.weixin.servlet;
 
 import com.alibaba.fastjson.JSON;
-import com.jfinal.plugin.ehcache.CacheKit;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.core.plugins.cache.InjectionCache;
 import com.lbxy.core.utils.JWTUtil;
 import com.lbxy.model.User;
-import com.lbxy.service.OrderService;
 import com.lbxy.service.UserService;
-import com.lbxy.weixin.properties.Properties;
 import com.lbxy.weixin.service.PayService;
 import com.lbxy.weixin.utils.PayCacheUtil;
 
@@ -45,7 +42,9 @@ public class PayServlet extends HttpServlet {
         PAY_SERVICE.setPreHandler(result -> {
             String out_trade_no = result.get("out_trade_no");
             String orderId = result.get("orderId");
+            String userId = result.get("userId");
             PayCacheUtil.put(out_trade_no + "orderId", orderId);
+            PayCacheUtil.put(out_trade_no + "userId", userId);
         });
     }
 
@@ -56,10 +55,13 @@ public class PayServlet extends HttpServlet {
         String ip = req.getRemoteAddr();
         String fee = req.getParameter("fee");
         String orderId = req.getParameter("orderId");
-        String openId = this.getOpenId(req, resp);
+        User currentUser = this.getCurrentUser(req, resp);
+        String openId = currentUser.getOpenId();
+        long userId = currentUser.getId();
 
         Map<String, String> result = PAY_SERVICE.doPay(fee, ip, openId, new HashMap<String, String>() {{
             put("orderId", orderId);
+            put("userId", String.valueOf(userId));
         }});
 
         PrintWriter out = resp.getWriter();
@@ -68,7 +70,7 @@ public class PayServlet extends HttpServlet {
         out.close();
     }
 
-    private String getOpenId(HttpServletRequest request,HttpServletResponse response) throws IOException {
+    private User getCurrentUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String token = request.getHeader("Authorization");
         if (token == null) {
             PrintWriter out = response.getWriter();
@@ -79,7 +81,7 @@ public class PayServlet extends HttpServlet {
         } else {
             int userId = JWTUtil.verifyToken(token);
             User user = USER_SERVICE.findById(userId);
-            return user.getOpenId();
+            return user;
         }
     }
 }

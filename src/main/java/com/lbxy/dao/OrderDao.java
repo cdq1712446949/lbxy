@@ -26,7 +26,7 @@ public class OrderDao {
         return Order.DAO.paginate(pn, PageConst.PAGE_SIZE, "select * ", "from `order` where status=? or status=?", OrderStatus.UN_COMPLETED, OrderStatus.WAIT_COMPLETE);
     }
 
-    public BigDecimal getWaitCompletedOrdersTotalRewardByAcceptUserId(int acceptUserId) {
+    public BigDecimal getWaitCompletedOrdersTotalRewardByAcceptUserId(long acceptUserId) {
         return Db.queryBigDecimal("select sum(reward) from `order` where acceptUserId=? and status=?", acceptUserId, OrderStatus.WAIT_COMPLETE);
     }
 
@@ -41,23 +41,23 @@ public class OrderDao {
         return Order.DAO.paginate(pn, 10, "select *", " from `Order`");
     }
 
-    public Order findById(int orderId) {
+    public Order findById(long orderId) {
         return Order.DAO.findFirst("select u.username,u.avatarUrl,o.* from `order` o inner join user u on o.userId = u.id where o.id=?", orderId);
     }
 
-    public Page<Order> findByUserId(int userId, int pn) {
+    public Page<Order> findByUserId(long userId, int pn) {
         return Order.DAO.paginate(pn, PageConst.PAGE_SIZE, "select *", "from `order` where userId = ? and status != ?", userId, CommonStatus.DELETED);
     }
 
-    public Page<Order> findByAcceptUserId(int acceptUserId, int pn) {
+    public Page<Order> findByAcceptUserId(long acceptUserId, int pn) {
         return Order.DAO.paginate(pn, PageConst.PAGE_SIZE, "select *", "from `order` where acceptUserId = ? and status != ?", acceptUserId, CommonStatus.DELETED);
     }
 
-    public int updateOrderStatus(int orderId, int status) {
+    public int updateOrderStatus(long orderId, int status) {
         return Db.update("update `order` set status=? where id=?", status, orderId);
     }
 
-    public boolean deleteById(int orderId) {
+    public boolean deleteById(long orderId) {
         return Order.DAO.deleteById(orderId);
     }
 }
