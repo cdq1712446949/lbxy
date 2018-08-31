@@ -1,12 +1,15 @@
 package com.lbxy;
 
+import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.lbxy.service.impl.BillServiceImpl;
+import com.lbxy.weixin.utils.PayCacheUtil;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.UUID;
 
 /**
  * @author lmy
@@ -18,7 +21,7 @@ class UtilTest {
     @Test
     void test() throws URISyntaxException, ClassNotFoundException {
 
-        System.out.println(UtilTest.class.getResource("/"));;
+//        System.out.println(UtilTest.class.getResource("/"));;
 
 //        Class clazz = BillServiceImpl.class;
 //        ClassLoader loader = clazz.getClassLoader();
@@ -40,5 +43,13 @@ class UtilTest {
 //            clazz = Class.forName(allName);
 //            System.out.println(clazz);
 //        }
+
+    }
+
+    @Test
+    void test2() {
+        new EhCachePlugin().start();
+        PayCacheUtil.put("a","b");
+        System.out.println(PayCacheUtil.get("a","1"));
     }
 }

@@ -1,9 +1,9 @@
 package com.lbxy.weixin.service;
 
 import com.alibaba.fastjson.JSON;
-import com.jfinal.plugin.ehcache.CacheKit;
 import com.lbxy.core.utils.DateUtil;
 import com.lbxy.core.utils.LoggerUtil;
+import com.lbxy.core.utils.UUIDUtil;
 import com.lbxy.core.utils.XmlUtil;
 import com.lbxy.weixin.pay.impl.WXPayConfigImpl;
 import com.lbxy.weixin.pay.sdk.WXPay;
@@ -11,10 +11,8 @@ import com.lbxy.weixin.pay.sdk.WXPayConstants;
 import com.lbxy.weixin.pay.sdk.WXPayUtil;
 import com.lbxy.weixin.properties.AuthKey;
 import com.lbxy.weixin.properties.Properties;
+import com.lbxy.weixin.utils.PayCacheUtil;
 import com.lbxy.weixin.utils.PayUtil;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,30 +24,45 @@ import java.util.Objects;
 public class PayService {
 
     private WXPay wxPay;
-
-    private CacheManager cacheManager;
+    //预支付成功回调
+    private Handler preHandler;
+    //支付成功回调
+    private Handler successHandler;
 
     private PayService() {
-        this.cacheManager = CacheKit.getCacheManager();
+        this.preHandler = System.out::println;
+        this.successHandler = System.out::println;
+        this.init();
+    }
 
+    public static PayService getInstance() {
+        return Holder.payService;
+    }
+
+    private void init() {
         try {
             WXPayConfigImpl config = WXPayConfigImpl.getInstance();
             wxPay = new WXPay(config, Properties.PAY_BACK_OFF_URL);
         } catch (Exception e) {
             LoggerUtil.error(getClass(), e.getMessage());
             e.printStackTrace();
-
         }
     }
 
-    public static PayService getInstance() {
-        return Holder.PAY_SERVICE;
+    public PayService setSuccessHandler(Handler successHandler) {
+        this.successHandler = successHandler;
+        return this;
     }
 
-    public Map<String, String> doPay(String fee, String ip, String openId) {
+    public PayService setPreHandler(Handler preHandler) {
+        this.preHandler = preHandler;
+        return this;
+    }
+
+    public Map<String, String> doPay(String fee, String ip, String openId, Map<String, String> otherArgs) {
         HashMap<String, String> data = new HashMap<>();
         data.put("body", "vip充值");
-        data.put("out_trade_no", DateUtil.getFormatDate());
+        data.put("out_trade_no", UUIDUtil.generateUUID32());
         data.put("device_info", "WEB");
         data.put("total_fee", fee);
         data.put("spbill_create_ip", ip);
@@ -58,30 +71,33 @@ public class PayService {
 
         LoggerUtil.fmtDebug(getClass(), "支付信息", data.toString());
 
-        return pay(data);
+        return pay(data, otherArgs);
     }
 
-    public Map<String, String> pay(Map<String, String> payData) {
-        Map<String, String> result;
+    public Map<String, String> pay(final Map<String, String> payData, final Map<String, String> otherArgs) {
+        final Map<String, String> result;
         try {
             result = wxPay.unifiedOrder(payData);
+            result.put("out_trade_no", payData.get("out_trade_no")); //将商户订单id放入结果集中，方便在preHandler中处理
+
+            if (otherArgs != null) {
+                otherArgs.keySet().forEach(key -> result.put(key, otherArgs.get(key)));
+            }
+
             processPayResult(result);
+            return result;
         } catch (Exception e) {
-            result = new HashMap<>();
-            result.put("status", "400");
             LoggerUtil.error(getClass(), e.getMessage());
-            LoggerUtil.error(getClass(), JSON.toJSONString(result));
         }
-        return result;
+        return null;
     }
 
     private void processPayResult(Map<String, String> result) throws Exception {
         if ("SUCCESS".equalsIgnoreCase(result.get("return_code"))) {
 
             if ("SUCCESS".equalsIgnoreCase(result.get("result_code"))) {
-//                chargeService.preCharge(TokenManager.getWeixinToken().getOpenid(), type);  //TODO
-                // 预支付，第一次请求后台的时候调用
-
+                //预支付成功
+                this.preHandler.handle(result);
             } else {
                 throw new Exception("err_code：" + result.get("err_code") + "，err_code_des：" + result.get("err_code_des"));
             }
@@ -117,9 +133,8 @@ public class PayService {
         LoggerUtil.fmtDebug(getClass(), JSON.toJSONString(h5Result));
 
         //将时间戳和packages存入缓存，便于回掉的签名验证
-        Cache cache = getPayCache();
-        cache.put(new Element(nonceStr + "timeStamp", String.valueOf(timestamp)));
-        cache.put(new Element(nonceStr + "package", packages));
+        PayCacheUtil.put(nonceStr + "timeStamp", String.valueOf(timestamp));
+        PayCacheUtil.put(nonceStr + "package", packages);
 
         return h5Result;
     }
@@ -164,9 +179,8 @@ public class PayService {
         map.put("signType", payResult.get("sign_type"));
         map.put("nonceStr", nonceStr);
 
-        Cache cache = getPayCache();
-        map.put("timeStamp", cache.get(nonceStr + "timeStamp").toString());
-        map.put("package", cache.get(nonceStr + "package").toString());
+        map.put("timeStamp", PayCacheUtil.get(nonceStr + "timeStamp"));
+        map.put("package", PayCacheUtil.get(nonceStr + "package"));
 
         return Objects.equals(sign, getSign(map));
     }
@@ -206,7 +220,7 @@ public class PayService {
 
     private String paySuccess(Map<String, String> payResult) throws Exception {
         // 成功将成功信息写进数据库，返回SUCCESS
-//        chargeService.charge(payResult);  //TODO
+        successHandler.handle(payResult);
 
         Map<String, String> result = new HashMap<>();
         result.put("return_code", "SUCCESS");
@@ -221,11 +235,13 @@ public class PayService {
         return WXPayUtil.mapToXml(result);
     }
 
-    private Cache getPayCache() {
-        return cacheManager.getCache("payCache");
+
+    @FunctionalInterface
+    public interface Handler {
+        void handle(Map<String, String> payResult);
     }
 
     private static class Holder {
-        private static final PayService PAY_SERVICE = new PayService();
+        private static PayService payService = new PayService();
     }
 }

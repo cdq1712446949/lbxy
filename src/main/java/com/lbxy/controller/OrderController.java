@@ -6,9 +6,7 @@ import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.request.CreateOrderBean;
-import com.lbxy.common.response.MessageVo;
 import com.lbxy.common.response.MessageVoUtil;
-import com.lbxy.common.response.ResponseStatus;
 import com.lbxy.core.annotation.ValidParam;
 import com.lbxy.core.interceptors.WeixinLoginInterceptor;
 import com.lbxy.model.Order;
@@ -36,13 +34,20 @@ public class OrderController extends BaseController {
 
     @Before(POST.class)
     public void createOrder(int userId, @ValidParam @Para("") CreateOrderBean orderInfo) {
-        boolean i = orderService.createOrder(userId, orderInfo);
-        if (i) {
-            renderJson(new MessageVo().setStatus(ResponseStatus.success).setMessage("发单成功"));
-        } else {
-            renderJson(new MessageVo().setStatus(ResponseStatus.error).setMessage("发单失败"));
-        }
+        long orderId = orderService.createOrder(userId, orderInfo);
+        renderJson(MessageVoUtil.success("发单成功", orderId));
     }
+
+    //不需要此方法，防止用户直接请求此action
+//    @Before(POST.class)
+//    public void payOrder(int orderId) {
+//        boolean result = orderService.payOrder(orderId);
+//        if (result) {
+//            renderJson(MessageVoUtil.success("支付成功"));
+//        } else {
+//            renderJson(MessageVoUtil.error("支付失败，请联系管理员查看" + orderId + "订单"));
+//        }
+//    }
 
     @Before(POST.class)
     public void acceptOrder(int userId, @NotBlank int orderId) {

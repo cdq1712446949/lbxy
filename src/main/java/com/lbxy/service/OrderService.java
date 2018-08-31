@@ -32,7 +32,7 @@ public interface OrderService {
 
     BigDecimal getWaitSettledReward(int acceptUserId);
 
-    boolean createOrder(int userId, CreateOrderBean orderInfo);
+    long createOrder(int userId, CreateOrderBean orderInfo);
 
     Page<Order> getOwnerPostOrders(int pn, int userId);
 
@@ -41,4 +41,6 @@ public interface OrderService {
     int cancelOrder(int orderId);
 
     int settleOrder(int orderId) throws Exception;
+
+    boolean payOrder(int orderId);
 }

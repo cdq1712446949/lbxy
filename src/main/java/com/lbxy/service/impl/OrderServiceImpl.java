@@ -1,8 +1,8 @@
 package com.lbxy.service.impl;
 
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.request.CreateOrderBean;
+import com.lbxy.common.status.CommonStatus;
 import com.lbxy.common.status.OrderStatus;
 import com.lbxy.core.annotation.Service;
 import com.lbxy.dao.OrderDao;
@@ -92,12 +92,20 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    @Override
+    public boolean payOrder(int orderId) {
+        int result = orderDao.updateOrderStatus(orderId, OrderStatus.UN_COMPLETED);
+        return result != 0;
+    }
+
     public boolean delete(int id) {
-        return orderDao.deleteById(id);
+//        return orderDao.deleteById(id); // 不采用物理删除的方法，使用逻辑删除
+        int result = orderDao.updateOrderStatus(id, CommonStatus.DELETED);
+        return result != 0;
     }
 
     public Page<Order> getAllOrder(int pn) {
-        int totalNum = Db.queryInt("select count(*) from `Order`");
+        int totalNum = orderDao.getTotalNumber();
         int totalPage = totalNum / 10;
         if (totalNum % 10 >= 1) {
             totalPage += 1;
@@ -117,7 +125,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean createOrder(int userId, CreateOrderBean orderInfo) {
+    public long createOrder(int userId, CreateOrderBean orderInfo) {
         Order order = new Order();
         order.set("createdDate", LocalDateTime.now());
         order.set("reward", orderInfo.getReward());
@@ -129,7 +137,8 @@ public class OrderServiceImpl implements OrderService {
         order.set("remark", orderInfo.getReward());
         order.set("detail", orderInfo.getDetail());
         order.set("availableDate", orderInfo.getAvailableData());
-
-        return order.save();
+        order.save();
+        return order.getId();
     }
+
 }

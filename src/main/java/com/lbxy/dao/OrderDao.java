@@ -18,6 +18,10 @@ import java.math.BigDecimal;
 @Repository
 public class OrderDao {
 
+    public int getTotalNumber() {
+        return Db.queryInt("select count(*) from `Order`");
+    }
+
     public BigDecimal getWaitCompletedOrdersTotalRewardByAcceptUserId(int acceptUserId) {
         return Db.queryBigDecimal("select sum(reward) from `order` where acceptUserId=? and status=?", acceptUserId, OrderStatus.WAIT_COMPLETE);
     }

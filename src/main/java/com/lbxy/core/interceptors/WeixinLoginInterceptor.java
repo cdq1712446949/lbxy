@@ -18,7 +18,7 @@ import static com.lbxy.core.utils.InterceptorUtil.*;
 public class WeixinLoginInterceptor implements Interceptor {
     @Override
     public void intercept(Invocation inv) {
-        String token = inv.getController().getHeader("token");
+        String token = inv.getController().getHeader("Authorization");
         if (StringUtils.isBlank(token)) {
             inv.getController().renderJson(MessageVoUtil.needLogin());
         } else {

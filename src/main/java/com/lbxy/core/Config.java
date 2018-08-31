@@ -12,10 +12,8 @@ import com.jfinal.template.Engine;
 import com.lbxy.controller.*;
 import com.lbxy.core.interceptors.InjectionInterceptor;
 import com.lbxy.core.interceptors.ParamValidateInterceptor;
-import com.lbxy.core.interceptors.exception.ExceptionsInterceptor;
 import com.lbxy.core.plugins.AnnotationInjectionPlugin;
 import com.lbxy.model._MappingKit;
-import com.lbxy.weixin.controller.PayController;
 
 /**
  * API引导式配置
@@ -65,8 +63,6 @@ public class Config extends JFinalConfig {
         me.add("/treahole", TreeholeController.class);
         me.add("/lostfound", LostfoundController.class);
         me.add("/notification", NotificationController.class);
-
-        me.add("/pay", PayController.class);
     }
 
     public void configEngine(Engine me) {

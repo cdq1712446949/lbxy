@@ -19,9 +19,8 @@ public class UserDao {
         return Db.queryBigDecimal("select balance from User where id=?", userId);
     }
 
-    public int insert(User user) {
-        user.save();
-        return this.findByOpenid(user.getStr("openId")).getInt("id");
+    public boolean insert(User user) {
+        return user.save();
     }
 
     public User findByOpenid(String openid) {
