@@ -7,8 +7,7 @@ import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.core.utils.JWTUtil;
 import org.apache.commons.lang3.StringUtils;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
+import static com.lbxy.core.utils.InterceptorUtil.*;
 
 /**
  * @author lmy
@@ -28,7 +27,7 @@ public class WeixinLoginInterceptor implements Interceptor {
                 inv.getController().renderJson(MessageVoUtil.needLogin());
             } else {
 
-                if (this.containsParameter(inv.getMethod(), InterceptorConst.USER_ID)) {
+                if (containsParameter(inv.getMethod(), InterceptorConst.USER_ID)) {
                     inv.setArg(getParameterIndex(inv.getMethod(), InterceptorConst.USER_ID), userId);
                 }
 
@@ -37,24 +36,5 @@ public class WeixinLoginInterceptor implements Interceptor {
         }
     }
 
-    private boolean containsParameter(Method method, String parameterName) {
-        boolean flag = false;
-        for (Parameter parameter : method.getParameters()) {
 
-            if (parameterName.equals(parameter.getName())) {
-                flag = true;
-            }
-        }
-        return flag;
-    }
-
-    private int getParameterIndex(Method method, String parameterName) {
-        Parameter[] parameters = method.getParameters();
-        for (int i = 0; i < parameters.length; i++) {
-            if (parameterName.equals(parameters[i].getName())) {
-                return i;
-            }
-        }
-        return 0;
-    }
 }

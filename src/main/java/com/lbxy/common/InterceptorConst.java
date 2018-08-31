@@ -7,4 +7,5 @@ package com.lbxy.common;
  */
 public class InterceptorConst {
     public static String USER_ID = "userId";
+    public static String MANAGER_USERNAME = "username";
 }

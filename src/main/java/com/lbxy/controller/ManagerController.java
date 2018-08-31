@@ -3,6 +3,8 @@ package com.lbxy.controller;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.ehcache.CacheKit;
+import com.lbxy.common.CacheNameConst;
 import com.lbxy.core.interceptors.ManagerLoginInterceptor;
 import com.lbxy.model.*;
 import com.lbxy.service.*;
@@ -29,15 +31,10 @@ public class ManagerController extends BaseController {
     private FleaService fleaService;
 
     @Resource
-    private NoticeService noticeService;
-
-    @Resource
     private LostFoundService lostFoundService;
 
     @Resource
     private BillService billService;
-
-    private String userNmae = "null";
 
     @Clear({ManagerLoginInterceptor.class})
     public void index() {
@@ -89,44 +86,21 @@ public class ManagerController extends BaseController {
         }
     }
 
-    //查询公告
-    public void searchNotice() {
-        int pn = getParaToInt("pn");
-        String userName = getPara("userName");
-        if (StringUtils.isBlank(userName)) {
-            Page<Notice> noticePage = noticeService.getAllNotice(1);
-            setAttr("noticePage", noticePage);
-        } else {
-            Page<Notice> noticePage = noticeService.findByUserName(pn, userNmae);
-            if (noticePage.getList().size() == 0) {
-                System.out.println("改手机号不存在");
-                setAttr("error_search", "该手机号不存在");
-            } else {
-                setAttr("noticePage", noticePage);
-            }
-        }
-        render("notice_list.html");
-    }
-
+    @Clear({ManagerLoginInterceptor.class})
     public void login(String username, String password) {
         int i = managerService.login(username, password);
         if (i == ManagerService.NOT_EXIST) {
             System.out.println("账号不存在");
             setAttr("error", "账号不存在");
-            return;
-        }
-        if (i == ManagerService.INVALID_PASSWORD) {
+        } else if (i == ManagerService.INVALID_PASSWORD) {
             System.out.println("密码错误");
             setAttr("error", "密码错误");
             render("login.html");
-            return;
-        }
-        if (i == ManagerService.SUCCESS) {
+        } else if (i == ManagerService.SUCCESS) {
             System.out.println("登陆成功");
-            setSessionAttr("userName.login", username);
-            setAttr("userName", username);
+            CacheKit.put(CacheNameConst.MANAGER_LOGIN_CACHE, "username.login", username);
+            setAttr("username", username);
             render("index.html");
-            return;
         }
     }
 
@@ -178,49 +152,13 @@ public class ManagerController extends BaseController {
         render("lostfound_list.html");
     }
 
-    public int checkPn(int pn) {
-        int totalPage = getParaToInt("totalPage");
-        if (pn > totalPage) {
+    public int checkPn(int pn, int totalPage) {
+        if (pn >= totalPage) {
+            pn = totalPage;
+        } else if (pn <= 1) {
             pn = 1;
-        } else {
-            if (pn < 1) {
-                pn = 1;
-            }
         }
         return pn;
-    }
-
-    public void noticeList() {
-        if (getPara("userName") == null || getPara("userName").equals("")) {
-            System.out.println("判断username值为null");
-        } else {
-            userNmae = getPara("userName");
-        }
-        if (userNmae.equals("null")) {
-            int pn = 1;
-            try {
-                pn = getParaToInt("pn");
-                pn = checkPn(pn);
-                Page<Notice> noticePage = noticeService.getAllNotice(pn);
-                System.out.println(pn);
-            } catch (Exception e) {
-                System.out.println(" pageNumber is invalid");
-            }
-            Page<Notice> noticePage = noticeService.getAllNotice(pn);
-            setAttr("noticePage", noticePage);
-        } else {
-            int pn = 1;
-            try {
-                pn = getParaToInt("pn");
-                pn = checkPn(pn);
-            } catch (Exception e) {
-                System.out.println(" pageNumber is invalid");
-            }
-            Page<Notice> noticePage = noticeService.findByUserName(pn, userNmae);
-            setAttr("noticePage", noticePage);
-            setAttr("username", userNmae);
-        }
-        render("notice_list.html");
     }
 
     public void billList() {
@@ -271,47 +209,9 @@ public class ManagerController extends BaseController {
         }
     }
 
-    public void deleteNotice() {
-        int id = getParaToInt("id");
-        boolean isDelete = noticeService.deleteNotice(id);
-        if (isDelete) {
-            setAttr("isDelete", "true");
-            noticeList();
-        } else {
-            setAttr("isDelete", "false");
-            noticeList();
-        }
-    }
-
-    public void noticeEdit(int id, String content, String title) {
-        boolean isEdit = noticeService.noticeEdit(id, content, title);
-        if (isEdit) {
-            setAttr("isEdit", "true");
-            noticeList();
-        } else {
-            setAttr("isEdit", "false");
-            noticeList();
-        }
-    }
-
-    public void noticeSave(String userId, String content, String title) {
-        boolean isSave = noticeService.noticeSave(userId, content, title);
-        if (isSave) {
-            setAttr("isSave", "true");
-            noticeList();
-        } else {
-            setAttr("isSave", "false");
-            noticeList();
-        }
-    }
-
     public void throughAuthencation(int id, int status) {
         userService.throughAuthentication(id, status);
         userList();
-    }
-
-    public void creatNotice() {
-
     }
 
     public void test() {
