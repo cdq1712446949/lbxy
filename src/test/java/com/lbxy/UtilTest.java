@@ -1,6 +1,7 @@
 package com.lbxy;
 
 import com.jfinal.plugin.ehcache.EhCachePlugin;
+import com.lbxy.core.utils.PasswordUtil;
 import com.lbxy.service.impl.BillServiceImpl;
 import com.lbxy.weixin.utils.PayCacheUtil;
 import org.junit.jupiter.api.Test;
@@ -51,5 +52,10 @@ class UtilTest {
         new EhCachePlugin().start();
         PayCacheUtil.put("a","b");
         System.out.println(PayCacheUtil.get("a","1"));
+    }
+
+    @Test
+    void test3() {
+        System.out.println(PasswordUtil.createHash("123456"));
     }
 }

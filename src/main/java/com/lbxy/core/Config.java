@@ -12,6 +12,7 @@ import com.jfinal.template.Engine;
 import com.lbxy.controller.*;
 import com.lbxy.core.interceptors.InjectionInterceptor;
 import com.lbxy.core.interceptors.ParamValidateInterceptor;
+import com.lbxy.core.interceptors.exception.ExceptionsInterceptor;
 import com.lbxy.core.plugins.AnnotationInjectionPlugin;
 import com.lbxy.model._MappingKit;
 
@@ -103,7 +104,7 @@ public class Config extends JFinalConfig {
     public void configInterceptor(Interceptors me) {
 //		me.addGlobalActionInterceptor(new GlobalParamInterceptor());  //自定义参数校验，所有字段不能为空
         me.addGlobalActionInterceptor(new ParamValidateInterceptor());  // 使用hibernate-validator参数校验
-//        me.addGlobalActionInterceptor(new ExceptionsInterceptor()); //全局异常拦截
+        me.addGlobalActionInterceptor(new ExceptionsInterceptor()); //全局异常拦截
         me.addGlobalActionInterceptor(new InjectionInterceptor()); //控制器拦截注入
     }
 
