@@ -42,7 +42,9 @@ public interface OrderService {
 
     int cancelOrder(long orderId);
 
-    int settleOrder(long orderId) throws Exception;
+    boolean settleOrder(long orderId) throws Exception;
 
     boolean payOrder(long orderId);
+
+    boolean updateModel(Order order);
 }

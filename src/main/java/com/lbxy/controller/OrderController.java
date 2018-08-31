@@ -92,8 +92,8 @@ public class OrderController extends BaseController {
 
     @Before(POST.class)
     public void settleOrder(int orderId) throws Exception {
-        int result = orderService.settleOrder(orderId);
-        if (result != 0) {
+        boolean result = orderService.settleOrder(orderId);
+        if (result) {
             renderJson(MessageVoUtil.success("订单取消成功"));
         } else {
             renderJson(MessageVoUtil.error("订单取消失败"));

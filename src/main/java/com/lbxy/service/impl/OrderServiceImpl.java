@@ -94,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public int settleOrder(long orderId) throws Exception {
+    public boolean settleOrder(long orderId) throws Exception {
         Order order = orderDao.findById(orderId);
         long acceptUserId = order.getAcceptUserId();
         BigDecimal reward = order.getReward();
@@ -110,7 +110,10 @@ public class OrderServiceImpl implements OrderService {
             bill.setMoney(reward);
             bill.setStatus(BillStatus.INCOME);
             billDao.save(bill);
-            return orderDao.updateOrderStatus(orderId, OrderStatus.SETTLED);
+
+            order.setStatus(OrderStatus.SETTLED);
+            order.setSettledDate(new Date());
+            return orderDao.update(order);
         } else {
             throw new Exception("订单结算失败，orderId：" + orderId);
         }
@@ -120,6 +123,11 @@ public class OrderServiceImpl implements OrderService {
     public boolean payOrder(long orderId) {
         int result = orderDao.updateOrderStatus(orderId, OrderStatus.UN_COMPLETED);
         return result != 0;
+    }
+
+    @Override
+    public boolean updateModel(Order order) {
+        return orderDao.update(order);
     }
 
     public boolean delete(long id) {

@@ -43,6 +43,7 @@ public class OrderCronTask implements Runnable {
                         // 已经过期
                         order.setStatus(OrderStatus.CANCELED);
                     }
+                    orderService.updateModel(order);
                 } else if (order.getStatus() == OrderStatus.WAIT_COMPLETE) {
                     if (availableLocalDate.isBefore(LocalDate.now())) {
                         //todo 已经过期
@@ -51,17 +52,21 @@ public class OrderCronTask implements Runnable {
                     } else if (availableLocalTime.plusHours(2).isBefore(LocalTime.now())) {
                         //todo 已经过期
                     }
+                    orderService.updateModel(order);
                 } else if (order.getStatus() == OrderStatus.COMPLETED) {
-                    if (availableLocalDate.isBefore(LocalDate.now())) {
-                        //todo 已经过期
-                    } else if (availableLocalTime.getHour() == 0 && availableLocalTime.getMinute() == 0) {
-                        //todo  未过期
-                    } else if (availableLocalTime.plusHours(2).isBefore(LocalTime.now())) {
-                        //todo 已经过期
+                    Date completedDate = order.getCompletedDate();
+                    LocalDateTime completedLocalDateTime = LocalDateTime.ofInstant(completedDate.toInstant(), ZoneId.systemDefault());
+                    LocalDate completedLocalDate = completedLocalDateTime.toLocalDate();
+                    if (completedLocalDate.plusDays(3).isBefore(LocalDate.now())) {
+                        //如果订单完成三天后还没有结算，那么系统自动结算
+                        try {
+                            orderService.settleOrder(order.getId());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 
-                order.update();
             });
 
             orderPage = orderService.getUnCompletedAndWaitCompletedAndCompletedOrdersByPage(orderPage.getPageNumber() + 1);

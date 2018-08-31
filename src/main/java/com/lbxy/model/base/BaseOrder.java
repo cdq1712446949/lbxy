@@ -162,4 +162,13 @@ public abstract class BaseOrder<M extends BaseOrder<M>> extends Model<M> impleme
 		return get("acceptDate");
 	}
 
+	public M setSettledDate(java.util.Date settledDate) {
+		set("settledDate", settledDate);
+		return (M)this;
+	}
+	
+	public java.util.Date getSettledDate() {
+		return get("settledDate");
+	}
+
 }
