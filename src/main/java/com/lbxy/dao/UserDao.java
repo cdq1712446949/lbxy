@@ -32,7 +32,7 @@ public class UserDao {
         return User.DAO.findById(id);
     }
 
-    public Page<User> findUserByPn(int pn){
+    public Page<User> findUsersByPn(int pn){
         return User.DAO.paginate(pn,10,"select *", " from User");
     }
 
@@ -46,6 +46,10 @@ public class UserDao {
 
     public boolean userSave(User user) {
         return user.update();
+    }
+
+    public int getTotalNumber() {
+        return Db.queryInt("select count(*) from User");
     }
 
 }

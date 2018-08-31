@@ -7,4 +7,6 @@ package com.lbxy.weixin.properties;
  */
 public class Properties {
     public static final String TEMPLATE_ID = "";
+
+    public static final String PAY_BACK_OFF_URL = "http://www.here52.cn/open/page/wxpayDone";
 }

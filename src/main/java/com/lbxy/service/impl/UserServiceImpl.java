@@ -2,7 +2,6 @@ package com.lbxy.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.exception.InvalidRequestParamException;
 import com.lbxy.common.request.UserInfoBean;
@@ -28,7 +27,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public Page<User> getAllUsers(int pn) {
-        int totalNum = Db.queryInt("select count(*) from User");
+        int totalNum = userDao.getTotalNumber();
         int totalPage = totalNum / 10;
         if (totalNum % 10 >= 1) {
             totalPage += 1;
@@ -40,7 +39,7 @@ public class UserServiceImpl implements UserService {
         if (pn <= 1) {
             pn = 1;
         }
-        return userDao.findUserByPn(pn);
+        return userDao.findUsersByPn(pn);
     }
 
     public Page<User> findByPhone(String phoneNumber) {

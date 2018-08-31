@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Created by 96428 on 2017/7/13.
  */
-public class XmlUtil {
+public class WeixinMessageUtil {
 
 
     public static Map<String, String> xml2Map(HttpServletRequest request) throws IOException, DocumentException {
