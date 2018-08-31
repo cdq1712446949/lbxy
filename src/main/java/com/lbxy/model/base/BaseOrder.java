@@ -135,13 +135,22 @@ public abstract class BaseOrder<M extends BaseOrder<M>> extends Model<M> impleme
 		return getStr("detail");
 	}
 
-	public M setAvailableDate(java.lang.String availableDate) {
+	public M setAvailableDateDesc(java.lang.String availableDateDesc) {
+		set("availableDateDesc", availableDateDesc);
+		return (M)this;
+	}
+	
+	public java.lang.String getAvailableDateDesc() {
+		return getStr("availableDateDesc");
+	}
+
+	public M setAvailableDate(java.util.Date availableDate) {
 		set("availableDate", availableDate);
 		return (M)this;
 	}
 	
-	public java.lang.String getAvailableDate() {
-		return getStr("availableDate");
+	public java.util.Date getAvailableDate() {
+		return get("availableDate");
 	}
 
 	public M setAcceptDate(java.util.Date acceptDate) {

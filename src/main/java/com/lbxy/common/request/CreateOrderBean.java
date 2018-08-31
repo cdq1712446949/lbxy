@@ -33,7 +33,7 @@ public class CreateOrderBean {
     private String detail;
 
     @NotNull
-    private String availableData;
+    private String availableDate;
 
     public double getReward() {
         return reward;
@@ -91,12 +91,12 @@ public class CreateOrderBean {
         this.detail = detail;
     }
 
-    public String getAvailableData() {
-        return availableData;
+    public String getAvailableDateDesc() {
+        return availableDate;
     }
 
-    public void setAvailableData(String availableData) {
-        this.availableData = availableData;
+    public void setAvailableDateDesc(String availableDateDesc) {
+        this.availableDate = availableDateDesc;
     }
 
 

@@ -22,6 +22,8 @@ public interface OrderService {
 
     Page<Order> getOrdersByPage(int pn);
 
+    Page<Order> getUnCompletedAndWaitCompletedOrdersByPage(int pn);
+
     boolean complete(int id);
 
     int accept(int orderId, long userId);
@@ -32,7 +34,7 @@ public interface OrderService {
 
     BigDecimal getWaitSettledReward(int acceptUserId);
 
-    long createOrder(int userId, CreateOrderBean orderInfo);
+    long createOrder(long userId, CreateOrderBean orderInfo);
 
     Page<Order> getOwnerPostOrders(int pn, int userId);
 

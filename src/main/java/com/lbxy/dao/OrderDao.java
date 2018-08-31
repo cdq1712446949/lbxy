@@ -22,6 +22,10 @@ public class OrderDao {
         return Db.queryInt("select count(*) from `Order`");
     }
 
+    public Page<Order> getUnCompletedAndWaitCompletedOrdersByPage(int pn) {
+        return Order.DAO.paginate(pn, PageConst.PAGE_SIZE, "select * ", "from `order` where status=? or status=?", OrderStatus.UN_COMPLETED, OrderStatus.WAIT_COMPLETE);
+    }
+
     public BigDecimal getWaitCompletedOrdersTotalRewardByAcceptUserId(int acceptUserId) {
         return Db.queryBigDecimal("select sum(reward) from `order` where acceptUserId=? and status=?", acceptUserId, OrderStatus.WAIT_COMPLETE);
     }

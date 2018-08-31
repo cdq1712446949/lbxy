@@ -10,6 +10,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.time.LocalTime;
 import java.util.UUID;
 
 /**
@@ -57,5 +58,12 @@ class UtilTest {
     @Test
     void test3() {
         System.out.println(PasswordUtil.createHash("123456"));
+    }
+
+    @Test
+    void test4() {
+        LocalTime localTime = LocalTime.of(0, 0);
+        System.out.println(localTime);
+
     }
 }

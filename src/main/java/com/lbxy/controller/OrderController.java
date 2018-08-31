@@ -33,7 +33,7 @@ public class OrderController extends BaseController {
     }
 
     @Before(POST.class)
-    public void createOrder(int userId, @ValidParam @Para("") CreateOrderBean orderInfo) {
+    public void createOrder(long userId, @ValidParam @Para("") CreateOrderBean orderInfo) {
         long orderId = orderService.createOrder(userId, orderInfo);
         renderJson(MessageVoUtil.success("发单成功", orderId));
     }

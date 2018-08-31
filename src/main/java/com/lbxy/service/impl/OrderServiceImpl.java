@@ -13,7 +13,10 @@ import com.lbxy.service.OrderService;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Service("orderService")
@@ -32,6 +35,11 @@ public class OrderServiceImpl implements OrderService {
 
     public Page<Order> getOrdersByPage(int pn) {
         return orderDao.getUnCompletedOrdersByPage(pn);
+    }
+
+    @Override
+    public Page<Order> getUnCompletedAndWaitCompletedOrdersByPage(int pn) {
+        return orderDao.getUnCompletedAndWaitCompletedOrdersByPage(pn);
     }
 
     public boolean complete(int orderId) {
@@ -125,18 +133,41 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public long createOrder(int userId, CreateOrderBean orderInfo) {
+    public long createOrder(long userId, CreateOrderBean orderInfo) {
         Order order = new Order();
-        order.set("createdDate", LocalDateTime.now());
-        order.set("reward", orderInfo.getReward());
-        order.set("userId", userId);
-        order.set("userName", orderInfo.getUserName());
-        order.set("userPhoneNumber", orderInfo.getUserPhoneNumber());
-        order.set("fromAddress", orderInfo.getFromAddress());
-        order.set("toAddress", orderInfo.getToAddress());
-        order.set("remark", orderInfo.getReward());
-        order.set("detail", orderInfo.getDetail());
-        order.set("availableDate", orderInfo.getAvailableData());
+        order.setCreatedDate(new Date());
+        order.setReward(BigDecimal.valueOf(orderInfo.getReward()));
+        order.setUserId(userId);
+        order.setUserName(orderInfo.getUserName());
+        order.setUserPhoneNumber(orderInfo.getUserPhoneNumber());
+        order.setFromAddress(orderInfo.getFromAddress());
+        order.setToAddress(orderInfo.getToAddress());
+        order.setRemark(orderInfo.getRemark());
+        order.setDetail(orderInfo.getDetail());
+        order.setAvailableDateDesc(orderInfo.getAvailableDateDesc());
+
+        String[] availableDateTimeArray = orderInfo.getAvailableDateDesc().split(" \\| ");
+        String[] availableDateArray = availableDateTimeArray[0].split("/");
+        String startTime = null;
+        if (availableDateTimeArray[1].contains("-")) {
+            startTime = availableDateTimeArray[1].split("-")[0].trim();
+        } else {
+            startTime = "00:00"; //如果时间为零点，那么就是任意时间
+        }
+        String[] startTimeArray = startTime.split(":");
+
+        LocalDateTime dateTime = LocalDateTime.of(LocalDate.now().getYear(),
+                Integer.parseInt(availableDateArray[0]),
+                Integer.parseInt(availableDateArray[1]),
+                Integer.parseInt(startTimeArray[0]),
+                Integer.parseInt(startTimeArray[1])
+        );
+
+        ZoneId zoneId = ZoneId.systemDefault();
+        ZonedDateTime zdt = dateTime.atZone(zoneId);
+        Date date = Date.from(zdt.toInstant());
+
+        order.setAvailableDate(date);
         order.save();
         return order.getId();
     }

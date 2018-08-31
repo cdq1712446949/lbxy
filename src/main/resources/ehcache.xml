@@ -1,20 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ehcache updateCheck="false" name="ehcache" monitoring="autodetect" dynamicConfig="true">
 
+
+    <defaultCache
+            maxElementsInMemory="10000"
+            eternal="true"
+            timeToIdleSeconds="3600"
+            timeToLiveSeconds="3600"
+            overflowToDisk="true"
+    />
+
     <cache name="payCache"
            maxElementsInMemory="10000"
            overflowToDisk="true"
            eternal="false"
            timeToLiveSeconds="300"
            timeToIdleSeconds="300"
-           diskExpiryThreadIntervalSeconds="120"/>
+           diskExpiryThreadIntervalSeconds="120"
+    />
 
     <cache name="managerLoginCache"
            maxElementsInMemory="10"
            overflowToDisk="true"
            eternal="false"
            timeToLiveSeconds="1200"
-           diskExpiryThreadIntervalSeconds="120"/>
+           diskExpiryThreadIntervalSeconds="120"
+    />
     <!--
             缓存配置
                    name:缓存名称。
