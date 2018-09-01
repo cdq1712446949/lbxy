@@ -179,10 +179,11 @@ public class ManagerController extends BaseController {
         }
         if (userNmae.equals("null")) {
             int pn = 1;
+            int totalPage = 1;
             try {
                 pn = getParaToInt("pn");
-                pn = checkPn(pn);
-//                Page<Notice> notificationPage = notificationService.getAllNotice(pn);
+                totalPage=getParaToInt("totalPage");
+                pn = checkPn(pn,totalPage);
             } catch (Exception e) {
                 System.out.println(" pageNumber is invalid");
             }
@@ -190,9 +191,11 @@ public class ManagerController extends BaseController {
             setAttr("noticePage", noticePage);
         } else {
             int pn = 1;
+            int totalPage=1;
             try {
                 pn = getParaToInt("pn");
-                pn = checkPn(pn);
+                totalPage=getParaToInt("totalPage");
+                pn = checkPn(pn,totalPage);
             } catch (Exception e) {
                 System.out.println(" pageNumber is invalid");
             }

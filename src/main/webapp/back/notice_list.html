@@ -104,12 +104,16 @@
             obj.onclick = function onclick(event) {
                 update(this, x)
             };
-            alert(table.rows[0].cells[1].innerHTML+ ",传到后端操作成功，刷新页面");
+            alert(table.rows[0].cells[1].innerHTML + ",传到后端操作成功，刷新页面");
         }
 
         function creatNotice() {
-            var title = prompt("请输入公告标题")
             var content = prompt("请输入公告内容")
+            if(confirm("是否显示此公告（公告只能显示一个）")==true){
+                var active=1
+            }else{
+                active=0;
+            }
             //同步请求服务器端
             var xmlhttp;
             if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -122,11 +126,9 @@
                     // document.getElementById("btn_change").innerHTML = xmlhttp.responseText;
                 }
             }
-            if (title != null) {
-                if (content != null) {
-                    xmlhttp.open("GET", "/back/noticeSave?userId=admin&content=" + content + "&title=" + title + "", true);
-                    xmlhttp.send();
-                }
+            if (content != null) {
+                xmlhttp.open("GET", "/back/notificationSave?userId=admin&content=" + content + "&active="+active+"", true);
+                xmlhttp.send();
             }
         }
 
@@ -151,15 +153,15 @@
         function GoPage(total) {
             var pn = document.getElementById("ai").value
             if (pn > total) {
-                alert("请输入有效值")
+                alert("请输入有效值,已将页码重置为1")
                 pn = 1
             } else {
                 if (pn < 1) {
-                    alert("请输入有效值")
+                    alert("请输入有效值，已将页码重置为1")
                     pn = 1
                 }
             }
-            window.location.href = "/back/noticeList?pn=" + pn;
+            window.location.href = "/back/notificationList?pn=" + pn;
         }
 
 
