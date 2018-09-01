@@ -2,7 +2,6 @@ package com.lbxy.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.exception.InvalidRequestParamException;
 import com.lbxy.common.request.UserInfoBean;
@@ -28,7 +27,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public Page<User> getAllUsers(int pn) {
-        int totalNum = Db.queryInt("select count(*) from User");
+        int totalNum = userDao.getTotalNumber();
         int totalPage = totalNum / 10;
         if (totalNum % 10 >= 1) {
             totalPage += 1;
@@ -40,7 +39,7 @@ public class UserServiceImpl implements UserService {
         if (pn <= 1) {
             pn = 1;
         }
-        return userDao.findUserByPn(pn);
+        return userDao.findUsersByPn(pn);
     }
 
     public Page<User> findByPhone(String phoneNumber) {
@@ -51,23 +50,22 @@ public class UserServiceImpl implements UserService {
     public JSONObject login(String code) {
         JSONObject result = WeixinUtil.login(code);
         User user = userDao.findByOpenid(result.getString("openid"));
-        JSONObject returnValue = null;
-        int userId = -1;
+        JSONObject returnValue = new JSONObject();
+        long userId = -1;
         if (user != null) {
             //更新sessionKey
             user.set("sessionKey", result.getString("session_key"));
             userDao.update(user);
 
             userId = user.getInt("id");
-            returnValue = new JSONObject();
             returnValue.put("isNew", false);
         } else {
             user = new User();
             user.set("openId", result.getString("openid"));
             user.set("sessionKey", result.getString("session_key"));
-            userId = userDao.insert(user);
+            userDao.insert(user);
+            userId = user.getId();
 
-            returnValue = JSON.parseObject(user.toJson());
             returnValue.put("isNew", true);
         }
 
@@ -107,7 +105,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean throughAuthentication(int id, int status) {
+    public boolean throughAuthentication(long id, int status) {
         User user = new User();
         user.set("id", id);
         user.set("status", status);
@@ -115,7 +113,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BigDecimal getUserAccountBalance(int userId) {
+    public BigDecimal getUserAccountBalance(long userId) {
         return userDao.getUserBalance(userId);
     }
 

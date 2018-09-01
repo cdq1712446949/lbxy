@@ -4,6 +4,8 @@ import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.NotificationType;
+import com.jfinal.plugin.ehcache.CacheKit;
+import com.lbxy.common.CacheNameConst;
 import com.lbxy.core.interceptors.ManagerLoginInterceptor;
 import com.lbxy.model.*;
 import com.lbxy.service.*;
@@ -28,6 +30,9 @@ public class ManagerController extends BaseController {
 
     @Resource
     private FleaService fleaService;
+
+    @Resource
+    private NoticeService noticeService;
 
     @Resource
     private LostFoundService lostFoundService;
@@ -93,26 +98,19 @@ public class ManagerController extends BaseController {
 
     @Clear({ManagerLoginInterceptor.class})
     public void login(String username, String password) {
-        System.out.println("login username:" + username);
-        System.out.println("password:" + password);
         int i = managerService.login(username, password);
         if (i == ManagerService.NOT_EXIST) {
             System.out.println("账号不存在");
             setAttr("error", "账号不存在");
-            return;
-        }
-        if (i == ManagerService.INVALID_PASSWORD) {
+        } else if (i == ManagerService.INVALID_PASSWORD) {
             System.out.println("密码错误");
             setAttr("error", "密码错误");
             render("login.html");
-            return;
-        }
-        if (i == ManagerService.SUCCESS) {
+        } else if (i == ManagerService.SUCCESS) {
             System.out.println("登陆成功");
-            setSessionAttr("userName.login", username);
-            setAttr("userName", username);
+            CacheKit.put(CacheNameConst.MANAGER_LOGIN_CACHE, "username.login", username);
+            setAttr("username", username);
             render("index.html");
-            return;
         }
     }
 
@@ -164,14 +162,11 @@ public class ManagerController extends BaseController {
         render("lostfound_list.html");
     }
 
-    public int checkPn(int pn) {
-        int totalPage = getParaToInt("totalPage");
-        if (pn > totalPage) {
+    public int checkPn(int pn, int totalPage) {
+        if (pn >= totalPage) {
+            pn = totalPage;
+        } else if (pn <= 1) {
             pn = 1;
-        } else {
-            if (pn < 1) {
-                pn = 1;
-            }
         }
         return pn;
     }

@@ -1,12 +1,15 @@
 package com.lbxy;
 
-import com.lbxy.service.impl.BillServiceImpl;
+import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.ehcache.EhCachePlugin;
+import com.lbxy.core.utils.PasswordUtil;
+import com.lbxy.model.Order;
+import com.lbxy.service.OrderService;
+import com.lbxy.service.impl.OrderServiceImpl;
+import com.lbxy.weixin.utils.PayCacheUtil;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 /**
  * @author lmy
@@ -18,7 +21,7 @@ class UtilTest {
     @Test
     void test() throws URISyntaxException, ClassNotFoundException {
 
-        System.out.println(UtilTest.class.getResource("/"));;
+//        System.out.println(UtilTest.class.getResource("/"));;
 
 //        Class clazz = BillServiceImpl.class;
 //        ClassLoader loader = clazz.getClassLoader();
@@ -40,5 +43,25 @@ class UtilTest {
 //            clazz = Class.forName(allName);
 //            System.out.println(clazz);
 //        }
+
+    }
+
+    @Test
+    void test2() {
+        new EhCachePlugin().start();
+        PayCacheUtil.put("a","b");
+        System.out.println(PayCacheUtil.get("a","1"));
+    }
+
+    @Test
+    void test3() {
+        System.out.println(PasswordUtil.createHash("123456"));
+    }
+
+    @Test
+    void test4() {
+        OrderService orderService = new OrderServiceImpl();
+        Page<Order> orderPage = orderService.getUnCompletedAndWaitCompletedAndCompletedOrdersByPage(1);
+        System.out.println(orderPage);
     }
 }

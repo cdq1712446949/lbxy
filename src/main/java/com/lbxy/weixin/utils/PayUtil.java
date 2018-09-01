@@ -18,7 +18,7 @@ public class PayUtil {
         String result = NetWorkUtil.doPostUriReturnPlainText(Api.ORDER_QUERY, params);
         Map<String, String> xml = null;
         try {
-            xml = XmlUtil.xml2Map(result);
+            xml = WeixinMessageUtil.xml2Map(result);
         } catch (DocumentException e) {
             e.printStackTrace();
         }

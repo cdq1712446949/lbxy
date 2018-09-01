@@ -135,13 +135,22 @@ public abstract class BaseOrder<M extends BaseOrder<M>> extends Model<M> impleme
 		return getStr("detail");
 	}
 
-	public M setAvailableDate(java.lang.String availableDate) {
+	public M setAvailableDateDesc(java.lang.String availableDateDesc) {
+		set("availableDateDesc", availableDateDesc);
+		return (M)this;
+	}
+	
+	public java.lang.String getAvailableDateDesc() {
+		return getStr("availableDateDesc");
+	}
+
+	public M setAvailableDate(java.util.Date availableDate) {
 		set("availableDate", availableDate);
 		return (M)this;
 	}
 	
-	public java.lang.String getAvailableDate() {
-		return getStr("availableDate");
+	public java.util.Date getAvailableDate() {
+		return get("availableDate");
 	}
 
 	public M setAcceptDate(java.util.Date acceptDate) {
@@ -151,6 +160,24 @@ public abstract class BaseOrder<M extends BaseOrder<M>> extends Model<M> impleme
 	
 	public java.util.Date getAcceptDate() {
 		return get("acceptDate");
+	}
+
+	public M setSettledDate(java.util.Date settledDate) {
+		set("settledDate", settledDate);
+		return (M)this;
+	}
+	
+	public java.util.Date getSettledDate() {
+		return get("settledDate");
+	}
+
+	public M setCanPayBack(java.lang.Integer canPayBack) {
+		set("canPayBack", canPayBack);
+		return (M)this;
+	}
+	
+	public java.lang.Integer getCanPayBack() {
+		return getInt("canPayBack");
 	}
 
 }

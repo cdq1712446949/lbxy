@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2018-08-28 00:04:32
+Date: 2018-09-01 08:35:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -150,7 +150,7 @@ CREATE TABLE `manager` (
 -- ----------------------------
 -- Records of manager
 -- ----------------------------
-INSERT INTO `manager` VALUES ('admin', '1000:979ffa57acc60f3ea399bfff21bf93f2eca496b6cf15c486:04386cdde4c14a66a83c690ca1a71c826640e564c8e3284d', '6');
+INSERT INTO `manager` VALUES ('admin', '1000:a92506ce1e293441a43a2abdca2de1b400ba28ba041fa844:7d9bc03953244579fc85dcdd9d49b259bddd16dc5340f6fc', '6');
 
 -- ----------------------------
 -- Table structure for notice
@@ -182,7 +182,7 @@ CREATE TABLE `notification` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `content` text,
   `createdDate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `active` tinyint(2) DEFAULT NULL,
+  `active` tinyint(2) DEFAULT '0' COMMENT '启用为1，不启用为0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -209,8 +209,11 @@ CREATE TABLE `order` (
   `toAddress` varchar(255) NOT NULL,
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `detail` varchar(255) NOT NULL COMMENT '简要概述',
-  `availableDate` varchar(255) DEFAULT NULL COMMENT '送达时间段',
+  `availableDateDesc` varchar(255) DEFAULT NULL COMMENT '送达时间段',
+  `availableDate` datetime DEFAULT NULL,
   `acceptDate` datetime DEFAULT NULL,
+  `settledDate` datetime DEFAULT NULL COMMENT '订单结算时间',
+  `canPayBack` tinyint(2) DEFAULT '0' COMMENT '是否可以退款，1是0否',
   PRIMARY KEY (`id`),
   KEY `acceptUserId` (`acceptUserId`),
   KEY `userId` (`userId`),
@@ -233,7 +236,9 @@ CREATE TABLE `treehole` (
   `pId` int(10) unsigned DEFAULT NULL COMMENT '评论者id',
   `content` text NOT NULL COMMENT '内容',
   `postDate` datetime(6) NOT NULL COMMENT '发帖时间',
-  `status` tinyint(2) DEFAULT NULL COMMENT '是否删除，0未删除，-1删除',
+  `status` tinyint(2) DEFAULT '1',
+  `avatarUrl` varchar(255) DEFAULT NULL COMMENT '匿名用户的头像',
+  `nameColor` varchar(255) DEFAULT NULL COMMENT '匿名用户昵称的颜色',
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   KEY `pUserId` (`pUserId`),

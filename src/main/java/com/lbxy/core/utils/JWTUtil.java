@@ -20,7 +20,7 @@ public class JWTUtil {
     private final static String SIGN_CLASS = "com.lbxy.core.utils.JWTUtil";
 
     private JWTUtil() {
-        
+
     }
 
     private static class VerifierHolder{
@@ -36,7 +36,7 @@ public class JWTUtil {
      * @param userId
      * @return
      */
-    public static String createToken(int userId) {
+    public static String createToken(long userId) {
         String token = JWT.create()
                 .withIssuer(ISSUER)
                 .withIssuedAt(new Date())

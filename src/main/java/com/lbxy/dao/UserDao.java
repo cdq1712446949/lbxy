@@ -15,13 +15,16 @@ import java.math.BigDecimal;
 @Repository
 public class UserDao {
 
-    public BigDecimal getUserBalance(int userId) {
+    public BigDecimal getUserBalance(long userId) {
         return Db.queryBigDecimal("select balance from User where id=?", userId);
     }
 
-    public int insert(User user) {
-        user.save();
-        return this.findByOpenid(user.getStr("openId")).getInt("id");
+    public int updateUserBalance(long userId, BigDecimal money) {
+        return Db.update("update user set balance = balance + ? where id = ?", money, userId);
+    }
+
+    public boolean insert(User user) {
+        return user.save();
     }
 
     public User findByOpenid(String openid) {
@@ -32,7 +35,7 @@ public class UserDao {
         return User.DAO.findById(id);
     }
 
-    public Page<User> findUserByPn(int pn){
+    public Page<User> findUsersByPn(int pn){
         return User.DAO.paginate(pn,10,"select *", " from User");
     }
 
@@ -46,6 +49,10 @@ public class UserDao {
 
     public boolean userSave(User user) {
         return user.update();
+    }
+
+    public int getTotalNumber() {
+        return Db.queryInt("select count(*) from User");
     }
 
 }

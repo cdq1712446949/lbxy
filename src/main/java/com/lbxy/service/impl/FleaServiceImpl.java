@@ -102,7 +102,7 @@ public class FleaServiceImpl implements FleaService {
 //
 //        if (Objects.nonNull(replyBean.getpUserId())) {
 //            User pUser = userDao.findById(replyBean.getpUserId());
-//             WeixinUtil.sendMessage(pUser.getOpenId(), replyBean.getFormId(), replyBean.getUrl(), currentUser.getUsername(), replyBean.getContent(), ""); //TODO 此处有问题，待完成
+//             WeixinUtil.sendMessage(pUser.getOpenId(), replyBean.getFormId(), replyBean.getUrl(), currentUser.getUsername(), replyBean.getContent(), "");
 //        }
 
         Flea flea = new Flea();
