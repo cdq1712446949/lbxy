@@ -43,7 +43,6 @@ public class ManagerController extends BaseController {
     @Resource
     private NotificationService notificationService;
 
-    private String userNmae = "null";
 
     @Clear({ManagerLoginInterceptor.class})
     public void index() {
@@ -172,12 +171,13 @@ public class ManagerController extends BaseController {
     }
 
     public void notificationList() {
+        String userName=null;
         if (getPara("userName") == null || getPara("userName").equals("")) {
             System.out.println("判断username值为null");
         } else {
-            userNmae = getPara("userName");
+            userName = getPara("userName");
         }
-        if (userNmae.equals("null")) {
+        if (userName.equals("null")) {
             int pn = 1;
             int totalPage = 1;
             try {
@@ -201,7 +201,7 @@ public class ManagerController extends BaseController {
             }
             Page<Notification> noticePage = notificationService.getAllNotification(pn);
             setAttr("noticePage", noticePage);
-            setAttr("username", userNmae);
+            setAttr("username", userName);
         }
         render("notice_list.html");
     }
