@@ -182,8 +182,8 @@ public class ManagerController extends BaseController {
             int totalPage = 1;
             try {
                 pn = getParaToInt("pn");
-                totalPage=getParaToInt("totalPage");
-                pn = checkPn(pn,totalPage);
+                totalPage = getParaToInt("totalPage");
+                pn = checkPn(pn, totalPage);
             } catch (Exception e) {
                 System.out.println(" pageNumber is invalid");
             }
@@ -191,11 +191,11 @@ public class ManagerController extends BaseController {
             setAttr("noticePage", noticePage);
         } else {
             int pn = 1;
-            int totalPage=1;
+            int totalPage = 1;
             try {
                 pn = getParaToInt("pn");
-                totalPage=getParaToInt("totalPage");
-                pn = checkPn(pn,totalPage);
+                totalPage = getParaToInt("totalPage");
+                pn = checkPn(pn, totalPage);
             } catch (Exception e) {
                 System.out.println(" pageNumber is invalid");
             }
@@ -267,7 +267,13 @@ public class ManagerController extends BaseController {
     }
 
     public void notificationSave(String content, int active) {
-        boolean isSave = notificationService.notificationSave(content, active);
+        boolean isSave;
+        if (active == 1) {
+            cancelNowActive();
+            isSave = notificationService.notificationSave(content, active);
+        } else {
+            isSave = notificationService.notificationSave(content, active);
+        }
         if (isSave) {
             setAttr("isSave", "true");
             notificationList();
