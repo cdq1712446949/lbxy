@@ -33,11 +33,13 @@ public class PayServlet extends HttpServlet {
 
     private static final PayService PAY_SERVICE = PayService.getInstance();
 
-    private static final UserService USER_SERVICE = (UserService) InjectionCache.get("userService");
+    private UserService userService;
 
     @Override
     public void init() throws ServletException {
         super.init();
+
+        userService = (UserService) InjectionCache.get("userService");
 
         PAY_SERVICE.setPreHandler(result -> {
             String out_trade_no = result.get("out_trade_no");
@@ -80,7 +82,7 @@ public class PayServlet extends HttpServlet {
             throw new IOException("当前请求用户未登录");
         } else {
             int userId = JWTUtil.verifyToken(token);
-            User user = USER_SERVICE.findById(userId);
+            User user = userService.findById(userId);
             return user;
         }
     }

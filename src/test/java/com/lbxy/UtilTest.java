@@ -1,17 +1,15 @@
 package com.lbxy;
 
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.lbxy.core.utils.PasswordUtil;
-import com.lbxy.service.impl.BillServiceImpl;
+import com.lbxy.model.Order;
+import com.lbxy.service.OrderService;
+import com.lbxy.service.impl.OrderServiceImpl;
 import com.lbxy.weixin.utils.PayCacheUtil;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.time.LocalTime;
-import java.util.UUID;
 
 /**
  * @author lmy
@@ -62,8 +60,8 @@ class UtilTest {
 
     @Test
     void test4() {
-        LocalTime localTime = LocalTime.of(0, 0);
-        System.out.println(localTime);
-
+        OrderService orderService = new OrderServiceImpl();
+        Page<Order> orderPage = orderService.getUnCompletedAndWaitCompletedAndCompletedOrdersByPage(1);
+        System.out.println(orderPage);
     }
 }

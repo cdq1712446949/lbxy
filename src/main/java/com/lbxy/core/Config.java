@@ -82,12 +82,6 @@ public class Config extends JFinalConfig {
         me.add(arp);
 
         /*
-        配置定时任务
-         */
-        Cron4jPlugin cp = new Cron4jPlugin(PropKit.get("cron4j.configFile"));
-        me.add(cp);
-
-        /*
         缓存
          */
         me.add(new EhCachePlugin());
@@ -95,7 +89,13 @@ public class Config extends JFinalConfig {
         /*
         基于注解 依赖注入
          */
-        me.add(new AnnotationInjectionPlugin("com.lbxy.service.impl","com.lbxy.dao"));
+        me.add(new AnnotationInjectionPlugin("com.lbxy.service.impl", "com.lbxy.dao"));
+
+        /*
+        配置定时任务
+         */
+        Cron4jPlugin cp = new Cron4jPlugin(PropKit.get("cron4j.configFile"));
+        me.add(cp);
     }
 
     /**

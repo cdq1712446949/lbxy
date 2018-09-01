@@ -35,20 +35,24 @@ import java.util.Map;
 public class PayCallbackServlet extends HttpServlet {
     private static final PayService PAY_SERVICE = PayService.getInstance();
 
-    private static final OrderService ORDER_SERVICE = (OrderService) InjectionCache.get("orderService");
+    private OrderService orderService;
 
-    private static final BillService BILL_SERVICE = (BillService) InjectionCache.get("billService");
+    private BillService billService;
 
     @Override
     public void init() throws ServletException {
         super.init();
+
+        orderService = (OrderService) InjectionCache.get("orderService");
+
+        billService = (BillService) InjectionCache.get("billService");
 
         PAY_SERVICE.setSuccessHandler(result -> {
             String out_trade_no = result.get("out_trade_no");
             Double totalFee = Double.valueOf(result.get("total_fee"));
             String orderId = PayCacheUtil.get(out_trade_no + "orderId");
             String userId = PayCacheUtil.get(out_trade_no + "userId");
-            ORDER_SERVICE.payOrder(Integer.parseInt(orderId));
+            orderService.payOrder(Integer.parseInt(orderId));
 
             Bill bill = new Bill();
             bill.setOrderId(Long.valueOf(orderId));
@@ -58,7 +62,7 @@ public class PayCallbackServlet extends HttpServlet {
             bill.setStatus(BillStatus.PAY);
             bill.setCreatedDate(new Date());
 
-            BILL_SERVICE.add(bill);
+            billService.add(bill);
         });
     }
 
