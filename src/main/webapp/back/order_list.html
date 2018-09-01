@@ -58,8 +58,8 @@
         </div>
     </div>
     <div class="ui_content">
-        <div class="ui_tb">
-            <table class="table" cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
+        <div class="ui_tb" style=" overflow:scroll;">
+            <table class="table" border="1" rules="all" style="width: 2000px" >
                 <tr>
                     <th>id</th>
                     <th>完成状态</th>
@@ -70,6 +70,8 @@
                     <th>酬金</th>
                     <th>取货地址</th>
                     <th>送货地址</th>
+                    <th>接单时间</th>
+                    <th>送达时间</th>
                     <th>货物介绍</th>
                     <th>配送时间段</th>
                     <th>备注</th>
@@ -80,11 +82,20 @@
                     <td>#if(x.status==0)
                         #("可接单")
                         #end
+                        #if(x.status==1)
+                        #("未支付")
+                        #end
                         #if(x.status==2)
-                        #("已接单")
+                        #("已接单未完成")
                         #end
                         #if(x.status==3)
-                        #("完成")
+                        #("已送达未结算")
+                        #end
+                        #if(x.status==4)
+                        #("已送达已结算")
+                        #end
+                        #if(x.status==5)
+                        #("已取消")
                         #end
                     </td>
                     <td>#(x.createdDate)</td>
@@ -94,6 +105,8 @@
                     <td>￥#(x.reward)</td>
                     <td>#(x.fromAddress)</td>
                     <td>#(x.toAddress)</td>
+                    <td>#(x.acceptDate)</td>
+                    <td>#(x.availableDate)</td>
                     <td>#(x.detail)</td>
                     <td>#(x.availableDate)</td>
                     <td>#(x.remark)</td>

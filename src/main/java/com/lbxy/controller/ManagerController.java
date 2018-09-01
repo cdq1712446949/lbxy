@@ -3,6 +3,7 @@ package com.lbxy.controller;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Page;
+import com.lbxy.common.NotificationType;
 import com.lbxy.core.interceptors.ManagerLoginInterceptor;
 import com.lbxy.model.*;
 import com.lbxy.service.*;
@@ -29,13 +30,13 @@ public class ManagerController extends BaseController {
     private FleaService fleaService;
 
     @Resource
-    private NoticeService noticeService;
-
-    @Resource
     private LostFoundService lostFoundService;
 
     @Resource
     private BillService billService;
+
+    @Resource
+    private NotificationService notificationService;
 
     private String userNmae = "null";
 
@@ -89,26 +90,11 @@ public class ManagerController extends BaseController {
         }
     }
 
-    //查询公告
-    public void searchNotice() {
-        int pn = getParaToInt("pn");
-        String userName = getPara("userName");
-        if (StringUtils.isBlank(userName)) {
-            Page<Notice> noticePage = noticeService.getAllNotice(1);
-            setAttr("noticePage", noticePage);
-        } else {
-            Page<Notice> noticePage = noticeService.findByUserName(pn, userNmae);
-            if (noticePage.getList().size() == 0) {
-                System.out.println("改手机号不存在");
-                setAttr("error_search", "该手机号不存在");
-            } else {
-                setAttr("noticePage", noticePage);
-            }
-        }
-        render("notice_list.html");
-    }
 
+    @Clear({ManagerLoginInterceptor.class})
     public void login(String username, String password) {
+        System.out.println("login username:" + username);
+        System.out.println("password:" + password);
         int i = managerService.login(username, password);
         if (i == ManagerService.NOT_EXIST) {
             System.out.println("账号不存在");
@@ -190,7 +176,7 @@ public class ManagerController extends BaseController {
         return pn;
     }
 
-    public void noticeList() {
+    public void notificationList() {
         if (getPara("userName") == null || getPara("userName").equals("")) {
             System.out.println("判断username值为null");
         } else {
@@ -201,12 +187,11 @@ public class ManagerController extends BaseController {
             try {
                 pn = getParaToInt("pn");
                 pn = checkPn(pn);
-                Page<Notice> noticePage = noticeService.getAllNotice(pn);
-                System.out.println(pn);
+//                Page<Notice> notificationPage = notificationService.getAllNotice(pn);
             } catch (Exception e) {
                 System.out.println(" pageNumber is invalid");
             }
-            Page<Notice> noticePage = noticeService.getAllNotice(pn);
+            Page<Notification> noticePage = notificationService.getAllNotification(pn);
             setAttr("noticePage", noticePage);
         } else {
             int pn = 1;
@@ -216,7 +201,7 @@ public class ManagerController extends BaseController {
             } catch (Exception e) {
                 System.out.println(" pageNumber is invalid");
             }
-            Page<Notice> noticePage = noticeService.findByUserName(pn, userNmae);
+            Page<Notification> noticePage = notificationService.getAllNotification(pn);
             setAttr("noticePage", noticePage);
             setAttr("username", userNmae);
         }
@@ -271,37 +256,26 @@ public class ManagerController extends BaseController {
         }
     }
 
-    public void deleteNotice() {
-        int id = getParaToInt("id");
-        boolean isDelete = noticeService.deleteNotice(id);
-        if (isDelete) {
-            setAttr("isDelete", "true");
-            noticeList();
-        } else {
-            setAttr("isDelete", "false");
-            noticeList();
-        }
-    }
 
-    public void noticeEdit(int id, String content, String title) {
-        boolean isEdit = noticeService.noticeEdit(id, content, title);
+    public void notificationEdit(int id, String content) {
+        boolean isEdit = notificationService.notificationEdit(id, content);
         if (isEdit) {
             setAttr("isEdit", "true");
-            noticeList();
+            notificationList();
         } else {
             setAttr("isEdit", "false");
-            noticeList();
+            notificationList();
         }
     }
 
-    public void noticeSave(String userId, String content, String title) {
-        boolean isSave = noticeService.noticeSave(userId, content, title);
+    public void notificationSave(String content, int active) {
+        boolean isSave = notificationService.notificationSave(content, active);
         if (isSave) {
             setAttr("isSave", "true");
-            noticeList();
+            notificationList();
         } else {
             setAttr("isSave", "false");
-            noticeList();
+            notificationList();
         }
     }
 
@@ -316,6 +290,26 @@ public class ManagerController extends BaseController {
 
     public void test() {
         render("TestEdit.html");
+    }
+
+    public void setActive(int id) {
+        cancelNowActive();
+        Notification notification = new Notification();
+        notification.set("id", id);
+        notification.set("active", NotificationType.ACTIVE);
+        boolean b = notificationService.notificationUpData(notification);
+        notificationList();
+    }
+
+    public void cancelNowActive() {
+        Notification notification = notificationService.findNotificationByActive();
+        if (notification == null) {
+            System.out.println("当前并没有显示的公告");
+        } else {
+            int id = notification.getInt("id");
+            boolean b = notificationService.cancelActive(id);
+        }
+        notificationList();
     }
 
 }

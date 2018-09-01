@@ -60,12 +60,10 @@
 
         function update(obj, x) {
             var table = document.getElementById("table");
-            for (var i = 3; i < 5; i++) {
-                var text = table.rows[x].cells[i].innerHTML;
-                table.rows[x].cells[i].innerHTML = '<input class="ui_input_txt02" name="input' + x + '" type="text" value=""/>';
-                var input = document.getElementsByName("input" + x);
-                input[i - 3].value = text;
-            }
+            var text = table.rows[x].cells[1].innerHTML;
+            table.rows[x].cells[1].innerHTML = '<input class="ui_input_txt02" name="input" type="text" value=""/>';
+            var input = document.getElementsByName("input");
+            input[0].value = text;
             obj.innerHTML = "确定";
             obj.onclick = function onclick(event) {
                 update_success(this, x)
@@ -75,19 +73,17 @@
         function update_success(obj, x) {
             var arr = [];
             var table = document.getElementById("table");
-            var input = document.getElementsByName("input" + x);
-            for (var i = 0; i < 2; i++) {
+            var input = document.getElementsByName("input");
+            for (var i = 0; i < 1; i++) {
                 var text = input[i].value;
                 arr.push(text);
             }
             //把值赋值给表格，不能在取值的时候给，会打乱input的个数
             var content;
-            var title;
             for (var j = 0; j < arr.length; j++) {
-                table.rows[x].cells[j + 3].innerHTML = arr[j];
+                table.rows[x].cells[1].innerHTML = arr[j];
                 var id = table.rows[x].cells[0].innerHTML;
                 content = arr[0];
-                title = arr[1];
             }
             // 同步请求服务器端
             var xmlhttp;
@@ -101,14 +97,14 @@
                     // document.getElementById("btn_change").innerHTML = xmlhttp.responseText;
                 }
             }
-            xmlhttp.open("GET", "/back/noticeEdit?id=" + id + "&content=" + content + "&title=" + title + "", true);
+            xmlhttp.open("GET", "/back/notificationEdit?id=" + id + "&content=" + content + "", true);
             xmlhttp.send();
             //回到原来状态
             obj.innerHTML = "修改";
             obj.onclick = function onclick(event) {
                 update(this, x)
             };
-            alert(table.rows[0].cells[4].innerHTML + "、" + table.rows[0].cells[5].innerHTML + ",传到后端操作成功，刷新页面");
+            alert(table.rows[0].cells[1].innerHTML+ ",传到后端操作成功，刷新页面");
         }
 
         function creatNotice() {
@@ -126,12 +122,12 @@
                     // document.getElementById("btn_change").innerHTML = xmlhttp.responseText;
                 }
             }
-           if(title!=null){
-                if (content!=null){
+            if (title != null) {
+                if (content != null) {
                     xmlhttp.open("GET", "/back/noticeSave?userId=admin&content=" + content + "&title=" + title + "", true);
                     xmlhttp.send();
                 }
-           }
+            }
         }
 
         function jumpPage() {
@@ -148,7 +144,7 @@
                     // document.getElementById("btn_change").innerHTML = xmlhttp.responseText;
                 }
             }
-            xmlhttp.open("GET", "/back/noticeList?pn=" + pn + "", true);
+            xmlhttp.open("GET", "/back/notificationList?pn=" + pn + "", true);
             xmlhttp.send();
         }
 
@@ -205,12 +201,9 @@
                    border="0">
                 <tr>
                     <th>id</th>
-                    <th>管理员账号</th>
-                    <th>状态</th>
                     <th>内容</th>
-                    <th>标题</th>
-                    <th>发布时间</th>
-                    <th>图片路径</th>
+                    <th>是否显示</th>
+                    <th>创建时间</th>
                     <th>操作</th>
                     <th>修改</th>
                 </tr>
@@ -220,14 +213,19 @@
                 #for(x:noticePage.list)
                 <tr>
                     <td>#(x.id)</td>
-                    <td>#(x.userId)</td>
-                    <td>#(x.status==0?"正常":"已删除")</td>
                     <td>#(x.content)</td>
-                    <td>#(x.title)</td>
-                    <td>#(x.postDate)</td>
-                    <td>#(x.pictureUrl)</td>
+                    <td>#(x.active==0?"不显示":"显示")</td>
+                    <td>#(x.createdDate)</td>
                     <td>
-                        <a href="/back/deleteNotice?id=#(x.id)">删除</a>
+                        <a href="/back/setActive?id=#(x.id)">
+                            #if(x.active==0)
+                            显示
+                            #end</a>
+                        <a href="/back/cancelNowActive?id=#(x.id)">
+                            #if(x.active==1)
+                            不显示
+                            #end
+                        </a>
                     </td>
                     <td>
                         <button id="btn_change" onclick="update(this,'#(q++)')">修改</button>
@@ -245,13 +243,13 @@
                 </div>
                 <div class="ui_frt">
                     <!--    如果是第一页，则只显示下一页、尾页 -->
-                    <a href="/back/noticeList?pn=1&userName=#(username)"
+                    <a href="/back/notificationList?pn=1&userName=#(username)"
                        class="ui_input_btn01">首页</a>
-                    <a href="/back/noticeList?pn=#(noticePage.pageNumber-1)&userName=#(username)&totalPage=#(noticePage.totalPage)"
+                    <a href="/back/notificationList?pn=#(noticePage.pageNumber-1)&userName=#(username)&totalPage=#(noticePage.totalPage)"
                        class="ui_input_btn01">上一页</a>
-                    <a href="/back/noticeList?pn=#(noticePage.pageNumber+1)&userName=#(username)&totalPage=#(noticePage.totalPage)"
+                    <a href="/back/notificationList?pn=#(noticePage.pageNumber+1)&userName=#(username)&totalPage=#(noticePage.totalPage)"
                        class="ui_input_btn01">下一页</a>
-                    <a href="/back/noticeList?pn=#(noticePage.totalPage)&userName=#(username)"
+                    <a href="/back/notificationList?pn=#(noticePage.totalPage)&userName=#(username)"
                        class="ui_input_btn01">尾页</a>
                 </div>
             </div>

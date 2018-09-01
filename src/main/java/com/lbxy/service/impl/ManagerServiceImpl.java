@@ -15,8 +15,7 @@ public class ManagerServiceImpl implements ManagerService {
     private ManagerDao managerDao;
 
     public int login(String username, String password) {
-        Manager manager = new Manager();
-        manager = managerDao.findManagerByUserName(username);
+        Manager manager = managerDao.findManagerByUserName(username);
         if (manager == null) {
             System.out.println("账号不存在");
             return ManagerService.NOT_EXIST;

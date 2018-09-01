@@ -1,5 +1,6 @@
 package com.lbxy.model;
 
+
 import com.lbxy.model.base.BaseNotification;
 
 /**

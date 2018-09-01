@@ -15,12 +15,16 @@ public class ManagerLoginInterceptor implements Interceptor {
     public void intercept(Invocation inv) {
         Controller target = inv.getController();
 
-        String username = target.getSessionAttr("userName.login", "");
+        String username = target.getSessionAttr("userName.login");
+        System.out.println("username:"+username);
         if (StrKit.isBlank(username)) {
+//            inv.invoke();
             //跳转到登陆界面
+            System.out.println("返回登陆界面");
             target.render("login.html");
         } else {
             //放行
+            System.out.println("放行");
             inv.invoke();
         }
     }
