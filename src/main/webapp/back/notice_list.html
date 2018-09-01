@@ -109,10 +109,10 @@
 
         function creatNotice() {
             var content = prompt("请输入公告内容")
-            if(confirm("是否显示此公告（公告只能显示一个）")==true){
-                var active=1
-            }else{
-                active=0;
+            if (confirm("是否显示此公告（公告只能显示一个）") == true) {
+                var active = 1
+            } else {
+                active = 0;
             }
             //同步请求服务器端
             var xmlhttp;
@@ -127,7 +127,7 @@
                 }
             }
             if (content != null) {
-                xmlhttp.open("GET", "/back/notificationSave?userId=admin&content=" + content + "&active="+active+"", true);
+                xmlhttp.open("GET", "/back/notificationSave?userId=admin&content=" + content + "&active=" + active + "", true);
                 xmlhttp.send();
             }
         }
@@ -178,12 +178,7 @@
     <div class="ui_content">
         <div class="ui_text_indent">
             <div id="box_border">
-                <div id="box_top">搜索</div>
                 <form action="/back/noticeList" method="post">
-                    <div id="box_center">
-                        管理员账号&nbsp;&nbsp;<input type="text" name="userName" value="#(username)" class="ui_input_txt02"/>
-                        <button id="search_btn" type="submit" class="ui_input_btn01">查询</button>
-                    </div>
                     <div id="box_bottom">
                         <input type="button" name='notice_button' id="notice_button" value="发布公告" class="ui_input_btn01"
                                onclick="creatNotice()"/>
