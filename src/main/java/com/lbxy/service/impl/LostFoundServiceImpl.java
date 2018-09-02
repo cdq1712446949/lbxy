@@ -100,4 +100,9 @@ public class LostFoundServiceImpl implements LostFoundService {
         lostfound.setPostDate(new Date());
         return lostFoundDao.save(lostfound);
     }
+
+    @Override
+    public Page<Lostfound> getLostFoundByContent(int pn, String content) {
+        return lostFoundDao.findLostFoundByContent(pn,content);
+    }
 }

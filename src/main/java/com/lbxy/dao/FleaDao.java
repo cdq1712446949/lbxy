@@ -30,4 +30,9 @@ public class FleaDao {
     public List<Flea> getReplyByPId(int pid) {
         return Flea.DAO.find("select f.*,u.username from flea f inner join user u on f.userId = u.id where f.pId = ? and f.status = ? order by f.postDate asc", pid, CommonStatus.NORMAL);
     }
+
+    public Page<Flea> findFleaByContent(int pn,String content){
+        return Flea.DAO.paginate(pn,10,"select *","from Flea where content like '%"+content+"%'");
+    }
+
 }

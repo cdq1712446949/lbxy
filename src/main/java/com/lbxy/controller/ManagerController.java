@@ -94,6 +94,32 @@ public class ManagerController extends BaseController {
         }
     }
 
+    public void searchTreehole(int pn, String content) {
+        if (content.equals("") || content == null) {
+            notificationList();
+        } else {
+            setAttr("treeHolePage", treeHoleService.getTreeHoleByContent(pn, content));
+            render("treehole_list.html");
+        }
+    }
+
+    public void searchFlea(int pn, String content) {
+        if (content.equals("") || content == null) {
+            fleaList();
+        } else {
+            setAttr("fleaPage", fleaService.getFleaByContent(pn, content));
+            render("flea_list.html");
+        }
+    }
+
+    public void searchLostFound(int pn, String content) {
+        if (content.equals("") || content == null) {
+            lostFoundList();
+        } else {
+            setAttr("lostFoundPage", lostFoundService.getLostFoundByContent(pn, content));
+            render("lostFound_list.html");
+        }
+    }
 
     @Clear({ManagerLoginInterceptor.class})
     public void login(String username, String password) {
@@ -171,7 +197,7 @@ public class ManagerController extends BaseController {
     }
 
     public void notificationList() {
-        String userName=null;
+        String userName = null;
         if (getPara("userName") == null || getPara("userName").equals("")) {
             System.out.println("判断username值为null");
         } else {

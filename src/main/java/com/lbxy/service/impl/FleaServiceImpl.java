@@ -113,4 +113,9 @@ public class FleaServiceImpl implements FleaService {
         flea.setPostDate(new Date());
         return fleaDao.save(flea);
     }
+
+    @Override
+    public Page<Flea> getFleaByContent(int pn, String content) {
+        return fleaDao.findFleaByContent(pn,content);
+    }
 }

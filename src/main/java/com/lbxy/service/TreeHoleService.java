@@ -16,4 +16,7 @@ public interface TreeHoleService {
     JSONObject getMainByPage(int pn);
 
     boolean reply(long userId, ReplyBean replyBean);
+
+    Page<Treehole> getTreeHoleByContent(int pn,String content);
+
 }

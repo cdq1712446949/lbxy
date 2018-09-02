@@ -5,6 +5,7 @@ import com.lbxy.common.PageConst;
 import com.lbxy.common.status.CommonStatus;
 import com.lbxy.core.annotation.Repository;
 import com.lbxy.model.Treehole;
+import sun.reflect.generics.tree.Tree;
 
 import java.util.List;
 
@@ -31,6 +32,11 @@ public class TreeHoleDao {
     public List<Treehole> getReplyByPId(int pid) {
         return Treehole.DAO.find("select f.*,u.username from treehole f inner join user u on f.userId = u.id where f.pId = ? and f.status = ? order by f.postDate asc", pid,CommonStatus.NORMAL);
     }
+
+    public Page<Treehole> findTreeHoleByContent(int pn,String content){
+        return Treehole.DAO.paginate(pn,10,"select *","from TreeHole where content like '%"+content+"%'");
+    }
+
 }
 
 

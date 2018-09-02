@@ -30,4 +30,9 @@ public class LostFoundDao {
     public List<Lostfound> getReplyByPId(int pid) {
         return Lostfound.DAO.find("select f.*,u.username from lostfound f inner join user u on f.userId = u.id where f.pId = ? and f.status = ? order by f.postDate asc", pid, CommonStatus.NORMAL);
     }
+
+    public Page<Lostfound> findLostFoundByContent (int pn,String content){
+        return Lostfound.DAO.paginate(pn,10,"select *","from Lostfound where content like '%"+content+"%'");
+    }
+
 }

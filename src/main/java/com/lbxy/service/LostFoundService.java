@@ -15,4 +15,7 @@ public interface LostFoundService {
     JSONObject getMainByPage(int pn);
 
     boolean reply(long userId, Long pId, Long pUserId, Long toUserId, String formId, String content);
+
+    Page<Lostfound> getLostFoundByContent(int pn,String content);
+
 }

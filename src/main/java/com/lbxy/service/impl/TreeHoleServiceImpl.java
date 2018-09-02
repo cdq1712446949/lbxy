@@ -100,4 +100,9 @@ public class TreeHoleServiceImpl implements TreeHoleService {
         treehole.setPostDate(new Date());
         return treeHoleDao.save(treehole);
     }
+
+    @Override
+    public Page<Treehole> getTreeHoleByContent(int pn,String content) {
+        return treeHoleDao.findTreeHoleByContent(pn,content);
+    }
 }

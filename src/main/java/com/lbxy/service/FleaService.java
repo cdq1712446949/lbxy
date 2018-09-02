@@ -16,4 +16,7 @@ public interface FleaService {
     JSONObject getMainByPage(int pn);
 
     boolean reply(long userId, ReplyBean replyBean);
+
+    Page<Flea> getFleaByContent(int pn,String content);
+
 }
