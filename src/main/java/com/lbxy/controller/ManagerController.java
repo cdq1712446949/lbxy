@@ -197,7 +197,7 @@ public class ManagerController extends BaseController {
     }
 
     public void notificationList() {
-        String userName = null;
+        String userName ="null";
         if (getPara("userName") == null || getPara("userName").equals("")) {
             System.out.println("判断username值为null");
         } else {
