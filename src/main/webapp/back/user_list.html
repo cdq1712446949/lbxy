@@ -67,7 +67,7 @@
                     <th>手机号</th>
                     <th>姓名</th>
                     <th>余额</th>
-                    <th>是否认证</th>
+                    <th>用户状态</th>
                     <th>身份证</th>
                     <th>校园卡</th>
                     <th>操作</th>
@@ -81,11 +81,14 @@
                     <td>#if(x.status==0)
                         #("未申请认证")
                         #end
-                        #if(x.status==8)
+                        #if(x.status==1)
                         #("待审核")
                         #end
-                        #if(x.status==9)
+                        #if(x.status==2)
                         #("认证通过")
+                        #end
+                        #if(x.status==-1)
+                        #("拉黑状态")
                         #end
                     </td>
                     <td>
@@ -95,11 +98,17 @@
                         <a href="/upload/stuNoPic?id=#(x.id)" target="_blank">查看照片</a>
                     </td>
                     <td>
-                        <a href="/back/throughAuthencation?id=#(x.id)&status=9"> #if(x.status==8)
+                        <a href="/back/throughAuthencation?id=#(x.id)&status=2"> #if(x.status==1)
                             给予认证
                             #end</a>
-                        <a href="/back/throughAuthencation?id=#(x.id)&status=0"> #if(x.status==9)
+                        <a href="/back/throughAuthencation?id=#(x.id)&status=0"> #if(x.status==2)
                             取消认证
+                            #end</a>
+                        <a href="/back/throughAuthencation?id=#(x.id)&status=-1"> #if(x.status!=-1)
+                            拉黑用户
+                            #end</a>
+                        <a href="/back/throughAuthencation?id=#(x.id)&status=0"> #if(x.status==-1)
+                            取消拉黑
                             #end</a>
                     </td>
                 </tr>
