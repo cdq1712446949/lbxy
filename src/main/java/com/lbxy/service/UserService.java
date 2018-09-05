@@ -31,4 +31,7 @@ public interface UserService {
     boolean throughAuthentication(long id, int status);
 
     BigDecimal getUserAccountBalance(long userId);
+
+    boolean changeMoney(User user);
+
 }

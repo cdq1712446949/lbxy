@@ -117,4 +117,9 @@ public class UserServiceImpl implements UserService {
         return userDao.getUserBalance(userId);
     }
 
+    @Override
+    public boolean changeMoney(User user) {
+        return userDao.changeMoney(user);
+    }
+
 }

@@ -197,7 +197,7 @@ public class ManagerController extends BaseController {
     }
 
     public void notificationList() {
-        String userName ="null";
+        String userName = "null";
         if (getPara("userName") == null || getPara("userName").equals("")) {
             System.out.println("判断username值为null");
         } else {
@@ -314,9 +314,20 @@ public class ManagerController extends BaseController {
         userList();
     }
 
-    public void creatNotice() {
-
+    public void changeMoney(int id, int money) {
+        User user = new User();
+        user.set("id", id);
+        user.set("balance", money);
+        boolean i = userService.changeMoney(user);
+        if (i){
+            setAttr("isChange","true");
+            userList();
+        }else {
+            setAttr("isChange","false");
+            userList();
+        }
     }
+
 
     public void test() {
         render("TestEdit.html");
