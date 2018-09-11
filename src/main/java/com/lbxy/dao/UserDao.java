@@ -54,9 +54,4 @@ public class UserDao {
     public int getTotalNumber() {
         return Db.queryInt("select count(*) from User");
     }
-
-    public boolean changeMoney(User user){
-        return user.update();
-    }
-
 }

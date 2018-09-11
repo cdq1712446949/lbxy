@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean changeMoney(User user) {
-        return userDao.changeMoney(user);
+        return userDao.update(user);
     }
 
 }

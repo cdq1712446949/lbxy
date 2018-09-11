@@ -21,7 +21,7 @@ public class NotificationDAO {
         return Notification.dao.paginate(pn,10,"select *","from Notification");
     }
 
-    public boolean notificationUpData(Notification notification){
+    public boolean notificationUpdate(Notification notification){
         return notification.update();
     }
 

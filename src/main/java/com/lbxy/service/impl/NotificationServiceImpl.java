@@ -36,7 +36,7 @@ public class NotificationServiceImpl implements NotificationService {
         Notification notification=new Notification();
         notification.set("id" ,id);
         notification.set("content",content);
-        return notificationDAO.notificationUpData(notification);
+        return notificationDAO.notificationUpdate(notification);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class NotificationServiceImpl implements NotificationService {
         Notification notification=new Notification();
         notification.set("id",id);
         notification.set("active",NotificationType.INACTIVE);
-        return notificationDAO.notificationUpData(notification);
+        return notificationDAO.notificationUpdate(notification);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public boolean notificationUpData(Notification notification) {
-        return notificationDAO.notificationUpData(notification);
+        return notificationDAO.notificationUpdate(notification);
     }
 
 
