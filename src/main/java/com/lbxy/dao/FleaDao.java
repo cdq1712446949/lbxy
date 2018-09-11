@@ -27,8 +27,12 @@ public class FleaDao {
         return Flea.DAO.paginate(pn, PageConst.PAGE_SIZE, "select f.*,u.username", "from flea f inner join user u on f.userId = u.id where f.pId is null and f.status = ? order by f.postDate desc", CommonStatus.NORMAL);
     }
 
-    public List<Flea> getReplyByPId(int pid) {
+    public List<Flea> getReplyByPId(long pid) {
         return Flea.DAO.find("select f.*,u.username from flea f inner join user u on f.userId = u.id where f.pId = ? and f.status = ? order by f.postDate asc", pid, CommonStatus.NORMAL);
+    }
+
+    public Flea getById(long id) {
+        return Flea.DAO.findById(id);
     }
 
     public Page<Flea> findFleaByContent(int pn,String content){

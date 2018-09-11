@@ -13,10 +13,12 @@ public interface FleaService {
 
     long save(String content, long userId);
 
+    JSONObject getMainById(long id);
+
     JSONObject getMainByPage(int pn);
 
-    boolean reply(long userId, ReplyBean replyBean);
+    boolean reply(long userId, String formId, ReplyBean replyBean);
 
-    Page<Flea> getFleaByContent(int pn,String content);
+    Page<Flea> getFleaByContent(int pn, String content);
 
 }

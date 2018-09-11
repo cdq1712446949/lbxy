@@ -2,6 +2,7 @@ package com.lbxy.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.plugin.activerecord.Page;
+import com.lbxy.common.request.ReplyBean;
 import com.lbxy.model.Lostfound;
 
 public interface LostFoundService {
@@ -12,10 +13,12 @@ public interface LostFoundService {
 
     long save(String content, long userId);
 
+    public JSONObject getMainById(long id);
+
     JSONObject getMainByPage(int pn);
 
-    boolean reply(long userId, Long pId, Long pUserId, Long toUserId, String formId, String content);
+    boolean reply(long userId, String formId, ReplyBean replyBean);
 
-    Page<Lostfound> getLostFoundByContent(int pn,String content);
+    Page<Lostfound> getLostFoundByContent(int pn, String content);
 
 }

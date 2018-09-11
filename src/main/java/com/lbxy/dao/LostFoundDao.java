@@ -27,8 +27,12 @@ public class LostFoundDao {
         return Lostfound.DAO.paginate(pn, PageConst.PAGE_SIZE, "select f.*,u.username", "from lostfound f inner join user u on f.userId = u.id where f.pId is null and f.status = ? order by f.postDate desc", CommonStatus.NORMAL);
     }
 
-    public List<Lostfound> getReplyByPId(int pid) {
+    public List<Lostfound> getReplyByPId(long pid) {
         return Lostfound.DAO.find("select f.*,u.username from lostfound f inner join user u on f.userId = u.id where f.pId = ? and f.status = ? order by f.postDate asc", pid, CommonStatus.NORMAL);
+    }
+
+    public Lostfound getById(long id) {
+        return Lostfound.DAO.findById(id);
     }
 
     public Page<Lostfound> findLostFoundByContent (int pn,String content){

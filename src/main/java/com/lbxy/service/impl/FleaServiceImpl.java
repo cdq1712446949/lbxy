@@ -18,8 +18,11 @@ import com.lbxy.service.FleaService;
 import com.lbxy.weixin.utils.WeixinUtil;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 @Service("fleaService")
@@ -93,17 +96,62 @@ public class FleaServiceImpl implements FleaService {
     }
 
     @Override
-    public boolean reply(long userId, ReplyBean replyBean) {
-        //TODO 回复待完成， 微信要求Openid和formId一一对应，之后考虑采用采集formId的形式或者使用短信
-//        User currentUser = userDao.findById(userId);
-//        User toUser = userDao.findById(replyBean.getToUserId());
+    public JSONObject getMainById(long id) {
 
-//        WeixinUtil.sendMessage(toUser.getOpenId(), replyBean.getFormId(), replyBean.getUrl(), currentUser.getUsername(), replyBean.getContent(), "");
-//
-//        if (Objects.nonNull(replyBean.getpUserId())) {
-//            User pUser = userDao.findById(replyBean.getpUserId());
-//             WeixinUtil.sendMessage(pUser.getOpenId(), replyBean.getFormId(), replyBean.getUrl(), currentUser.getUsername(), replyBean.getContent(), "");
-//        }
+        Flea page = fleaDao.getById(id);
+        JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(page));
+
+        //将用户信息放入结果集中
+        User userInMain = userDao.findById(jsonObject.getIntValue("userId"));
+        jsonObject.put("username", userInMain.getUsername());
+        jsonObject.put("userId", userInMain.getId());
+        jsonObject.put("avatarUrl", userInMain.getAvatarUrl());
+
+        //将每一条回复放入结果集
+        List<Flea> reply = fleaDao.getReplyByPId(jsonObject.getIntValue("id"));
+        JSONArray replyArray = JSON.parseArray(JSON.toJSONString(reply));
+        for (int i1 = 0; i1 < replyArray.size(); i1++) {
+            // 将回复中的被回复者的username放入结果集
+            JSONObject replyObject = replyArray.getJSONObject(i1);
+            User userInReply = userDao.findById(replyObject.getIntValue("userId"));
+            replyObject.put("username", userInReply.getUsername());
+            replyObject.put("userId", userInReply.getId());
+        }
+
+        jsonObject.put("reply", replyArray);
+
+        // 将每一条的图片放入结果集
+        List<Image> images = imageDao.getImagesByContentIdAndType(jsonObject.getIntValue("id"), ImageType.FLEA);
+        jsonObject.put("images", images);
+        return jsonObject;
+    }
+
+    @Override
+    public boolean reply(long userId, String formId, ReplyBean replyBean) {
+        User currentUser = userDao.findById(userId);
+        User toUser = userDao.findById(replyBean.getToUserId());
+        Flea currentFlea = fleaDao.getById(replyBean.getpId());
+
+        WeixinUtil.sendMessage(toUser.getOpenId(),
+                formId,
+                "",
+                "跳蚤市场",
+                currentFlea.getContent(),
+                currentUser.getUsername(),
+                replyBean.getContent(),
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.CHINA)));
+
+        if (Objects.nonNull(replyBean.getpUserId())) {
+            User pUser = userDao.findById(replyBean.getpUserId());
+            WeixinUtil.sendMessage(pUser.getOpenId(),
+                    formId,
+                    "",
+                    "跳蚤市场",
+                    currentFlea.getContent(),
+                    currentUser.getUsername(),
+                    replyBean.getContent(),
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.CHINA)));
+        }
 
         Flea flea = new Flea();
         flea.setUserId(userId);
@@ -116,6 +164,6 @@ public class FleaServiceImpl implements FleaService {
 
     @Override
     public Page<Flea> getFleaByContent(int pn, String content) {
-        return fleaDao.findFleaByContent(pn,content);
+        return fleaDao.findFleaByContent(pn, content);
     }
 }

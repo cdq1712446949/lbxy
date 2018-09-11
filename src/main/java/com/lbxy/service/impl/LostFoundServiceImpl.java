@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.ImageType;
+import com.lbxy.common.request.ReplyBean;
 import com.lbxy.common.status.CommonStatus;
 import com.lbxy.core.annotation.Service;
 import com.lbxy.dao.ImageDao;
@@ -14,10 +15,15 @@ import com.lbxy.model.Image;
 import com.lbxy.model.Lostfound;
 import com.lbxy.model.User;
 import com.lbxy.service.LostFoundService;
+import com.lbxy.weixin.utils.WeixinUtil;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 @Service("lostFoundService")
 public class LostFoundServiceImpl implements LostFoundService {
@@ -88,21 +94,73 @@ public class LostFoundServiceImpl implements LostFoundService {
         return jsonObject;
     }
 
+    public JSONObject getMainById(long id) {
+
+        Lostfound page = lostFoundDao.getById(id);
+        JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(page));
+        //将用户信息放入结果集中
+        User userInMain = userDao.findById(jsonObject.getIntValue("userId"));
+        jsonObject.put("username", userInMain.getUsername());
+        jsonObject.put("userId", userInMain.getId());
+        jsonObject.put("avatarUrl", userInMain.getAvatarUrl());
+
+        //将每一条回复放入结果集
+        List<Lostfound> reply = lostFoundDao.getReplyByPId(jsonObject.getIntValue("id"));
+        JSONArray replyArray = JSON.parseArray(JSON.toJSONString(reply));
+        for (int i1 = 0; i1 < replyArray.size(); i1++) {
+            // 将回复中的被回复者的username放入结果集
+            JSONObject replyObject = replyArray.getJSONObject(i1);
+            User userInReply = userDao.findById(replyObject.getIntValue("userId"));
+            replyObject.put("username", userInReply.getUsername());
+            replyObject.put("userId", userInReply.getId());
+        }
+
+        jsonObject.put("reply", replyArray);
+
+        // 将每一条的图片放入结果集
+        List<Image> images = imageDao.getImagesByContentIdAndType(jsonObject.getIntValue("id"), ImageType.LOSTFOUND);
+        jsonObject.put("images", images);
+        return jsonObject;
+    }
+
     @Override
-    public boolean reply(long userId, Long pId, Long pUserId, Long toUserId, String formId, String content) {
-        //TODO 通知被回复用户
+    public boolean reply(long userId, String formId, ReplyBean replyBean) {
+        User currentUser = userDao.findById(userId);
+        User toUser = userDao.findById(replyBean.getToUserId());
+        Lostfound currentLostfound = lostFoundDao.getById(replyBean.getpId());
+
+        WeixinUtil.sendMessage(toUser.getOpenId(),
+                formId,
+                "",
+                "跳蚤市场",
+                currentLostfound.getContent(),
+                currentUser.getUsername(),
+                replyBean.getContent(),
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.CHINA)));
+
+        if (Objects.nonNull(replyBean.getpUserId())) {
+            User pUser = userDao.findById(replyBean.getpUserId());
+            WeixinUtil.sendMessage(pUser.getOpenId(),
+                    formId,
+                    "",
+                    "跳蚤市场",
+                    currentLostfound.getContent(),
+                    currentUser.getUsername(),
+                    replyBean.getContent(),
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.CHINA)));
+        }
 
         Lostfound lostfound = new Lostfound();
         lostfound.setUserId(userId);
-        lostfound.setPId(pId);
-        lostfound.setPUserId(pUserId);
-        lostfound.setContent(content);
+        lostfound.setPId(replyBean.getpId());
+        lostfound.setPUserId(replyBean.getpUserId());
+        lostfound.setContent(replyBean.getContent());
         lostfound.setPostDate(new Date());
         return lostFoundDao.save(lostfound);
     }
 
     @Override
     public Page<Lostfound> getLostFoundByContent(int pn, String content) {
-        return lostFoundDao.findLostFoundByContent(pn,content);
+        return lostFoundDao.findLostFoundByContent(pn, content);
     }
 }

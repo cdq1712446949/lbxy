@@ -29,8 +29,12 @@ public class TreeHoleDao {
         return Treehole.DAO.paginate(pn, PageConst.PAGE_SIZE, "select f.*,u.username", "from treehole f inner join user u on f.userId = u.id where f.pId is null and f.status = ? order by f.postDate desc", CommonStatus.NORMAL);
     }
 
-    public List<Treehole> getReplyByPId(int pid) {
+    public List<Treehole> getReplyByPId(long pid) {
         return Treehole.DAO.find("select f.*,u.username from treehole f inner join user u on f.userId = u.id where f.pId = ? and f.status = ? order by f.postDate asc", pid,CommonStatus.NORMAL);
+    }
+
+    public Treehole getById(long id) {
+        return Treehole.DAO.findById(id);
     }
 
     public Page<Treehole> findTreeHoleByContent(int pn,String content){
