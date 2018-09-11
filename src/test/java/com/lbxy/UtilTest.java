@@ -7,9 +7,13 @@ import com.lbxy.model.Order;
 import com.lbxy.service.OrderService;
 import com.lbxy.service.impl.OrderServiceImpl;
 import com.lbxy.weixin.utils.PayCacheUtil;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Ehcache;
+import net.sf.ehcache.Element;
 import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
+import java.util.Date;
 
 /**
  * @author lmy
@@ -49,8 +53,8 @@ class UtilTest {
     @Test
     void test2() {
         new EhCachePlugin().start();
-        PayCacheUtil.put("a","b");
-        System.out.println(PayCacheUtil.get("a","1"));
+        PayCacheUtil.put("a", "b");
+        System.out.println(PayCacheUtil.get("a", "1"));
     }
 
     @Test
@@ -63,5 +67,30 @@ class UtilTest {
         OrderService orderService = new OrderServiceImpl();
         Page<Order> orderPage = orderService.getUnCompletedAndWaitCompletedAndCompletedOrdersByPage(1);
         System.out.println(orderPage);
+    }
+
+    @Test
+    void test5() throws InterruptedException {
+        CacheManager ehCacheManager = new CacheManager();
+        ehCacheManager.addCache("qq");
+        for (String a :
+                ehCacheManager.getCacheNames()) {
+            System.out.println(a);
+        }
+        Ehcache cache = ehCacheManager.getCache("qq");
+        Element e = new Element("aa", "aa", 1, 1);
+        cache.put(e);
+        System.out.println(cache.get("aa").getObjectValue().toString());
+
+        Thread.sleep(1000);
+
+        System.out.println(cache.get("aa"));
+    }
+
+    @Test
+    void test6() throws InterruptedException {
+        System.out.println(new Date().getTime());
+        int a = Math.toIntExact(new Date().getTime() / 1000);
+        System.out.println(a);
     }
 }

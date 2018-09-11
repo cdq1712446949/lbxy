@@ -5,8 +5,7 @@
     <defaultCache
             maxElementsInMemory="10000"
             eternal="true"
-            timeToIdleSeconds="3600"
-            timeToLiveSeconds="3600"
+            timeToLiveSeconds="604800"
             overflowToDisk="true"
     />
 

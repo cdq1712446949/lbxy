@@ -39,14 +39,11 @@ public class WeixinUtil {
      * 向指定用户发送消息
      *
      * @param toUser 被发送用户的openid
-     * @param url 点击之后跳转的页面 例如：index？type=1
-     * @param header
-     * @param body
-     * @param footer
+     * @param url    点击之后跳转的页面 例如：index？type=1
      * @return
      */
-    public static boolean sendMessage(String toUser, String formId, String url, String header, String body, String footer) {
-        TemplateData templateData = new TemplateData(header, body, footer);
+    public static boolean sendMessage(String toUser, String formId, String url, String projectName, String content, String replyer, String replyContent, String replyTime) {
+        TemplateData templateData = new TemplateData(projectName, content, replyer, replyContent, replyTime);
         TemplateModel model = new TemplateModel(toUser, Properties.TEMPLATE_ID, formId, url, templateData);
         return sendTemplateMessage(model);
     }
