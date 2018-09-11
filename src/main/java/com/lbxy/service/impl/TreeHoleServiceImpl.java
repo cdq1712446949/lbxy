@@ -132,7 +132,7 @@ public class TreeHoleServiceImpl implements TreeHoleService {
 
         WeixinUtil.sendMessage(toUser.getOpenId(),
                 formId,
-                "",
+                String.format("/pages/community/detail/detail?id=%s&type=1", replyBean.getpId()),
                 "跳蚤市场",
                 currentTreehole.getContent(),
                 currentUser.getUsername(),
@@ -143,7 +143,7 @@ public class TreeHoleServiceImpl implements TreeHoleService {
             User pUser = userDao.findById(replyBean.getpUserId());
             WeixinUtil.sendMessage(pUser.getOpenId(),
                     formId,
-                    "",
+                    String.format("/pages/community/detail/detail?id=%s&type=1", replyBean.getpId()),
                     "跳蚤市场",
                     currentTreehole.getContent(),
                     currentUser.getUsername(),

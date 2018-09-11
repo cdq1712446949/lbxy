@@ -131,7 +131,7 @@ public class LostFoundServiceImpl implements LostFoundService {
 
         WeixinUtil.sendMessage(toUser.getOpenId(),
                 formId,
-                "",
+                String.format("/pages/community/detail/detail?id=%s&type=2", replyBean.getpId()),
                 "跳蚤市场",
                 currentLostfound.getContent(),
                 currentUser.getUsername(),
@@ -142,7 +142,7 @@ public class LostFoundServiceImpl implements LostFoundService {
             User pUser = userDao.findById(replyBean.getpUserId());
             WeixinUtil.sendMessage(pUser.getOpenId(),
                     formId,
-                    "",
+                    String.format("/pages/community/detail/detail?id=%s&type=2", replyBean.getpId()),
                     "跳蚤市场",
                     currentLostfound.getContent(),
                     currentUser.getUsername(),

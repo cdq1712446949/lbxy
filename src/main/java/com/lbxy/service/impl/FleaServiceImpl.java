@@ -134,7 +134,7 @@ public class FleaServiceImpl implements FleaService {
 
         WeixinUtil.sendMessage(toUser.getOpenId(),
                 formId,
-                "",
+                String.format("/pages/community/detail/detail?id=%s&type=0", replyBean.getpId()),
                 "跳蚤市场",
                 currentFlea.getContent(),
                 currentUser.getUsername(),
@@ -145,7 +145,7 @@ public class FleaServiceImpl implements FleaService {
             User pUser = userDao.findById(replyBean.getpUserId());
             WeixinUtil.sendMessage(pUser.getOpenId(),
                     formId,
-                    "",
+                    String.format("/pages/community/detail/detail?id=%s&type=0", replyBean.getpId()),
                     "跳蚤市场",
                     currentFlea.getContent(),
                     currentUser.getUsername(),
