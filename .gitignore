@@ -1,2 +1,11 @@
 # Created by .ignore support plugin (hsz.mobi)
 target
+/src/main/resources/globalConfig.properties
+.idea/dataSources.local.xml
+.idea/dataSources/
+.idea/inspectionProfiles/
+.idea/workspace.xml
+lbxy.log
+src/main/java/com/lbxy/manager/
+src/main/webapp/upload/IMG_0339.JPG
+src/test/resources/
