@@ -47,7 +47,7 @@ public class Config extends JFinalConfig {
         me.setDevMode(PropKit.getBoolean("devMode", false));
         me.setJsonFactory(new FastJsonFactory());
         me.setJsonDatePattern(PropKit.get("jFinalConfig.jsonDatePattern"));
-        me.setBaseUploadPath(PropKit.get("jFinalConfig.uploadPath"));
+//        me.setBaseUploadPath(PropKit.get("jFinalConfig.uploadPath"));
     }
 
     /**

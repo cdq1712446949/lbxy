@@ -48,5 +48,5 @@ public interface OrderService {
 
     boolean updateModel(Order order);
 
-    public boolean setPayBack(Order order);
+    boolean setPayBack(Order order);
 }
