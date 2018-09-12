@@ -182,7 +182,7 @@ a:hover {
 	border-style: none;
 	cursor: pointer;
 	font-family: "Microsoft YaHei", "微软雅黑", "sans-serif";
-	background: url('../../images/login/btn.jpg') 0px -1px no-repeat;
+	background: url('/img/login/btn.jpg') 0px -1px no-repeat;
 }
 
 .ui_input_btn01:hover {
@@ -193,7 +193,7 @@ a:hover {
 	border-style: none;
 	cursor: pointer;
 	font-family: "Microsoft YaHei", "微软雅黑", "sans-serif";
-	background: url('../../images/login/btn_hover.jpg') 0px 0px no-repeat;
+	background: url('/img/login/btn_hover.jpg') 0px 0px no-repeat;
 	color: #fff;
 }
 

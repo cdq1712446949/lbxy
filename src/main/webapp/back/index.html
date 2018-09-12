@@ -3,8 +3,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>乐帮校园后台系统</title>
-    <link href="style/authority/main_css.css" rel="stylesheet" type="text/css"/>
-    <link href="style/authority/zTreeStyle.css" rel="stylesheet" type="text/css">
+    <link href="/css/main_css.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/zTreeStyle.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="scripts/jquery/jquery-1.7.1.js"></script>
     <script type="text/javascript" src="scripts/zTree/jquery.ztree.core-3.2.js"></script>
     <script type="text/javascript" src="scripts/authority/commonAll.js"></script>
@@ -159,14 +159,6 @@
                 $(document).ajaxStart(onStart).ajaxSuccess(onStop);
                 // 异步加载"业务模块"下的菜单
                 loadMenu('YEWUMOKUAI', 'dleft_tab1');
-            } else if ('left_tab2' == tabid) {
-                $(document).ajaxStart(onStart).ajaxSuccess(onStop);
-                // 异步加载"系统管理"下的菜单
-                loadMenu('XITONGMOKUAI', 'dleft_tab1');
-            } else if ('left_tab3' == tabid) {
-                $(document).ajaxStart(onStart).ajaxSuccess(onStop);
-                // 异步加载"其他"下的菜单
-                loadMenu('QITAMOKUAI', 'dleft_tab1');
             }
         }
 
@@ -184,45 +176,6 @@
 
         function loadMenu(resourceType, treeObj) {
             data = [
-                {
-                    "accessPath": "",
-                    "checked": false,
-                    "delFlag": 0,
-                    "parentID": 1,
-                    "resourceCode": "",
-                    "resourceDesc": "",
-                    "resourceGrade": 2,
-                    "resourceID": 37,
-                    "resourceName": "畅聊社区",
-                    "resourceOrder": 0,
-                    "resourceType": ""
-                },
-                {
-                    "accessPath": "/back/userList",
-                    "checked": false,
-                    "delFlag": 0,
-                    "parentID": 1,
-                    "resourceCode": "",
-                    "resourceDesc": "",
-                    "resourceGrade": 2,
-                    "resourceID": 3,
-                    "resourceName": "用户",
-                    "resourceOrder": 0,
-                    "resourceType": ""
-                },
-                {
-                    "accessPath": "",
-                    "checked": false,
-                    "delFlag": 0,
-                    "parentID": 37,
-                    "resourceCode": "",
-                    "resourceDesc": "",
-                    "resourceGrade": 2,
-                    "resourceID": 19,
-                    "resourceName": "普通贴",
-                    "resourceOrder": 0,
-                    "resourceType": ""
-                },
                 {
                     "accessPath": "/back/treeHoleList",
                     "checked": false,
@@ -259,6 +212,19 @@
                     "resourceGrade": 2,
                     "resourceID": 20,
                     "resourceName": "失物招领",
+                    "resourceOrder": 0,
+                    "resourceType": ""
+                },
+                {
+                    "accessPath": "/back/userList",
+                    "checked": false,
+                    "delFlag": 0,
+                    "parentID": 1,
+                    "resourceCode": "",
+                    "resourceDesc": "",
+                    "resourceGrade": 2,
+                    "resourceID": 3,
+                    "resourceName": "用户",
                     "resourceOrder": 0,
                     "resourceType": ""
                 },
@@ -330,24 +296,24 @@
 <body onload="showTime()">
 <div id="top">
     <div id="top_logo">
-        <img alt="logo" src="images/common/logolbxy.png" width="274" height="49" style="vertical-align:middle;">
+        <img alt="logo" src="/img/common/logo.png" width="274" height="49" style="vertical-align:middle;">
     </div>
     <div id="top_links">
         <div id="top_op">
             <ul>
                 <li>
-                    <img alt="当前用户" src="images/common/user.jpg">：
+                    <img alt="当前用户" src="/img/common/user.jpg">：
                     <span>#(username)</span>
                 </li>
                 <li>
-                    <img alt="今天是" src="images/common/date.jpg">：
+                    <img alt="今天是" src="/img/common/date.jpg">：
                     <span id="day_day"></span>
                 </li>
             </ul>
         </div>
         <div id="top_close">
             <a href="javascript:void(0);" onclick="logout();" target="_parent">
-                <img alt="退出系统" title="退出系统" src="images/common/close.jpg"
+                <img alt="退出系统" title="退出系统" src="/img/common/close.jpg"
                      style="position: relative; top: 10px; left: 25px;">
             </a>
         </div>
@@ -357,7 +323,7 @@
 <div id="side">
     <div id="left_menu_cnt">
         <div id="nav_module">
-            <img src="images/common/module_1.png" width="210" height="58"/>
+            <img src="/img/common/module_1.png" width="210" height="58"/>
         </div>
         <div id="nav_resource">
             <ul id="dleft_tab1" class="ztree"></ul>
@@ -368,12 +334,12 @@
     $(function () {
         $('#TabPage2 li').click(function () {
             var index = $(this).index();
-            $(this).find('img').attr('src', 'images/common/' + (index + 1) + '_hover.jpg');
+            $(this).find('img').attr('src', '/img/common/' + (index + 1) + '_hover.jpg');
             $(this).css({background: '#fff'});
-            $('#nav_module').find('img').attr('src', 'images/common/module_' + (index + 1) + '.png');
+            $('#nav_module').find('img').attr('src', '/img/common/module_' + (index + 1) + '.png');
             $('#TabPage2 li').each(function (i, ele) {
                 if (i != index) {
-                    $(ele).find('img').attr('src', 'images/common/' + (i + 1) + '.jpg');
+                    $(ele).find('img').attr('src', '/img/common/' + (i + 1) + '.jpg');
                     $(ele).css({background: '#044599'});
                 }
             });
@@ -402,13 +368,13 @@
                 side.css({width: '60px'});
                 $('#top_nav').css({width: '100%', left: '60px', 'padding-left': '28px'});
                 $('#main').css({left: '60px'});
-                $("#show_hide_btn").find('img').attr('src', 'images/common/nav_show.png');
+                $("#show_hide_btn").find('img').attr('src', '/img/common/nav_show.png');
             } else {
                 left_menu_cnt.show(500, 'linear');
                 side.css({width: '280px'});
                 $('#top_nav').css({width: '77%', left: '304px', 'padding-left': '0px'});
                 $('#main').css({left: '280px'});
-                $("#show_hide_btn").find('img').attr('src', 'images/common/nav_hide.png');
+                $("#show_hide_btn").find('img').attr('src', '/img/common/nav_hide.png');
             }
         }
     }
