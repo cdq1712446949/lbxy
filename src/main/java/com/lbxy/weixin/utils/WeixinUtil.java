@@ -49,7 +49,7 @@ public class WeixinUtil {
     }
 
     public static AccessToken getAccessTokenByRequest() {
-        String uri = String.format(Api.ACCESS_TOKEN_URI, AuthKey.APP_ID, AuthKey.PAY_APP_KEY);
+        String uri = String.format(Api.ACCESS_TOKEN_URI, AuthKey.APP_ID, AuthKey.APP_SECRET);
         JSONObject object = NetWorkUtil.doGetUri(uri);
         return JSON.parseObject(object.toJSONString(), AccessToken.class);
     }
