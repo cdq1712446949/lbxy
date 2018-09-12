@@ -6,6 +6,8 @@ import com.jfinal.core.Controller;
 import com.lbxy.common.exception.BaseException;
 import com.lbxy.common.response.MessageVoUtil;
 
+import java.util.Objects;
+
 /**
  * @author lmy
  * @description ExceptionsInterceptor
@@ -22,7 +24,11 @@ public class ExceptionsInterceptor implements Interceptor {
             if (e instanceof BaseException) {
                 ((BaseException) e).handle(invController);
             } else {
-                invController.renderJson(MessageVoUtil.error(e.getCause().toString() + " ; " + e.getMessage()));
+                if (Objects.nonNull(e.getCause())) {
+                    invController.renderJson(MessageVoUtil.error(e.getCause().toString() + " ; " + e.getMessage()));
+                } else {
+                    invController.renderJson(MessageVoUtil.error(e.getMessage()));
+                }
             }
         }
     }

@@ -19,7 +19,7 @@ import com.lbxy.weixin.properties.Properties;
  */
 public class WeixinUtil {
     public static JSONObject login(String code) throws WeixinLoginException {
-        String reqUrl = String.format(Api.LOGIN, AuthKey.APP_ID, AuthKey.PAY_APP_KEY, code);
+        String reqUrl = String.format(Api.LOGIN, AuthKey.APP_ID, AuthKey.APP_SECRET, code);
         JSONObject result = NetWorkUtil.doGetUri(reqUrl);
         if (result.containsKey("errcode")) {
             throw new WeixinLoginException(result.getString("errcode"));

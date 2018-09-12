@@ -159,6 +159,14 @@
                 $(document).ajaxStart(onStart).ajaxSuccess(onStop);
                 // 异步加载"业务模块"下的菜单
                 loadMenu('YEWUMOKUAI', 'dleft_tab1');
+            } else if ('left_tab2' == tabid) {
+                $(document).ajaxStart(onStart).ajaxSuccess(onStop);
+                // 异步加载"系统管理"下的菜单
+                loadMenu('XITONGMOKUAI', 'dleft_tab1');
+            } else if ('left_tab3' == tabid) {
+                $(document).ajaxStart(onStart).ajaxSuccess(onStop);
+                // 异步加载"其他"下的菜单
+                loadMenu('QITAMOKUAI', 'dleft_tab1');
             }
         }
 
