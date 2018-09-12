@@ -39,7 +39,7 @@
                     <form action="/back/searchFlea?pn=1" method="post">
                         <div id="box_center">
                             内容&nbsp;&nbsp;<input type="text" name="content" class="ui_input_txt02"/>
-                            <button id="search_btn" type="submit" class="ui_input_btn01"  >查询</button>
+                            <button id="search_btn" type="submit" class="ui_input_btn02"  >查询</button>
                             <div>#(error_search)</div>
                         </div>
                         <div id="box_bottom">
@@ -96,10 +96,10 @@
                 <div class="ui_frt">
                     <!--    如果是第一页，则只显示下一页、尾页 -->
 
-                    <a href="/back/fleaList?pn=1" class="ui_input_btn01">首页</a>
-                    <a href="/back/fleaList?pn=#(fleaPage.pageNumber-1)" class="ui_input_btn01">上一页</a>
-                    <a href="/back/fleaList?pn=#(fleaPage.pageNumber+1)" class="ui_input_btn01">下一页</a>
-                    <a href="/back/fleaList?pn=#(fleaPage.totalPage)" class="ui_input_btn01">尾页</a>
+                    <a href="/back/fleaList?pn=1" class="ui_input_btn02">首页</a>
+                    <a href="/back/fleaList?pn=#(fleaPage.pageNumber-1)" class="ui_input_btn02">上一页</a>
+                    <a href="/back/fleaList?pn=#(fleaPage.pageNumber+1)" class="ui_input_btn02">下一页</a>
+                    <a href="/back/fleaList?pn=#(fleaPage.totalPage)" class="ui_input_btn02">尾页</a>
 
                 </div>
             </div>

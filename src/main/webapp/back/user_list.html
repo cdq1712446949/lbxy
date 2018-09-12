@@ -56,7 +56,7 @@
                 <form action="/back/search" method="post">
                     <div id="box_center">
                         手机号&nbsp;&nbsp;<input type="number" name="phoneNumber" class="ui_input_txt02"/>
-                        <button id="search_btn" type="submit" class="ui_input_btn01">查询</button>
+                        <button id="search_btn" type="submit" class="ui_input_btn02">查询</button>
                         <div>#(error_search)</div>
                     </div>
                     <div id="box_bottom">
@@ -110,7 +110,7 @@
                         <a href="/upload/stuNoPic?id=#(x.id)" target="_blank">查看照片</a>
                     </td>
                     <td>
-                        <button class="ui_input_btn01" onclick="ChangeMoney('#(x.id)')">余额修改</button>
+                        <button class="ui_input_btn02" onclick="ChangeMoney('#(x.id)')">余额修改</button>
                     </td>
                     <td>
                         <a href="/back/throughAuthencation?id=#(x.id)&status=2"> #if(x.status==1)
@@ -141,10 +141,10 @@
             <div class="ui_frt">
                 <!--    如果是第一页，则只显示下一页、尾页 -->
 
-                <a href="/back/userList?pn=1" class="ui_input_btn01">首页</a>
-                <a href="/back/userList?pn=#(data.pageNumber-1)" class="ui_input_btn01">上一页</a>
-                <a href="/back/userList?pn=#(data.pageNumber+1)" class="ui_input_btn01">下一页</a>
-                <a href="/back/userList?pn=#(data.totalPage)" class="ui_input_btn01">尾页</a>
+                <a href="/back/userList?pn=1" class="ui_input_btn02">首页</a>
+                <a href="/back/userList?pn=#(data.pageNumber-1)" class="ui_input_btn02">上一页</a>
+                <a href="/back/userList?pn=#(data.pageNumber+1)" class="ui_input_btn02">下一页</a>
+                <a href="/back/userList?pn=#(data.totalPage)" class="ui_input_btn02">尾页</a>
 
             </div>
         </div>
