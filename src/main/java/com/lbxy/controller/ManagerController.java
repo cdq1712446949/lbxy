@@ -328,11 +328,6 @@ public class ManagerController extends BaseController {
         }
     }
 
-
-    public void test() {
-        render("TestEdit.html");
-    }
-
     public void setActive(int id) {
         cancelNowActive();
         Notification notification = new Notification();

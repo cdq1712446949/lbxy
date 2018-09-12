@@ -37,7 +37,7 @@ public class TreeHoleDao {
     }
 
     public Page<Treehole> findTreeHoleByContent(int pn,String content){
-        return Treehole.DAO.paginate(pn,10,"select *","from TreeHole where content like '%"+content+"%'");
+        return Treehole.DAO.paginate(pn,10,"select *","from treehole where content like '%"+content+"%'");
     }
 
 }

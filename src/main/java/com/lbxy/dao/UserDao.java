@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 public class UserDao {
 
     public BigDecimal getUserBalance(long userId) {
-        return Db.queryBigDecimal("select balance from User where id=?", userId);
+        return Db.queryBigDecimal("select balance from user where id=?", userId);
     }
 
     public int updateUserBalance(long userId, BigDecimal money) {
@@ -28,7 +28,7 @@ public class UserDao {
     }
 
     public User findByOpenid(String openid) {
-        return User.DAO.findFirst("select * from User where openid = ?", openid);
+        return User.DAO.findFirst("select * from user where openid = ?", openid);
     }
 
     public User findById(long id) {
@@ -36,11 +36,11 @@ public class UserDao {
     }
 
     public Page<User> findUsersByPn(int pn){
-        return User.DAO.paginate(pn,10,"select *", " from User");
+        return User.DAO.paginate(pn,10,"select *", " from user");
     }
 
     public Page<User> findByPhone(String phoneNumber){
-        return User.DAO.paginate(1, 1, "select * ", "from User where phoneNumber=?", phoneNumber);
+        return User.DAO.paginate(1, 1, "select * ", "from user where phoneNumber=?", phoneNumber);
     }
 
     public boolean update(User user) {
@@ -52,6 +52,6 @@ public class UserDao {
     }
 
     public int getTotalNumber() {
-        return Db.queryInt("select count(*) from User");
+        return Db.queryInt("select count(*) from user");
     }
 }

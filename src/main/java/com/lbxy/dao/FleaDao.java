@@ -12,7 +12,7 @@ import java.util.List;
 public class FleaDao {
 
     public Page<Flea> findFleaByPn(int pn) {
-        return Flea.DAO.paginate(pn, PageConst.PAGE_SIZE, "select *", "from Flea");
+        return Flea.DAO.paginate(pn, PageConst.PAGE_SIZE, "select *", "from flea");
     }
 
     public boolean update(Flea flea) {
@@ -36,7 +36,7 @@ public class FleaDao {
     }
 
     public Page<Flea> findFleaByContent(int pn,String content){
-        return Flea.DAO.paginate(pn,10,"select *","from Flea where content like '%"+content+"%'");
+        return Flea.DAO.paginate(pn,10,"select *","from flea where content like '%"+content+"%'");
     }
 
 }

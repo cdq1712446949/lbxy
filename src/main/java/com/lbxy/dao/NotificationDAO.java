@@ -18,7 +18,7 @@ public class NotificationDAO {
     }
 
     public Page<Notification> getAllNotificationByPn(int pn){
-        return Notification.dao.paginate(pn,10,"select *","from Notification");
+        return Notification.dao.paginate(pn,10,"select *","from notification");
     }
 
     public boolean notificationUpdate(Notification notification){

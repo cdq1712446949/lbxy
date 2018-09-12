@@ -12,7 +12,7 @@ import java.util.List;
 public class LostFoundDao {
 
     public Page<Lostfound> findLostFoundByPn(int pn) {
-        return Lostfound.DAO.paginate(pn, 10, "select *", "from LostFound");
+        return Lostfound.DAO.paginate(pn, 10, "select *", "from lostfound");
     }
 
     public boolean update(Lostfound lostFound) {
@@ -36,7 +36,7 @@ public class LostFoundDao {
     }
 
     public Page<Lostfound> findLostFoundByContent (int pn,String content){
-        return Lostfound.DAO.paginate(pn,10,"select *","from Lostfound where content like '%"+content+"%'");
+        return Lostfound.DAO.paginate(pn,10,"select *","from lostfound where content like '%"+content+"%'");
     }
 
 }
