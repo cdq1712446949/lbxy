@@ -30,7 +30,7 @@ public class BillDao {
     }
 
     public Page<Bill> findBillByPhoneNumber(int pn, String phoneNumber) {
-        return Bill.DAO.paginate(pn, 10, "select b.*", "from bill b inner join User u on b.userId=u.id where u.phoneNumber = ?", phoneNumber);
+        return Bill.DAO.paginate(pn, 10, "select b.*", "from bill b inner join user u on b.userId=u.id where u.phoneNumber = ?", phoneNumber);
     }
 
     public boolean save(Bill bill) {

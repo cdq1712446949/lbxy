@@ -12,7 +12,7 @@ import java.util.List;
 public class TreeHoleDao {
 
     public Page<Treehole> findAllTreeHole(int pn) {
-        return Treehole.DAO.paginate(pn, 10, "select *", "from TreeHole");
+        return Treehole.DAO.paginate(pn, 10, "select *", "from treehole");
     }
 
     public boolean update(Treehole treeHole) {

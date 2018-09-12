@@ -8,6 +8,7 @@ import com.lbxy.core.utils.LoggerUtil;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 /**
  * @author lmy
@@ -17,7 +18,7 @@ import java.lang.reflect.Field;
 public class InjectionInterceptor implements Interceptor {
     @Override
     public void intercept(Invocation inv) {
-        LoggerUtil.info(getClass(), "开始注入controller中的业务类.....");
+        LoggerUtil.info(getClass(), inv.getControllerKey()+"/"+inv.getActionKey()+":"+ Arrays.toString(inv.getArgs()));
 
         Controller controller = inv.getController();
         Field[] fields = controller.getClass().getDeclaredFields();

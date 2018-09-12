@@ -34,11 +34,11 @@ public class OrderDao {
         /*
         .createdDate,o.reward,o.userName,o.userPhoneNumber,o.fromAddress,o.toAddress,o.remark,o.detail
          */
-        return Order.DAO.paginate(pn, PageConst.PAGE_SIZE, "select u.username,u.avatarUrl,o.*", " from `order` o inner join User u on o.userId = u.id where o.status=?", OrderStatus.UN_COMPLETED);
+        return Order.DAO.paginate(pn, PageConst.PAGE_SIZE, "select u.username,u.avatarUrl,o.*", " from `order` o inner join user u on o.userId = u.id where o.status=?", OrderStatus.UN_COMPLETED);
     }
 
     public Page<Order> findByPn(int pn) {
-        return Order.DAO.paginate(pn, 10, "select *", " from `Order`");
+        return Order.DAO.paginate(pn, 10, "select *", " from `order`");
     }
 
     public Order findById(long orderId) {
