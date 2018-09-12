@@ -36,6 +36,7 @@ public class OrderCronTask implements Runnable {
                 LocalTime availableLocalTime = availableLocalDateTime.toLocalTime();
 
                 if (order.getStatus() == OrderStatus.UN_COMPLETED) {
+                    //检查未被接单的订单，如果已经过期则设置订单状态为已取消
                     if (availableLocalDate.isBefore(LocalDate.now())) {
                         // 已经过期
                         orderService.cancelOrder(order.getId());
@@ -46,6 +47,7 @@ public class OrderCronTask implements Runnable {
                         orderService.cancelOrder(order.getId());
                     }
                 } else if (order.getStatus() == OrderStatus.WAIT_COMPLETE) {
+                    //如果接单之后超时没有送到，用户可以取消订单
                     if (availableLocalDate.isBefore(LocalDate.now())) {
                         // 已经过期
                         orderService.setPayBack(order);
@@ -56,17 +58,18 @@ public class OrderCronTask implements Runnable {
                          orderService.setPayBack(order);
                     }
                 } else if (order.getStatus() == OrderStatus.COMPLETED) {
-                    Date completedDate = order.getCompletedDate();
-                    LocalDateTime completedLocalDateTime = LocalDateTime.ofInstant(completedDate.toInstant(), ZoneId.systemDefault());
-                    LocalDate completedLocalDate = completedLocalDateTime.toLocalDate();
-                    if (completedLocalDate.plusDays(3).isBefore(LocalDate.now())) {
-                        //如果订单完成三天后还没有结算，那么系统自动结算
-                        try {
-                            orderService.settleOrder(order.getId());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    // 已完成的订单过期未结算将自动结算
+//                    Date completedDate = order.getCompletedDate();
+//                    LocalDateTime completedLocalDateTime = LocalDateTime.ofInstant(completedDate.toInstant(), ZoneId.systemDefault());
+//                    LocalDate completedLocalDate = completedLocalDateTime.toLocalDate();
+//                    if (completedLocalDate.plusDays(3).isBefore(LocalDate.now())) {
+//                        //如果订单完成三天后还没有结算，那么系统自动结算
+//                        try {
+//                            orderService.settleOrder(order.getId());
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
                 }
 
             });
