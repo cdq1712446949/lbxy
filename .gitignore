@@ -9,3 +9,4 @@ lbxy.log
 src/main/java/com/lbxy/manager/
 src/main/webapp/upload/IMG_0339.JPG
 src/test/resources/
+/src/main/resources/log4j.properties

@@ -1,7 +1,5 @@
 package com.lbxy.common.request;
 
-import com.sun.istack.internal.Nullable;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -14,7 +12,7 @@ public class ReplyBean {
     @NotBlank(message = "回复的内同不能为空")
     private String content;
 
-    @Nullable
+
     private Long pUserId;
 
     @NotNull(message = "被回复的帖子id不能为空")
@@ -22,17 +20,6 @@ public class ReplyBean {
 
     @NotNull(message = "要通知的用户id不能为空")
     private Long toUserId;
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    @Nullable
-    private String url;
 
     public String getContent() {
         return content;
