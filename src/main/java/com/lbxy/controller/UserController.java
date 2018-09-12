@@ -80,4 +80,9 @@ public class UserController extends BaseController {
         Page<Bill> bills = billService.getAllByUserId(pn, userId);
         renderJson(MessageVoUtil.success("请求成功", bills));
     }
+
+    @Before(GET.class)
+    public void getUserInfo(int userId) {
+        renderJson(MessageVoUtil.success(userService.findById(userId)));
+    }
 }
