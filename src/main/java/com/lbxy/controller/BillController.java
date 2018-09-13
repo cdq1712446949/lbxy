@@ -1,11 +1,13 @@
 package com.lbxy.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.jfinal.aop.Before;
+import com.jfinal.ext.interceptor.GET;
+import com.jfinal.ext.interceptor.POST;
 import com.lbxy.common.response.MessageVo;
 import com.lbxy.common.response.ResponseStatus;
 import com.lbxy.model.Bill;
 import com.lbxy.service.BillService;
-import com.lbxy.service.impl.BillServiceImpl;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -16,11 +18,13 @@ public class BillController extends BaseController {
     @Resource
     private BillService billService;
 
+    @Before(GET.class)
     public void index() {
         List<Bill> list = billService.getBill(getJsonParamToInt("userId"));
         renderJson(new MessageVo().setStatus(ResponseStatus.success).setMessage("获取成功").setData(list));
     }
 
+    @Before({POST.class})
     public void addBill() {
         JSONObject param = new JSONObject();
         param = getJsonParam();

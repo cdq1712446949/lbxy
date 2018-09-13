@@ -32,9 +32,6 @@ public class ManagerController extends BaseController {
     private FleaService fleaService;
 
     @Resource
-    private NoticeService noticeService;
-
-    @Resource
     private LostFoundService lostFoundService;
 
     @Resource

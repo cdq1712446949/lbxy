@@ -1,6 +1,8 @@
 package com.lbxy.controller;
 
 import com.jfinal.aop.Before;
+import com.jfinal.ext.interceptor.GET;
+import com.jfinal.ext.interceptor.POST;
 import com.jfinal.upload.UploadFile;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.core.interceptors.WeixinLoginInterceptor;
@@ -21,6 +23,7 @@ public class ImageController extends BaseController {
     @Resource
     private ImageService imageService;
 
+    @Before(GET.class)
     public void index(int id) {
         User user = userService.findById(id);
         String url = user.get("idNoPic");
@@ -28,6 +31,7 @@ public class ImageController extends BaseController {
         render("/back/image_show.html");
     }
 
+    @Before(GET.class)
     public void stuNoPice(int id) {
         User user = userService.findById(id);
         String url = user.get("stuNoPic");
@@ -35,7 +39,7 @@ public class ImageController extends BaseController {
         render("/back/image_show.html");
     }
 
-    @Before(WeixinLoginInterceptor.class)
+    @Before({WeixinLoginInterceptor.class, POST.class})
     public void image(UploadFile img, @NotBlank @Range(min = 0) long id, @NotBlank @Range(min = 0, max = 2) int type) {
         //TODO 部署之后还要调试上传路径
         String imagePath = img.getUploadPath() + File.separatorChar + img.getFileName();
@@ -47,7 +51,7 @@ public class ImageController extends BaseController {
         }
     }
 
-    @Before(WeixinLoginInterceptor.class)
+    @Before({WeixinLoginInterceptor.class, GET.class})
     public void indexSwiper() {
         renderJson(MessageVoUtil.success("请求成功", imageService.getIndexImages()));
     }

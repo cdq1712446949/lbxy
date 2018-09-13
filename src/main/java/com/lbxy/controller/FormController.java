@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.ext.interceptor.POST;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.core.interceptors.WeixinLoginInterceptor;
 import com.lbxy.service.FormService;
@@ -21,6 +22,7 @@ public class FormController extends Controller {
     @Resource
     private FormService formService;
 
+    @Before(POST.class)
     public void post(long userId, String formIdsJsonString) {
         JSONObject formIds = JSON.parseObject(formIdsJsonString);
         formService.put(userId, formIds);

@@ -3,6 +3,8 @@ package com.lbxy.controller;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.core.paragetter.Para;
+import com.jfinal.ext.interceptor.GET;
+import com.jfinal.ext.interceptor.POST;
 import com.lbxy.common.request.PostBean;
 import com.lbxy.common.request.ReplyBean;
 import com.lbxy.common.response.MessageVoUtil;
@@ -25,15 +27,18 @@ public class TreeholeController extends Controller {
     @Resource
     private FormService formService;
 
+    @Before(POST.class)
     public void post(@ValidParam @Para("") PostBean postBean, long userId) {
         long treeholeId = treeHoleService.save(postBean.getContent(), userId);
         renderJson(MessageVoUtil.success("发布成功", treeholeId));
     }
 
+    @Before(GET.class)
     public void index(int pn) {
         renderJson(MessageVoUtil.success("请求成功", treeHoleService.getMainByPage(pn)));
     }
 
+    @Before(POST.class)
     public void reply(@ValidParam @Para("") ReplyBean replyBean, long userId) throws Exception {
         String formId = formService.get(userId);
         boolean result = treeHoleService.reply(userId, formId, replyBean);
@@ -44,6 +49,7 @@ public class TreeholeController extends Controller {
         }
     }
 
+    @Before(GET.class)
     public void id(long id) {
         renderJson(MessageVoUtil.success("请求成功", treeHoleService.getMainById(id)));
     }

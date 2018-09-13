@@ -2,6 +2,7 @@ package com.lbxy.controller;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.ext.interceptor.GET;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.core.interceptors.WeixinLoginInterceptor;
 import com.lbxy.service.NotificationService;
@@ -19,6 +20,7 @@ public class NotificationController extends Controller {
     @Resource
     private NotificationService notificationService;
 
+    @Before(GET.class)
     public void index() {
         renderJson(MessageVoUtil.success("获取成功", notificationService.getActiveNotification()));
     }

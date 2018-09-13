@@ -3,6 +3,8 @@ package com.lbxy.controller;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.core.paragetter.Para;
+import com.jfinal.ext.interceptor.GET;
+import com.jfinal.ext.interceptor.POST;
 import com.lbxy.common.request.PostBean;
 import com.lbxy.common.request.ReplyBean;
 import com.lbxy.common.response.MessageVoUtil;
@@ -25,15 +27,18 @@ public class LostfoundController extends Controller {
     @Resource
     private FormService formService;
 
+    @Before(POST.class)
     public void post(@ValidParam @Para("") PostBean postBean, long userId) {
         long lostFoundId = lostFoundService.save(postBean.getContent(), userId);
         renderJson(MessageVoUtil.success("发布成功", lostFoundId));
     }
 
+    @Before(GET.class)
     public void index(int pn) {
         renderJson(MessageVoUtil.success("请求成功", lostFoundService.getMainByPage(pn)));
     }
 
+    @Before(POST.class)
     public void reply(@ValidParam @Para("") ReplyBean replyBean, long userId) throws Exception {
         String formId = formService.get(userId);
         boolean result = lostFoundService.reply(userId, formId, replyBean);
@@ -44,6 +49,7 @@ public class LostfoundController extends Controller {
         }
     }
 
+    @Before(GET.class)
     public void id(long id) {
         renderJson(MessageVoUtil.success("请求成功", lostFoundService.getMainById(id)));
     }
