@@ -11,7 +11,7 @@ website:	http://code.google.com/p/jquerytree/
 	padding: 0;
 	margin: 0;
 	font-size: 14px;
-	font-family: "¿¬Ìå", Verdana, Arial, Helvetica, AppleGothic, sans-serif;
+	font-family: "ï¿½ï¿½ï¿½ï¿½", Verdana, Arial, Helvetica, AppleGothic, sans-serif;
 }
 
 .ztree {
@@ -36,7 +36,7 @@ website:	http://code.google.com/p/jquerytree/
 }
 
 .ztree li ul.line {
-	background: url(../../images/authority/line_conn.gif) 0 0 repeat-y;
+	background: url(/img/authority/line_conn.gif) 0 0 repeat-y;
 }
 
 .ztree li a {
@@ -312,7 +312,7 @@ website:	http://code.google.com/p/jquerytree/
 
 .ztree li span.button.ico_loading {
 	margin-right: 2px;
-	background: url(../../images/authority/loading.gif) no-repeat scroll 0 0
+	background: url(/img/authority/loading.gif) no-repeat scroll 0 0
 		transparent;
 	vertical-align: top;
 	*vertical-align: middle
@@ -336,8 +336,8 @@ span.tmpzTreeMove_arrow {
 	background-repeat: no-repeat;
 	background-attachment: scroll;
 	background-position: -110px -80px;
-	background-image: url("../../images/authority/zTreeStandard.png");
-	*background-image: url("../../images/authority/zTreeStandard.gif")
+	background-image: url("/img/authority/zTreeStandard.png");
+	*background-image: url("/img/authority/zTreeStandard.gif")
 }
 
 ul.ztree.zTreeDragUL {
