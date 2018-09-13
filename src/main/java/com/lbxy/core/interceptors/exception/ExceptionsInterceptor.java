@@ -21,7 +21,6 @@ public class ExceptionsInterceptor implements Interceptor {
         try {
             inv.invoke();
         } catch (Exception e) {
-            e.printStackTrace();
             LoggerUtil.error(getClass(), e.getMessage(), e);
             if (e instanceof BaseException) {
                 ((BaseException) e).handle(invController);

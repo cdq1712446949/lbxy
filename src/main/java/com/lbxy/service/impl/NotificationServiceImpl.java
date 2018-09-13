@@ -35,29 +35,31 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     @Before(Tx.class)
-    public boolean notificationEdit(int id,String content) {
-        Notification notification=new Notification();
-        notification.set("id" ,id);
-        notification.set("content",content);
+    public boolean notificationEdit(int id, String content) {
+        Notification notification = new Notification();
+        notification.set("id", id);
+        notification.set("content", content);
         return notificationDAO.notificationUpdate(notification);
     }
 
     @Override
     @Before(Tx.class)
-    public boolean notificationSave(String content,int active) {
-        Notification notification=new Notification();
-        notification.set("content",content);
-        notification.set("createdDate",new Date());
-        notification.set("active",active);
+    public boolean notificationSave(String content, int active) {
+        this.cancelActive();
+
+        Notification notification = new Notification();
+        notification.set("content", content);
+        notification.set("createdDate", new Date());
+        notification.set("active", active);
         return notificationDAO.notificationSave(notification);
     }
 
     @Override
     @Before(Tx.class)
     public boolean cancelActive(int id) {
-        Notification notification=new Notification();
-        notification.set("id",id);
-        notification.set("active",NotificationType.INACTIVE);
+        Notification notification = new Notification();
+        notification.set("id", id);
+        notification.set("active", NotificationType.INACTIVE);
         return notificationDAO.notificationUpdate(notification);
     }
 
@@ -68,9 +70,16 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     @Before(Tx.class)
-    public boolean notificationUpData(Notification notification) {
+    public boolean notificationUpdate(Notification notification) {
+        this.cancelActive();
         return notificationDAO.notificationUpdate(notification);
     }
 
-
+    private void cancelActive() {
+        Notification activeNotification = this.findNotificationByActive();
+        if (activeNotification != null) {
+            activeNotification.setActive(NotificationType.INACTIVE);
+            notificationDAO.notificationUpdate(activeNotification);
+        }
+    }
 }

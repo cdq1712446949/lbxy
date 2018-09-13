@@ -3,11 +3,12 @@ package com.lbxy.controller;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.ehcache.CacheInterceptor;
+import com.jfinal.plugin.ehcache.CacheKit;
 import com.jfinal.plugin.ehcache.CacheName;
 import com.jfinal.plugin.ehcache.EvictInterceptor;
-import com.lbxy.common.NotificationType;
-import com.jfinal.plugin.ehcache.CacheKit;
 import com.lbxy.common.CacheNameConst;
+import com.lbxy.common.NotificationType;
 import com.lbxy.core.interceptors.ManagerLoginInterceptor;
 import com.lbxy.model.*;
 import com.lbxy.service.*;
@@ -49,25 +50,18 @@ public class ManagerController extends BaseController {
         render("login.html");
     }
 
-    public void userList() {
-        int pn = 1;
-        try {
-            pn = getParaToInt("pn");
-        } catch (Exception e) {
-            System.out.println(" pageNumber is invalid");
-        }
+    public void userList(int pn) {
         Page<User> users = userService.getAllUsers(pn);
         setAttr("data", users);
         render("user_list.html");
     }
 
-    public void search() {
-        String phoneNum = getPara("phoneNumber");
-        if (StringUtils.isBlank(phoneNum)) {
+    public void search(String phoneNumber) {
+        if (StringUtils.isBlank(phoneNumber)) {
             Page<User> users = userService.getAllUsers(1);
             setAttr("data", users);
         } else {
-            Page<User> user = userService.findByPhone(phoneNum);
+            Page<User> user = userService.findByPhone(phoneNumber);
             if (user.getList().size() == 0) {
                 System.out.println("改手机号不存在");
                 setAttr("error_search", "该手机号不存在");
@@ -78,15 +72,10 @@ public class ManagerController extends BaseController {
         render("user_list.html");
     }
 
-    //查询树洞帖子
-    public void searchTreeHole() {
-
-    }
-
     //查询用户交易记录
     public void searchBill(String phoneNumber) {
         if (phoneNumber == null || phoneNumber.equals("")) {
-            billList();
+            redirect("./billList?pn=1");
         } else {
             setAttr("billPage", billService.getBillByPhoneNumber(1, phoneNumber));
             render("bill_list.html");
@@ -94,8 +83,8 @@ public class ManagerController extends BaseController {
     }
 
     public void searchTreehole(int pn, String content) {
-        if (content.equals("") || content == null) {
-            notificationList();
+        if (StringUtils.isBlank(content)) {
+            redirect("./notificationList?pn=1");
         } else {
             setAttr("treeHolePage", treeHoleService.getTreeHoleByContent(pn, content));
             render("treehole_list.html");
@@ -103,8 +92,8 @@ public class ManagerController extends BaseController {
     }
 
     public void searchFlea(int pn, String content) {
-        if (content.equals("") || content == null) {
-            fleaList();
+        if (StringUtils.isBlank(content)) {
+            redirect("./fleaList?pn=1");
         } else {
             setAttr("fleaPage", fleaService.getFleaByContent(pn, content));
             render("flea_list.html");
@@ -112,8 +101,8 @@ public class ManagerController extends BaseController {
     }
 
     public void searchLostFound(int pn, String content) {
-        if (content.equals("") || content == null) {
-            lostFoundList();
+        if (StringUtils.isBlank(content)) {
+            redirect("./lostFoundList?pn=1");
         } else {
             setAttr("lostFoundPage", lostFoundService.getLostFoundByContent(pn, content));
             render("lostFound_list.html");
@@ -138,145 +127,86 @@ public class ManagerController extends BaseController {
         }
     }
 
-    public void orderList() {
-        int pn = 1;
-        try {
-            pn = getParaToInt("pn");
-        } catch (Exception e) {
-            System.out.println(" pageNumber is invalid");
-        }
+    @Before({CacheInterceptor.class})
+    @CacheName("order")
+    public void orderList(int pn) {
         Page<Order> orderPage = orderService.getAllOrder(pn);
         setAttr("orderPage", orderPage);
         render("order_list.html");
     }
 
-    public void treeHoleList() {
-        int pn = 1;
-        try {
-            pn = getParaToInt(pn);
-        } catch (Exception e) {
-            System.out.println(" pageNumber is invalid");
-        }
+    @Before({CacheInterceptor.class})
+    @CacheName("treehole")
+    public void treeHoleList(int pn) {
         Page<Treehole> treeHolePage = treeHoleService.getAllTreeHole(pn);
         setAttr("treeHolePage", treeHolePage);
         render("treehole_list.html");
     }
 
-    public void fleaList() {
-        int pn = 1;
-        try {
-            pn = getParaToInt(pn);
-        } catch (Exception e) {
-            System.out.println(" pageNumber is invalid");
-        }
+    @Before({CacheInterceptor.class})
+    @CacheName("flea")
+    public void fleaList(int pn) {
         Page<Flea> fleaPage = fleaService.getAllFlea(pn);
         setAttr("fleaPage", fleaPage);
         render("flea_list.html");
     }
 
-    public void lostFoundList() {
-        int pn = 1;
-        try {
-            pn = getParaToInt(pn);
-        } catch (Exception e) {
-            System.out.println(" pageNumber is invalid");
-        }
+    @Before({CacheInterceptor.class})
+    @CacheName("lostfound")
+    public void lostFoundList(int pn) {
         Page<Lostfound> lostFoundPage = lostFoundService.getAllLostFound(pn);
         setAttr("lostFoundPage", lostFoundPage);
         render("lostfound_list.html");
     }
 
-    public int checkPn(int pn, int totalPage) {
-        if (pn >= totalPage) {
-            pn = totalPage;
-        } else if (pn <= 1) {
-            pn = 1;
-        }
-        return pn;
-    }
-
-    public void notificationList() {
-        String userName = "null";
-        if (getPara("userName") == null || getPara("userName").equals("")) {
-            System.out.println("判断username值为null");
-        } else {
-            userName = getPara("userName");
-        }
-        if (userName.equals("null")) {
-            int pn = 1;
-            int totalPage = 1;
-            try {
-                pn = getParaToInt("pn");
-                totalPage = getParaToInt("totalPage");
-                pn = checkPn(pn, totalPage);
-            } catch (Exception e) {
-                System.out.println(" pageNumber is invalid");
-            }
-            Page<Notification> noticePage = notificationService.getAllNotification(pn);
-            setAttr("noticePage", noticePage);
-        } else {
-            int pn = 1;
-            int totalPage = 1;
-            try {
-                pn = getParaToInt("pn");
-                totalPage = getParaToInt("totalPage");
-                pn = checkPn(pn, totalPage);
-            } catch (Exception e) {
-                System.out.println(" pageNumber is invalid");
-            }
-            Page<Notification> noticePage = notificationService.getAllNotification(pn);
-            setAttr("noticePage", noticePage);
-            setAttr("username", userName);
-        }
+    @Before({CacheInterceptor.class})
+    @CacheName("notification")
+    public void notificationList(int pn) {
+        Page<Notification> noticePage = notificationService.getAllNotification(pn);
+        setAttr("noticePage", noticePage);
         render("notice_list.html");
     }
 
-    public void billList() {
-        int pn = 1;
-        try {
-            pn = getParaToInt(pn);
-        } catch (Exception e) {
-            System.out.println(" pageNumber is invalid");
-        }
+    public void billList(int pn) {
         Page<Bill> billPage = billService.getAllBill(pn);
         setAttr("billPage", billPage);
         render("bill_list.html");
     }
 
-    public void deleteTreeHole() {
-        int id = getParaToInt("id");
+    @Before({EvictInterceptor.class})
+    @CacheName("treehole")
+    public void deleteTreeHole(int id) {
         boolean isDelete = treeHoleService.deleteTreeHole(id);
         if (isDelete) {
             setAttr("isDelete", "true");
-            treeHoleList();
         } else {
             setAttr("isDelete", "false");
-            treeHoleList();
         }
+        redirect("./treeHoleList?pn=1");
     }
 
-    public void deleteFlea() {
-        int id = getParaToInt("id");
+    @Before({EvictInterceptor.class})
+    @CacheName("flea")
+    public void deleteFlea(int id) {
         boolean isDelete = fleaService.deleteFlea(id);
         if (isDelete) {
             setAttr("isDelete", "true");
-            fleaList();
         } else {
             setAttr("isDelete", "false");
-            fleaList();
         }
+        redirect("./fleaList?pn=1");
     }
 
-    public void deleteLostFound() {
-        int id = getParaToInt("id");
+    @Before({EvictInterceptor.class})
+    @CacheName("lostfound")
+    public void deleteLostFound(int id) {
         boolean isDelete = lostFoundService.deleteLostFound(id);
         if (isDelete) {
             setAttr("isDelete", "true");
-            lostFoundList();
         } else {
             setAttr("isDelete", "false");
-            lostFoundList();
         }
+        redirect("./lostFoundList?pn=1");
     }
 
     @Before({EvictInterceptor.class})
@@ -285,35 +215,27 @@ public class ManagerController extends BaseController {
         boolean isEdit = notificationService.notificationEdit(id, content);
         if (isEdit) {
             setAttr("isEdit", "true");
-            notificationList();
         } else {
             setAttr("isEdit", "false");
-            notificationList();
         }
+        redirect("./notificationList?pn=1");
     }
 
     @Before({EvictInterceptor.class})
     @CacheName("notification")
     public void notificationSave(String content, int active) {
-        boolean isSave;
-        if (active == 1) {
-            cancelNowActive();
-            isSave = notificationService.notificationSave(content, active);
-        } else {
-            isSave = notificationService.notificationSave(content, active);
-        }
+        boolean isSave = notificationService.notificationSave(content, active);
         if (isSave) {
             setAttr("isSave", "true");
-            notificationList();
         } else {
             setAttr("isSave", "false");
-            notificationList();
         }
+        redirect("./notificationList?pn=1");
     }
 
     public void throughAuthencation(int id, int status) {
         userService.throughAuthentication(id, status);
-        userList();
+        redirect("./userList?pn=1");
     }
 
     public void changeMoney(int id, int money) {
@@ -321,37 +243,29 @@ public class ManagerController extends BaseController {
         user.set("id", id);
         user.set("balance", money);
         boolean i = userService.changeMoney(user);
-        if (i){
-            setAttr("isChange","true");
-            userList();
-        }else {
-            setAttr("isChange","false");
-            userList();
+        if (i) {
+            setAttr("isChange", "true");
+        } else {
+            setAttr("isChange", "false");
         }
+        redirect("./userList?pn=1");
     }
 
     @Before({EvictInterceptor.class})
     @CacheName("notification")
     public void setActive(int id) {
-        cancelNowActive();
         Notification notification = new Notification();
         notification.set("id", id);
         notification.set("active", NotificationType.ACTIVE);
-        boolean b = notificationService.notificationUpData(notification);
-        notificationList();
+        boolean b = notificationService.notificationUpdate(notification);
+        redirect("./notificationList?pn=1");
     }
 
     @Before({EvictInterceptor.class})
     @CacheName("notification")
-    public void cancelNowActive() {
-        Notification notification = notificationService.findNotificationByActive();
-        if (notification == null) {
-            System.out.println("当前并没有显示的公告");
-        } else {
-            int id = notification.getInt("id");
-            boolean b = notificationService.cancelActive(id);
-        }
-        notificationList();
+    public void cancelNowActive(int id) {
+        boolean b = notificationService.cancelActive(id);
+        redirect("./notificationList?pn=1");
     }
 
 }

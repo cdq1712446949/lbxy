@@ -123,7 +123,7 @@
                 }
             }
             if (content != null) {
-                xmlhttp.open("GET", "/back/notificationSave?userId=admin&content=" + content + "&active=" + active + "", true);
+                xmlhttp.open("GET", "/back/notificationSave?content=" + content + "&active=" + active + "", true);
                 xmlhttp.send();
             }
         }
@@ -236,13 +236,17 @@
                 </div>
                 <div class="ui_frt">
                     <!--    如果是第一页，则只显示下一页、尾页 -->
-                    <a href="/back/notificationList?pn=1&userName=#(username)"
+                    <a href="/back/notificationList?pn=1"
                        class="ui_input_btn01">首页</a>
-                    <a href="/back/notificationList?pn=#(noticePage.pageNumber-1)&userName=#(username)&totalPage=#(noticePage.totalPage)"
+                    #if(!noticePage.firstPage)
+                    <a href="/back/notificationList?pn=#(noticePage.pageNumber-1)&totalPage=#(noticePage.totalPage)"
                        class="ui_input_btn01">上一页</a>
-                    <a href="/back/notificationList?pn=#(noticePage.pageNumber+1)&userName=#(username)&totalPage=#(noticePage.totalPage)"
+                    #end
+                    #if(!noticePage.lastPage)
+                    <a href="/back/notificationList?pn=#(noticePage.pageNumber+1)&totalPage=#(noticePage.totalPage)"
                        class="ui_input_btn01">下一页</a>
-                    <a href="/back/notificationList?pn=#(noticePage.totalPage)&userName=#(username)"
+                    #end
+                    <a href="/back/notificationList?pn=#(noticePage.totalPage)"
                        class="ui_input_btn01">尾页</a>
                 </div>
             </div>

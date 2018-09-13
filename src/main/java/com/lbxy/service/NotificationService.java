@@ -22,6 +22,6 @@ public interface NotificationService {
 
     Notification findNotificationByActive();
 
-    boolean notificationUpData(Notification notification);
+    boolean notificationUpdate(Notification notification);
 
 }
