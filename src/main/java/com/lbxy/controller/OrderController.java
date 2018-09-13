@@ -5,6 +5,9 @@ import com.jfinal.core.paragetter.Para;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.ehcache.CacheInterceptor;
+import com.jfinal.plugin.ehcache.CacheName;
+import com.jfinal.plugin.ehcache.EvictInterceptor;
 import com.lbxy.common.request.CreateOrderBean;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.core.annotation.ValidParam;
@@ -21,7 +24,8 @@ public class OrderController extends BaseController {
     @Resource
     private OrderService orderService;
 
-    @Before(GET.class)
+    @Before({GET.class, CacheInterceptor.class})
+    @CacheName("order")
     public void index(int pn) {
         Page<Order> page = orderService.getOrdersByPage(pn);
         renderJson(MessageVoUtil.success(page));
@@ -32,7 +36,8 @@ public class OrderController extends BaseController {
         renderJson(MessageVoUtil.success("请求成功", orderService.findById(orderId)));
     }
 
-    @Before(POST.class)
+    @Before({POST.class, EvictInterceptor.class})
+    @CacheName("order")
     public void createOrder(long userId, @ValidParam @Para("") CreateOrderBean orderInfo) {
         long orderId = orderService.createOrder(userId, orderInfo);
         renderJson(MessageVoUtil.success("发单成功", orderId));
@@ -49,7 +54,8 @@ public class OrderController extends BaseController {
 //        }
 //    }
 
-    @Before(POST.class)
+    @Before({POST.class, EvictInterceptor.class})
+    @CacheName("order")
     public void acceptOrder(int userId, @NotBlank int orderId) {
         int result = orderService.accept(orderId, userId);
         if (result == OrderService.SUCCESS) {
@@ -80,7 +86,8 @@ public class OrderController extends BaseController {
         renderJson(MessageVoUtil.success("请求成功", result));
     }
 
-    @Before(POST.class)
+    @Before({POST.class, EvictInterceptor.class})
+    @CacheName("order")
     public void cancelOrder(int orderId) {
         int result = orderService.cancelOrder(orderId);
         if (result != 0) {
@@ -90,7 +97,8 @@ public class OrderController extends BaseController {
         }
     }
 
-    @Before(POST.class)
+    @Before({POST.class, EvictInterceptor.class})
+    @CacheName("order")
     public void settleOrder(int orderId) throws Exception {
         boolean result = orderService.settleOrder(orderId);
         if (result) {
@@ -100,7 +108,8 @@ public class OrderController extends BaseController {
         }
     }
 
-    @Before(POST.class)
+    @Before({POST.class, EvictInterceptor.class})
+    @CacheName("order")
     public void completeOrder(int orderId) {
         boolean result = orderService.complete(orderId);
         if (result) {
@@ -110,7 +119,8 @@ public class OrderController extends BaseController {
         }
     }
 
-    @Before(POST.class)
+    @Before({POST.class, EvictInterceptor.class})
+    @CacheName("order")
     public void deleteOrder(int orderId) {
         boolean result = orderService.delete(orderId);
         if (result) {

@@ -23,7 +23,7 @@ public class ImageController extends BaseController {
     @Resource
     private ImageService imageService;
 
-    @Before(GET.class)
+    @Before({GET.class})
     public void index(int id) {
         User user = userService.findById(id);
         String url = user.get("idNoPic");
@@ -31,7 +31,7 @@ public class ImageController extends BaseController {
         render("/back/image_show.html");
     }
 
-    @Before(GET.class)
+    @Before({GET.class})
     public void stuNoPice(int id) {
         User user = userService.findById(id);
         String url = user.get("stuNoPic");

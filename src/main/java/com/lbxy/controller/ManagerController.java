@@ -3,6 +3,8 @@ package com.lbxy.controller;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.ehcache.CacheName;
+import com.jfinal.plugin.ehcache.EvictInterceptor;
 import com.lbxy.common.NotificationType;
 import com.jfinal.plugin.ehcache.CacheKit;
 import com.lbxy.common.CacheNameConst;
@@ -277,7 +279,8 @@ public class ManagerController extends BaseController {
         }
     }
 
-
+    @Before({EvictInterceptor.class})
+    @CacheName("notification")
     public void notificationEdit(int id, String content) {
         boolean isEdit = notificationService.notificationEdit(id, content);
         if (isEdit) {
@@ -289,6 +292,8 @@ public class ManagerController extends BaseController {
         }
     }
 
+    @Before({EvictInterceptor.class})
+    @CacheName("notification")
     public void notificationSave(String content, int active) {
         boolean isSave;
         if (active == 1) {
@@ -325,6 +330,8 @@ public class ManagerController extends BaseController {
         }
     }
 
+    @Before({EvictInterceptor.class})
+    @CacheName("notification")
     public void setActive(int id) {
         cancelNowActive();
         Notification notification = new Notification();
@@ -334,6 +341,8 @@ public class ManagerController extends BaseController {
         notificationList();
     }
 
+    @Before({EvictInterceptor.class})
+    @CacheName("notification")
     public void cancelNowActive() {
         Notification notification = notificationService.findNotificationByActive();
         if (notification == null) {

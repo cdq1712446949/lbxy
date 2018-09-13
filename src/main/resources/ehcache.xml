@@ -25,6 +25,45 @@
            timeToLiveSeconds="1200"
            diskExpiryThreadIntervalSeconds="120"
     />
+
+
+    <!--下面是controller的配置-->
+    <cache name="flea"
+           maxElementsInMemory="10000"
+           overflowToDisk="true"
+           eternal="false"
+           timeToIdleSeconds="86400"
+           diskExpiryThreadIntervalSeconds="120"
+    />
+    <cache name="lostfound"
+           maxElementsInMemory="10000"
+           overflowToDisk="true"
+           eternal="false"
+           timeToIdleSeconds="86400"
+           diskExpiryThreadIntervalSeconds="120"
+    />
+    <cache name="treehole"
+           maxElementsInMemory="10000"
+           overflowToDisk="true"
+           eternal="false"
+           timeToIdleSeconds="86400"
+           diskExpiryThreadIntervalSeconds="120"
+    />
+    <cache name="notification"
+           maxElementsInMemory="10000"
+           overflowToDisk="true"
+           eternal="false"
+           timeToIdleSeconds="86400"
+           diskExpiryThreadIntervalSeconds="120"
+    />
+    <cache name="order"
+           maxElementsInMemory="10000"
+           overflowToDisk="true"
+           eternal="false"
+           timeToIdleSeconds="86400"
+           diskExpiryThreadIntervalSeconds="120"
+    />
+
     <!--
             缓存配置
                    name:缓存名称。
