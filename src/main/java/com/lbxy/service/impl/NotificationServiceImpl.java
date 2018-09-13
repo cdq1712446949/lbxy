@@ -5,7 +5,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.lbxy.common.NotificationType;
 import com.lbxy.core.annotation.Service;
-import com.lbxy.dao.NotificationDAO;
+import com.lbxy.dao.NotificationDao;
 import com.lbxy.model.Notification;
 import com.lbxy.service.NotificationService;
 
@@ -21,7 +21,7 @@ import java.util.Date;
 public class NotificationServiceImpl implements NotificationService {
 
     @Resource
-    private NotificationDAO notificationDAO;
+    private NotificationDao notificationDAO;
 
     @Override
     public Notification getActiveNotification() {

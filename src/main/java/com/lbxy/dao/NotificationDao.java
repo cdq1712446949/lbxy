@@ -7,11 +7,11 @@ import com.lbxy.model.Notification;
 
 /**
  * @author lmy
- * @description NotificationDAO
+ * @description NotificationDao
  * @date 2018/8/28
  */
 @Repository
-public class NotificationDAO {
+public class NotificationDao {
 
     public Notification getNotificationByActive(int type) {
        return Notification.dao.findFirst("select * from notification where active = ?", type);

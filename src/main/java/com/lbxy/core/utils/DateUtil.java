@@ -65,7 +65,7 @@ public class DateUtil {
         return (df.format(new Date()));// new Date()为获取当前系统时间
     }
 
-    public static Date StringToOriginalDate(String date) throws ParseException {
+    public static Date stringToOriginalDate(String date) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyMMddHHmmss");
         return sdf.parse(date);
     }

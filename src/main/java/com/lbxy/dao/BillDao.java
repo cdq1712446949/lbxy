@@ -17,8 +17,8 @@ public class BillDao {
         return Bill.DAO.paginate(pn, 10, "select *", "from bill");
     }
 
-    public List<Bill> findByUserId(int UserId) {
-        return Bill.DAO.find("select * from bill where userId=?", UserId);
+    public List<Bill> findByUserId(int userId) {
+        return Bill.DAO.find("select * from bill where userId=?", userId);
     }
 
     public BigDecimal get7DaysTotalIncome(int userId) {

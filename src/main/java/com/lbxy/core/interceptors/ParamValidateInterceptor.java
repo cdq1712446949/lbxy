@@ -63,8 +63,8 @@ public class ParamValidateInterceptor implements Interceptor {
                     }
                 } else {
                     //如果参数没有被ValidParam注解
-                    String AnnotationPackage = annotation.annotationType().getPackage().getName();
-                    if ("javax.validation.constraints".equals(AnnotationPackage) || "org.hibernate.annotation.constraints".equals(AnnotationPackage)) {
+                    String annotationPackage = annotation.annotationType().getPackage().getName();
+                    if ("javax.validation.constraints".equals(annotationPackage) || "org.hibernate.annotation.constraints".equals(annotationPackage)) {
                         //如果参数的注解是用于校验的注解，那么将参数提取出来使用hibernate validator校验
                         Parameter[] parameters = method.getParameters();
                         Map<String, Object> paramValueMap = new LinkedHashMap<>();
