@@ -21,16 +21,16 @@ import java.util.Date;
 public class NotificationServiceImpl implements NotificationService {
 
     @Resource
-    private NotificationDao notificationDAO;
+    private NotificationDao notificationDao;
 
     @Override
     public Notification getActiveNotification() {
-        return notificationDAO.getNotificationByActive(NotificationType.ACTIVE);
+        return notificationDao.getNotificationByActive(NotificationType.ACTIVE);
     }
 
     @Override
     public Page<Notification> getAllNotification(int pn) {
-        return notificationDAO.getAllNotificationByPn(pn);
+        return notificationDao.getAllNotificationByPn(pn);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class NotificationServiceImpl implements NotificationService {
         Notification notification = new Notification();
         notification.set("id", id);
         notification.set("content", content);
-        return notificationDAO.notificationUpdate(notification);
+        return notificationDao.notificationUpdate(notification);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class NotificationServiceImpl implements NotificationService {
         notification.set("content", content);
         notification.set("createdDate", new Date());
         notification.set("active", active);
-        return notificationDAO.notificationSave(notification);
+        return notificationDao.notificationSave(notification);
     }
 
     @Override
@@ -60,26 +60,26 @@ public class NotificationServiceImpl implements NotificationService {
         Notification notification = new Notification();
         notification.set("id", id);
         notification.set("active", NotificationType.INACTIVE);
-        return notificationDAO.notificationUpdate(notification);
+        return notificationDao.notificationUpdate(notification);
     }
 
     @Override
     public Notification findNotificationByActive() {
-        return notificationDAO.getNotificationByActive(NotificationType.ACTIVE);
+        return notificationDao.getNotificationByActive(NotificationType.ACTIVE);
     }
 
     @Override
     @Before(Tx.class)
     public boolean notificationUpdate(Notification notification) {
         this.cancelActive();
-        return notificationDAO.notificationUpdate(notification);
+        return notificationDao.notificationUpdate(notification);
     }
 
     private void cancelActive() {
         Notification activeNotification = this.findNotificationByActive();
         if (activeNotification != null) {
             activeNotification.setActive(NotificationType.INACTIVE);
-            notificationDAO.notificationUpdate(activeNotification);
+            notificationDao.notificationUpdate(activeNotification);
         }
     }
 }

@@ -10,6 +10,7 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.template.Engine;
 import com.lbxy.controller.*;
+import com.lbxy.core.handlers.ServletExcludeHandler;
 import com.lbxy.core.interceptors.InjectionInterceptor;
 import com.lbxy.core.interceptors.ParamValidateInterceptor;
 import com.lbxy.core.interceptors.exception.ExceptionsInterceptor;
@@ -112,6 +113,6 @@ public class Config extends JFinalConfig {
      * 配置处理器
      */
     public void configHandler(Handlers me) {
-
+        me.add(new ServletExcludeHandler()); // 过滤servlet请求
     }
 }

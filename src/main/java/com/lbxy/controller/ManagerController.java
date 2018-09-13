@@ -9,12 +9,15 @@ import com.jfinal.plugin.ehcache.CacheName;
 import com.jfinal.plugin.ehcache.EvictInterceptor;
 import com.lbxy.common.CacheNameConst;
 import com.lbxy.common.NotificationType;
+import com.lbxy.common.status.UserStatus;
 import com.lbxy.core.interceptors.ManagerLoginInterceptor;
 import com.lbxy.model.*;
 import com.lbxy.service.*;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.Range;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotBlank;
 
 @Before(ManagerLoginInterceptor.class)
 public class ManagerController extends BaseController {
@@ -51,6 +54,7 @@ public class ManagerController extends BaseController {
     }
 
     public void userList(int pn) {
+        if (pn <= 0) pn = 1;
         Page<User> users = userService.getAllUsers(pn);
         setAttr("data", users);
         render("user_list.html");
@@ -74,7 +78,7 @@ public class ManagerController extends BaseController {
 
     //查询用户交易记录
     public void searchBill(String phoneNumber) {
-        if (phoneNumber == null || phoneNumber.equals("")) {
+        if (StringUtils.isBlank(phoneNumber)) {
             redirect("./billList?pn=1");
         } else {
             setAttr("billPage", billService.getBillByPhoneNumber(1, phoneNumber));
@@ -83,6 +87,7 @@ public class ManagerController extends BaseController {
     }
 
     public void searchTreehole(int pn, String content) {
+        if (pn <= 0) pn = 1;
         if (StringUtils.isBlank(content)) {
             redirect("./notificationList?pn=1");
         } else {
@@ -92,6 +97,7 @@ public class ManagerController extends BaseController {
     }
 
     public void searchFlea(int pn, String content) {
+        if (pn <= 0) pn = 1;
         if (StringUtils.isBlank(content)) {
             redirect("./fleaList?pn=1");
         } else {
@@ -101,6 +107,7 @@ public class ManagerController extends BaseController {
     }
 
     public void searchLostFound(int pn, String content) {
+        if (pn <= 0) pn = 1;
         if (StringUtils.isBlank(content)) {
             redirect("./lostFoundList?pn=1");
         } else {
@@ -130,6 +137,7 @@ public class ManagerController extends BaseController {
     @Before({CacheInterceptor.class})
     @CacheName("order")
     public void orderList(int pn) {
+        if (pn <= 0) pn = 1;
         Page<Order> orderPage = orderService.getAllOrder(pn);
         setAttr("orderPage", orderPage);
         render("order_list.html");
@@ -138,6 +146,7 @@ public class ManagerController extends BaseController {
     @Before({CacheInterceptor.class})
     @CacheName("treehole")
     public void treeHoleList(int pn) {
+        if (pn <= 0) pn = 1;
         Page<Treehole> treeHolePage = treeHoleService.getAllTreeHole(pn);
         setAttr("treeHolePage", treeHolePage);
         render("treehole_list.html");
@@ -146,6 +155,7 @@ public class ManagerController extends BaseController {
     @Before({CacheInterceptor.class})
     @CacheName("flea")
     public void fleaList(int pn) {
+        if (pn <= 0) pn = 1;
         Page<Flea> fleaPage = fleaService.getAllFlea(pn);
         setAttr("fleaPage", fleaPage);
         render("flea_list.html");
@@ -154,6 +164,7 @@ public class ManagerController extends BaseController {
     @Before({CacheInterceptor.class})
     @CacheName("lostfound")
     public void lostFoundList(int pn) {
+        if (pn <= 0) pn = 1;
         Page<Lostfound> lostFoundPage = lostFoundService.getAllLostFound(pn);
         setAttr("lostFoundPage", lostFoundPage);
         render("lostfound_list.html");
@@ -162,12 +173,14 @@ public class ManagerController extends BaseController {
     @Before({CacheInterceptor.class})
     @CacheName("notification")
     public void notificationList(int pn) {
+        if (pn <= 0) pn = 1;
         Page<Notification> noticePage = notificationService.getAllNotification(pn);
         setAttr("noticePage", noticePage);
         render("notice_list.html");
     }
 
     public void billList(int pn) {
+        if (pn <= 0) pn = 1;
         Page<Bill> billPage = billService.getAllBill(pn);
         setAttr("billPage", billPage);
         render("bill_list.html");
@@ -175,7 +188,7 @@ public class ManagerController extends BaseController {
 
     @Before({EvictInterceptor.class})
     @CacheName("treehole")
-    public void deleteTreeHole(int id) {
+    public void deleteTreeHole(@Range(min = 1) int id) {
         boolean isDelete = treeHoleService.deleteTreeHole(id);
         if (isDelete) {
             setAttr("isDelete", "true");
@@ -187,7 +200,7 @@ public class ManagerController extends BaseController {
 
     @Before({EvictInterceptor.class})
     @CacheName("flea")
-    public void deleteFlea(int id) {
+    public void deleteFlea(@Range(min = 1) int id) {
         boolean isDelete = fleaService.deleteFlea(id);
         if (isDelete) {
             setAttr("isDelete", "true");
@@ -199,7 +212,7 @@ public class ManagerController extends BaseController {
 
     @Before({EvictInterceptor.class})
     @CacheName("lostfound")
-    public void deleteLostFound(int id) {
+    public void deleteLostFound(@Range(min = 1) int id) {
         boolean isDelete = lostFoundService.deleteLostFound(id);
         if (isDelete) {
             setAttr("isDelete", "true");
@@ -211,7 +224,7 @@ public class ManagerController extends BaseController {
 
     @Before({EvictInterceptor.class})
     @CacheName("notification")
-    public void notificationEdit(int id, String content) {
+    public void notificationEdit(@Range(min = 1) int id, @NotBlank String content) {
         boolean isEdit = notificationService.notificationEdit(id, content);
         if (isEdit) {
             setAttr("isEdit", "true");
@@ -223,7 +236,7 @@ public class ManagerController extends BaseController {
 
     @Before({EvictInterceptor.class})
     @CacheName("notification")
-    public void notificationSave(String content, int active) {
+    public void notificationSave(@NotBlank String content, @Range(min = 0, max = 1) int active) {
         boolean isSave = notificationService.notificationSave(content, active);
         if (isSave) {
             setAttr("isSave", "true");
@@ -233,12 +246,27 @@ public class ManagerController extends BaseController {
         redirect("./notificationList?pn=1");
     }
 
-    public void throughAuthencation(int id, int status) {
-        userService.throughAuthentication(id, status);
+    public void throughAuthencation(@Range(min = 1) int id) {
+        userService.updateUserStatus(id, UserStatus.AUTHENTACATED);
         redirect("./userList?pn=1");
     }
 
-    public void changeMoney(int id, int money) {
+    public void cancelAuthencation(@Range(min = 1) int id) {
+        userService.updateUserStatus(id,UserStatus.UNAUTHENTICATION);
+        redirect("./userList?pn=1");
+    }
+
+    public void blockUser(@Range(min = 1) int id) {
+        userService.updateUserStatus(id,UserStatus.BLOCKED);
+        redirect("./userList?pn=1");
+    }
+
+    public void unBlockUser(@Range(min = 1) int id) {
+        userService.updateUserStatus(id,UserStatus.UNAUTHENTICATION);
+        redirect("./userList?pn=1");
+    }
+
+    public void changeMoney(@Range(min = 1) int id, @Range double money) {
         User user = new User();
         user.set("id", id);
         user.set("balance", money);
@@ -253,7 +281,7 @@ public class ManagerController extends BaseController {
 
     @Before({EvictInterceptor.class})
     @CacheName("notification")
-    public void setActive(int id) {
+    public void setActive(@Range(min = 1) int id) {
         Notification notification = new Notification();
         notification.set("id", id);
         notification.set("active", NotificationType.ACTIVE);
@@ -263,7 +291,7 @@ public class ManagerController extends BaseController {
 
     @Before({EvictInterceptor.class})
     @CacheName("notification")
-    public void cancelNowActive(int id) {
+    public void cancelNowActive(@Range(min = 1) int id) {
         boolean b = notificationService.cancelActive(id);
         redirect("./notificationList?pn=1");
     }

@@ -18,7 +18,8 @@ import java.util.Arrays;
 public class InjectionInterceptor implements Interceptor {
     @Override
     public void intercept(Invocation inv) {
-        LoggerUtil.info(getClass(), inv.getControllerKey()+"/"+inv.getActionKey()+":"+ Arrays.toString(inv.getArgs()));
+        LoggerUtil.info(getClass(), inv.getActionKey()+":"+ inv.getController().getParaMap().toString());
+
 
         Controller controller = inv.getController();
         Field[] fields = controller.getClass().getDeclaredFields();

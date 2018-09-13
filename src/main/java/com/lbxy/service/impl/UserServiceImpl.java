@@ -1,6 +1,5 @@
 package com.lbxy.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
@@ -8,6 +7,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import com.lbxy.common.exception.InvalidRequestParamException;
 import com.lbxy.common.request.UserInfoBean;
 import com.lbxy.common.request.VerificationBean;
+import com.lbxy.common.status.UserStatus;
 import com.lbxy.core.annotation.Service;
 import com.lbxy.core.utils.JWTUtil;
 import com.lbxy.dao.UserDao;
@@ -92,9 +92,10 @@ public class UserServiceImpl implements UserService {
     @Before(Tx.class)
     public User updateVerificationUserInfo(VerificationBean verification, int userId) {
         User currentUser = this.findById(userId);
-        currentUser.set("realName", verification.getRealName());
-        currentUser.set("studentNumber", verification.getStudentNumber());
-        currentUser.set("stuNoPic", verification.getStuNoPic());
+        currentUser.setReadName(verification.getRealName());
+        currentUser.setStudentNumber(verification.getStudentNumber());
+        currentUser.setStuNoPic(verification.getStuNoPic());
+        currentUser.setStatus(UserStatus.WAIT_AUTHENTICATION);
         currentUser.update();
         return currentUser;
     }
@@ -112,7 +113,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Before(Tx.class)
-    public boolean throughAuthentication(long id, int status) {
+    public boolean updateUserStatus(long id, int status) {
         User user = new User();
         user.set("id", id);
         user.set("status", status);

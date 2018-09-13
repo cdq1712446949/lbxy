@@ -28,7 +28,7 @@ public interface UserService {
 
     User saveUserInfo(JSONObject userInfo, int userId);
 
-    boolean throughAuthentication(long id, int status);
+    boolean updateUserStatus(long id,int status);
 
     BigDecimal getUserAccountBalance(long userId);
 

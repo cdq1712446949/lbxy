@@ -113,16 +113,16 @@
                         <button class="ui_input_btn02" onclick="ChangeMoney('#(x.id)')">余额修改</button>
                     </td>
                     <td>
-                        <a href="/back/throughAuthencation?id=#(x.id)&status=2"> #if(x.status==1)
+                        <a href="/back/throughAuthencation?id=#(x.id)"> #if(x.status==1)
                             给予认证
                             #end</a>
-                        <a href="/back/throughAuthencation?id=#(x.id)&status=0"> #if(x.status==2)
+                        <a href="/back/cancelAuthencation?id=#(x.id)"> #if(x.status==2)
                             取消认证
                             #end</a>
-                        <a href="/back/throughAuthencation?id=#(x.id)&status=-1"> #if(x.status!=-1)
+                        <a href="/back/blockUser?id=#(x.id)"> #if(x.status!=-1)
                             拉黑用户
                             #end</a>
-                        <a href="/back/throughAuthencation?id=#(x.id)&status=0"> #if(x.status==-1)
+                        <a href="/back/unBlockUser?id=#(x.id)"> #if(x.status==-1)
                             取消拉黑
                             #end</a>
                     </td>
