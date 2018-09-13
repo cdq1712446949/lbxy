@@ -1,6 +1,8 @@
 package com.lbxy.service.impl;
 
+import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.lbxy.common.NotificationType;
 import com.lbxy.core.annotation.Service;
 import com.lbxy.dao.NotificationDAO;
@@ -32,6 +34,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
+    @Before(Tx.class)
     public boolean notificationEdit(int id,String content) {
         Notification notification=new Notification();
         notification.set("id" ,id);
@@ -40,6 +43,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
+    @Before(Tx.class)
     public boolean notificationSave(String content,int active) {
         Notification notification=new Notification();
         notification.set("content",content);
@@ -49,6 +53,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
+    @Before(Tx.class)
     public boolean cancelActive(int id) {
         Notification notification=new Notification();
         notification.set("id",id);
@@ -62,6 +67,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
+    @Before(Tx.class)
     public boolean notificationUpData(Notification notification) {
         return notificationDAO.notificationUpdate(notification);
     }

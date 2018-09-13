@@ -1,6 +1,8 @@
 package com.lbxy.service.impl;
 
+import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.lbxy.common.request.CreateOrderBean;
 import com.lbxy.common.status.BillStatus;
 import com.lbxy.common.status.CommonStatus;
@@ -48,6 +50,7 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.getUnCompletedAndWaitCompletedAndCompletedOrdersByPage(pn);
     }
 
+    @Before(Tx.class)
     public boolean complete(long orderId) {
         Order order = orderDao.findById(orderId);
         order.setCompletedDate(new Date());
@@ -55,6 +58,7 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.update(order);
     }
 
+    @Before(Tx.class)
     public int accept(long orderId, long userId) {
         User user = userDao.findById(userId);
         if (user == null) {
@@ -85,6 +89,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Before(Tx.class)
     public int cancelOrder( long orderId) {
         Order order = orderDao.findById(orderId);
         order.setStatus(OrderStatus.CANCELED);
@@ -94,6 +99,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Before(Tx.class)
     public boolean settleOrder(long orderId) throws Exception {
         Order order = orderDao.findById(orderId);
         long acceptUserId = order.getAcceptUserId();
@@ -120,16 +126,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Before(Tx.class)
     public boolean payOrder(long orderId) {
         int result = orderDao.updateOrderStatus(orderId, OrderStatus.UN_COMPLETED);
         return result != 0;
     }
 
     @Override
+    @Before(Tx.class)
     public boolean updateModel(Order order) {
         return orderDao.update(order);
     }
 
+    @Before(Tx.class)
     public boolean delete(long id) {
 //        return orderDao.deleteById(id); // 不采用物理删除的方法，使用逻辑删除
         int result = orderDao.updateOrderStatus(id, CommonStatus.DELETED);
@@ -157,6 +166,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Before(Tx.class)
     public long createOrder(long userId, CreateOrderBean orderInfo) {
         Order order = new Order();
         order.setCreatedDate(new Date());
@@ -168,9 +178,9 @@ public class OrderServiceImpl implements OrderService {
         order.setToAddress(orderInfo.getToAddress());
         order.setRemark(orderInfo.getRemark());
         order.setDetail(orderInfo.getDetail());
-        order.setAvailableDateDesc(orderInfo.getAvailableDateDesc());
+        order.setAvailableDateDesc(orderInfo.getAvailableDate());
 
-        String[] availableDateTimeArray = orderInfo.getAvailableDateDesc().split(" \\| ");
+        String[] availableDateTimeArray = orderInfo.getAvailableDate().split(" \\| ");
         String[] availableDateArray = availableDateTimeArray[0].split("/");
         String startTime = null;
         if (availableDateTimeArray[1].contains("-")) {
@@ -201,6 +211,7 @@ public class OrderServiceImpl implements OrderService {
      *
      * @return
      */
+    @Before(Tx.class)
     public boolean setPayBack(Order order) {
         order.setCanPayBack(OrderStatus.CAN_PAY_BACK);
         return orderDao.update(order);

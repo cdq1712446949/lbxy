@@ -1,9 +1,9 @@
 package com.lbxy.common.response;
 
-public class MessageVo<T> {
+public class MessageVo {
     private int status;
     private String message;
-    private T data;
+    private Object data;
 
     public int getStatus() {
         return status;
@@ -23,11 +23,11 @@ public class MessageVo<T> {
         return this;
     }
 
-    public T getData() {
+    public Object getData() {
         return data;
     }
 
-    public MessageVo setData(T data) {
+    public MessageVo setData(Object data) {
         this.data = data;
         return this;
     }

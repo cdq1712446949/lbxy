@@ -2,7 +2,9 @@ package com.lbxy.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.lbxy.common.exception.InvalidRequestParamException;
 import com.lbxy.common.request.UserInfoBean;
 import com.lbxy.common.request.VerificationBean;
@@ -47,6 +49,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Before(Tx.class)
     public JSONObject login(String code) {
         JSONObject result = WeixinUtil.login(code);
         User user = userDao.findByOpenid(result.getString("openid"));
@@ -75,6 +78,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Before(Tx.class)
     public User updateBaseUserInfo(UserInfoBean userInfo, int userId) throws InvalidRequestParamException {
         Map<String, String> param = userInfo.getUpdateUserInfo();
         Map.Entry<String, String> paramEntry = param.entrySet().iterator().next();
@@ -85,6 +89,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Before(Tx.class)
     public User updateVerificationUserInfo(VerificationBean verification, int userId) {
         User currentUser = this.findById(userId);
         currentUser.set("realName", verification.getRealName());
@@ -95,6 +100,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Before(Tx.class)
     public User saveUserInfo(JSONObject userInfo, int userId) {
         User currentUser = userDao.findById(userId);
         currentUser.set("username", userInfo.get("nickName"));
@@ -105,6 +111,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Before(Tx.class)
     public boolean throughAuthentication(long id, int status) {
         User user = new User();
         user.set("id", id);
@@ -118,6 +125,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Before(Tx.class)
     public boolean changeMoney(User user) {
         return userDao.update(user);
     }

@@ -1,7 +1,8 @@
 package com.lbxy.service.impl;
 
+import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
-import com.lbxy.core.annotation.Repository;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.lbxy.core.annotation.Service;
 import com.lbxy.dao.BillDao;
 import com.lbxy.model.Bill;
@@ -22,6 +23,7 @@ public class BillServiceImpl implements BillService {
         return billDao.findByUserId(userId);
     }
 
+    @Before(Tx.class)
     @Override
     public boolean add(Bill bill) {
         boolean i = bill.save();
@@ -45,6 +47,6 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public Page<Bill> getBillByPhoneNumber(int pn, String phoneNumber) {
-        return billDao.findBillByPhoneNumber(pn,phoneNumber);
+        return billDao.findBillByPhoneNumber(pn, phoneNumber);
     }
 }

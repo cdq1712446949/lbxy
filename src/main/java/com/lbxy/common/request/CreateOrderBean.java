@@ -10,30 +10,38 @@ import javax.validation.constraints.NotNull;
  * @date 2018/8/19
  */
 public class CreateOrderBean {
-    @NotNull
+    @NotNull(message = "酬金不能为空")
     private double reward;
 
-    @NotNull
+    @NotNull(message = "联系人不能为空")
     @Length(min = 2, message = "姓名最少为两位")
     private String userName;
 
-    @NotNull
+    @NotNull(message = "手机号不能为空")
     @Length(min = 11, max = 11, message = "手机号必须为11位")
     private String userPhoneNumber;
 
-    @NotNull
+    @NotNull(message = "取件地不能为空")
     private String fromAddress;
 
-    @NotNull
+    @NotNull(message = "送达地不能为空")
     private String toAddress;
 
     private String remark;
 
-    @NotNull
+    @NotNull(message = "详情不能为空")
     private String detail;
 
-    @NotNull
+    @NotNull(message = "配送时间不能为空")
     private String availableDate;
+
+    public String getAvailableDate() {
+        return availableDate;
+    }
+
+    public void setAvailableDate(String availableDate) {
+        this.availableDate = availableDate;
+    }
 
     public double getReward() {
         return reward;
@@ -90,14 +98,4 @@ public class CreateOrderBean {
     public void setDetail(String detail) {
         this.detail = detail;
     }
-
-    public String getAvailableDateDesc() {
-        return availableDate;
-    }
-
-    public void setAvailableDateDesc(String availableDateDesc) {
-        this.availableDate = availableDateDesc;
-    }
-
-
 }

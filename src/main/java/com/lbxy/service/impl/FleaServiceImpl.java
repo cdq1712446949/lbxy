@@ -3,7 +3,9 @@ package com.lbxy.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.lbxy.common.ImageType;
 import com.lbxy.common.request.ReplyBean;
 import com.lbxy.common.status.CommonStatus;
@@ -43,6 +45,7 @@ public class FleaServiceImpl implements FleaService {
     }
 
     @Override
+    @Before(Tx.class)
     public boolean deleteFlea(int id) {
         Flea flea = new Flea();
         flea.set("id", id);
@@ -51,6 +54,7 @@ public class FleaServiceImpl implements FleaService {
     }
 
     @Override
+    @Before(Tx.class)
     public long save(String content, long userId) {
         Flea flea = new Flea();
         flea.setUserId(userId);
@@ -127,6 +131,7 @@ public class FleaServiceImpl implements FleaService {
     }
 
     @Override
+    @Before(Tx.class)
     public boolean reply(long userId, String formId, ReplyBean replyBean) {
         User currentUser = userDao.findById(userId);
         User toUser = userDao.findById(replyBean.getToUserId());

@@ -1,11 +1,11 @@
 package com.lbxy.common.response;
 
 public class MessageVoUtil {
-    public static <T> MessageVo success(String message, T data) {
+    public static MessageVo success(String message, Object data) {
         return new MessageVo().setData(ResponseStatus.success).setMessage(message).setData(data);
     }
 
-    public static <T> MessageVo success(T data) {
+    public static MessageVo success(Object data) {
         return new MessageVo().setData(ResponseStatus.success).setMessage("处理成功").setData(data);
     }
 

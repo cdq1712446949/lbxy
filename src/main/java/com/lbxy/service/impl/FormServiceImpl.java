@@ -2,6 +2,8 @@ package com.lbxy.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.jfinal.aop.Before;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.lbxy.core.annotation.Service;
 import com.lbxy.service.FormService;
 
@@ -17,6 +19,7 @@ import java.util.Optional;
 @Service("formService")
 public class FormServiceImpl implements FormService {
     @Override
+    @Before(Tx.class)
     public void put(long userId, JSONObject formIds) {
         JSONArray jsonArray = formIds.getJSONArray("formIds");
         for (int i = 0; i < jsonArray.size(); i++) {

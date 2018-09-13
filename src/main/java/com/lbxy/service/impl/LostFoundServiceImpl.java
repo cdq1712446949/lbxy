@@ -3,7 +3,9 @@ package com.lbxy.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.lbxy.common.ImageType;
 import com.lbxy.common.request.ReplyBean;
 import com.lbxy.common.status.CommonStatus;
@@ -43,6 +45,7 @@ public class LostFoundServiceImpl implements LostFoundService {
     }
 
     @Override
+    @Before(Tx.class)
     public boolean deleteLostFound(int id) {
         Lostfound lostFound = new Lostfound();
         lostFound.set("id", id);
@@ -51,6 +54,7 @@ public class LostFoundServiceImpl implements LostFoundService {
     }
 
     @Override
+    @Before(Tx.class)
     public long save(String content, long userId) {
         Lostfound lostfound = new Lostfound();
         lostfound.setUserId(userId);
@@ -124,6 +128,7 @@ public class LostFoundServiceImpl implements LostFoundService {
     }
 
     @Override
+    @Before(Tx.class)
     public boolean reply(long userId, String formId, ReplyBean replyBean) {
         User currentUser = userDao.findById(userId);
         User toUser = userDao.findById(replyBean.getToUserId());

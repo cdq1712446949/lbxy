@@ -6,6 +6,7 @@ import com.lbxy.core.plugins.cache.InjectionCache;
 import com.lbxy.model.Bill;
 import com.lbxy.service.BillService;
 import com.lbxy.service.OrderService;
+import com.lbxy.service.PayBackService;
 import com.lbxy.weixin.service.PayService;
 import com.lbxy.weixin.utils.PayCacheUtil;
 import com.lbxy.weixin.utils.WeixinMessageUtil;
@@ -34,35 +35,23 @@ import java.util.Map;
 )
 public class PayCallbackServlet extends HttpServlet {
     private static final PayService PAY_SERVICE = PayService.getInstance();
+    private static final long serialVersionUID = -723644970677050494L;
 
-    private OrderService orderService;
-
-    private BillService billService;
+    private PayBackService payBackService;
 
     @Override
     public void init() throws ServletException {
         super.init();
 
-        orderService = (OrderService) InjectionCache.get("orderService");
-
-        billService = (BillService) InjectionCache.get("billService");
+        payBackService = (PayBackService) InjectionCache.get("payBackService");
 
         PAY_SERVICE.setSuccessHandler(result -> {
             String out_trade_no = result.get("out_trade_no");
-            Double totalFee = Double.valueOf(result.get("total_fee"));
+            double totalFee = Double.parseDouble(result.get("total_fee"));
             String orderId = PayCacheUtil.get(out_trade_no + "orderId");
             String userId = PayCacheUtil.get(out_trade_no + "userId");
-            orderService.payOrder(Integer.parseInt(orderId));
 
-            Bill bill = new Bill();
-            bill.setOrderId(Long.valueOf(orderId));
-            bill.setUserId(Long.valueOf(userId));
-
-            bill.setMoney(BigDecimal.valueOf(totalFee / 100));
-            bill.setStatus(BillStatus.PAY);
-            bill.setCreatedDate(new Date());
-
-            billService.add(bill);
+            payBackService.payBack(Long.parseLong(orderId), Long.parseLong(userId), totalFee);
         });
     }
 
