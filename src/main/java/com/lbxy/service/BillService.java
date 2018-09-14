@@ -12,15 +12,15 @@ import java.util.List;
  * @date 2018/8/14
  */
 public interface BillService {
-    List<Bill> getBill(int userId);
+    List<Bill> getBill(long userId);
 
     boolean add(Bill bill);
 
     Page<Bill> getAllBill(int pn);
 
-    BigDecimal get7DaysTotalIncome(int userId);
+    BigDecimal get7DaysTotalIncome(long userId);
 
-    Page<Bill> getAllByUserId(int pn, int userId);
+    Page<Bill> getAllByUserId(int pn, long userId);
 
     Page<Bill> getBillByPhoneNumber(int pn,String phoneNumber);
 

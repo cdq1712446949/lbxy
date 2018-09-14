@@ -61,7 +61,7 @@ public class Config extends JFinalConfig {
         me.add("/user", UserController.class);
         me.add("/upload", ImageController.class);
         me.add("/flea", FleaController.class);
-        me.add("/treahole", TreeholeController.class);
+        me.add("/treehole", TreeholeController.class);
         me.add("/lostfound", LostfoundController.class);
         me.add("/notification", NotificationController.class);
         me.add("/form", FormController.class);

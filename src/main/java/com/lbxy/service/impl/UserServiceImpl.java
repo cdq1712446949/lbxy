@@ -5,7 +5,8 @@ import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.lbxy.common.exception.InvalidRequestParamException;
-import com.lbxy.common.request.UserInfoBean;
+import com.lbxy.common.request.SaveUserInfoBean;
+import com.lbxy.common.request.UpdateUserInfoBean;
 import com.lbxy.common.request.VerificationBean;
 import com.lbxy.common.status.UserStatus;
 import com.lbxy.core.annotation.Service;
@@ -24,7 +25,7 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserDao userDao;
 
-    public User findById(int id) {
+    public User findById(long id) {
         return userDao.findById(id);
     }
 
@@ -79,7 +80,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Before(Tx.class)
-    public User updateBaseUserInfo(UserInfoBean userInfo, int userId) throws InvalidRequestParamException {
+    public User updateBaseUserInfo(UpdateUserInfoBean userInfo, long userId) throws InvalidRequestParamException {
         Map<String, String> param = userInfo.getUpdateUserInfo();
         Map.Entry<String, String> paramEntry = param.entrySet().iterator().next();
         User user = userDao.findById(userId);
@@ -90,7 +91,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Before(Tx.class)
-    public User updateVerificationUserInfo(VerificationBean verification, int userId) {
+    public User updateVerificationUserInfo(VerificationBean verification, long userId) {
         User currentUser = this.findById(userId);
         currentUser.setReadName(verification.getRealName());
         currentUser.setStudentNumber(verification.getStudentNumber());
@@ -102,11 +103,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Before(Tx.class)
-    public User saveUserInfo(JSONObject userInfo, int userId) {
-        User currentUser = userDao.findById(userId);
-        currentUser.set("username", userInfo.get("nickName"));
-        currentUser.set("avatarUrl", userInfo.get("avatarUrl"));
-        currentUser.set("gender", userInfo.get("gender"));
+    public User saveUserInfo(SaveUserInfoBean userInfo, long userId) {
+        User currentUser = new User();
+        currentUser.setId(userId);
+        currentUser.setUsername(userInfo.getNickName());
+        currentUser.setAvatarUrl(userInfo.getAvatarUrl());
+        currentUser.setGender(userInfo.getGender());
+
         currentUser.update();
         return currentUser;
     }

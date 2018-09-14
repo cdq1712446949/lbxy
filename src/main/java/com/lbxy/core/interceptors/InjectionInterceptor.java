@@ -9,6 +9,7 @@ import com.lbxy.core.utils.LoggerUtil;
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Map;
 
 /**
  * @author lmy
@@ -18,7 +19,10 @@ import java.util.Arrays;
 public class InjectionInterceptor implements Interceptor {
     @Override
     public void intercept(Invocation inv) {
-        LoggerUtil.info(getClass(), inv.getActionKey()+":"+ inv.getController().getParaMap().toString());
+        Map<String, String[]> paramMap = inv.getController().getParaMap();
+        StringBuilder builder = new StringBuilder();
+        paramMap.keySet().forEach(key -> builder.append("[ ").append(key).append(":").append(Arrays.toString(paramMap.get(key))).append(" ]").append("\n"));
+        LoggerUtil.info(getClass(), inv.getActionKey() + ": \n" + builder);
 
 
         Controller controller = inv.getController();

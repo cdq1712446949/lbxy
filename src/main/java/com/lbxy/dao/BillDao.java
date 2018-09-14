@@ -17,15 +17,15 @@ public class BillDao {
         return Bill.DAO.paginate(pn, 10, "select *", "from bill");
     }
 
-    public List<Bill> findByUserId(int userId) {
+    public List<Bill> findByUserId(long userId) {
         return Bill.DAO.find("select * from bill where userId=?", userId);
     }
 
-    public BigDecimal get7DaysTotalIncome(int userId) {
+    public BigDecimal get7DaysTotalIncome(long userId) {
         return Db.queryBigDecimal("select sum(money) from bill where userId=? and status=?", userId, BillStatus.INCOME);
     }
 
-    public Page<Bill> getAllByUserId(int pn, int userId) {
+    public Page<Bill> getAllByUserId(int pn, long userId) {
         return Bill.DAO.paginate(pn, PageConst.PAGE_SIZE, "select b.status,b.money,b.createdDate,o.fromAddress,o.toAddress ", "from bill b inner join `order` o on b.orderId = o.id where b.userId=?", userId);
     }
 

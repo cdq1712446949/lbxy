@@ -20,10 +20,9 @@ import java.util.Optional;
 public class FormServiceImpl implements FormService {
     @Override
     @Before(Tx.class)
-    public void put(long userId, JSONObject formIds) {
-        JSONArray jsonArray = formIds.getJSONArray("formIds");
-        for (int i = 0; i < jsonArray.size(); i++) {
-            JSONObject object = jsonArray.getJSONObject(i);
+    public void put(long userId, JSONArray formIds) {
+        for (int i = 0; i < formIds.size(); i++) {
+            JSONObject object = formIds.getJSONObject(i);
             String formId = object.getString("formId");
 
             long timestamp = object.getLongValue("timestamp");

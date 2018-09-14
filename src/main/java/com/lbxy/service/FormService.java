@@ -1,5 +1,6 @@
 package com.lbxy.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.plugin.ehcache.CacheKit;
 import net.sf.ehcache.Cache;
@@ -65,7 +66,7 @@ public interface FormService {
         }
     }
 
-    void put(long userId, JSONObject formIds);
+    void put(long userId, JSONArray formIds);
 
     String get(long userId) throws Exception;
 }

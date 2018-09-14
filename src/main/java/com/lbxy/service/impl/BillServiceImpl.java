@@ -19,7 +19,7 @@ public class BillServiceImpl implements BillService {
     private BillDao billDao;
 
     @Override
-    public List<Bill> getBill(int userId) {
+    public List<Bill> getBill(long userId) {
         return billDao.findByUserId(userId);
     }
 
@@ -36,12 +36,12 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public BigDecimal get7DaysTotalIncome(int userId) {
+    public BigDecimal get7DaysTotalIncome(long userId) {
         return billDao.get7DaysTotalIncome(userId);
     }
 
     @Override
-    public Page<Bill> getAllByUserId(int pn, int userId) {
+    public Page<Bill> getAllByUserId(int pn, long userId) {
         return billDao.getAllByUserId(pn, userId);
     }
 

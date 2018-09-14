@@ -1,6 +1,7 @@
 package com.lbxy.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
@@ -24,7 +25,7 @@ public class FormController extends Controller {
 
     @Before(POST.class)
     public void post(long userId, String formIdsJsonString) {
-        JSONObject formIds = JSON.parseObject(formIdsJsonString);
+        JSONArray formIds = JSON.parseArray(formIdsJsonString);
         formService.put(userId, formIds);
         renderJson(MessageVoUtil.success("formId保存成功"));
     }

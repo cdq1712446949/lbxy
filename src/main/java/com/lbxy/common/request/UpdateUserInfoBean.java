@@ -8,10 +8,10 @@ import java.util.Map;
 
 /**
  * @author lmy
- * @description UserInfoBean
+ * @description UpdateUserInfoBean
  * @date 2018/8/17
  */
-public class UserInfoBean {
+public class UpdateUserInfoBean {
     private String realName;
     private String phoneNumber;
     private String address;
