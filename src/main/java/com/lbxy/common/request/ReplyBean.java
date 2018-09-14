@@ -12,7 +12,6 @@ public class ReplyBean {
     @NotBlank(message = "回复的内同不能为空")
     private String content;
 
-
     private Long pUserId;
 
     @NotNull(message = "被回复的帖子id不能为空")

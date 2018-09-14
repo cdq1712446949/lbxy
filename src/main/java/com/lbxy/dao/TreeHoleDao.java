@@ -25,7 +25,7 @@ public class TreeHoleDao {
     }
 
     public Page<Treehole> getMainByPage(int pn) {
-        return Treehole.DAO.paginate(pn, PageConst.PAGE_SIZE, "select f.*,u.username", "from treehole f inner join user u on f.userId = u.id where f.pId is null and f.status = ? order by f.postDate desc", CommonStatus.NORMAL);
+        return Treehole.DAO.paginate(pn, PageConst.PAGE_SIZE, "select f.*", "from treehole f where f.pId is null and f.status = ? order by f.postDate desc", CommonStatus.NORMAL);
     }
 
     public List<Treehole> getReplyByPId(long pid) {

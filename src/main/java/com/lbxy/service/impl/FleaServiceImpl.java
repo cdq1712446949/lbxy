@@ -72,11 +72,6 @@ public class FleaServiceImpl implements FleaService {
         JSONArray jsonArray = jsonObject.getJSONArray("list");
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject one = jsonArray.getJSONObject(i);
-            //将用户信息放入结果集中
-            User userInMain = userDao.findById(one.getIntValue("userId"));
-            one.put("username", userInMain.getUsername());
-            one.put("userId", userInMain.getId());
-            one.put("avatarUrl", userInMain.getAvatarUrl());
 
             //将每一条回复放入结果集
             List<Flea> reply = fleaDao.getReplyByPId(one.getIntValue("id"));

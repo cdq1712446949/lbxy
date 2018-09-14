@@ -24,7 +24,7 @@ public class FleaDao {
     }
 
     public Page<Flea> getMainByPage(int pn) {
-        return Flea.DAO.paginate(pn, PageConst.PAGE_SIZE, "select f.*,u.username", "from flea f inner join user u on f.userId = u.id where f.pId is null and f.status = ? order by f.postDate desc", CommonStatus.NORMAL);
+        return Flea.DAO.paginate(pn, PageConst.PAGE_SIZE, "select f.*,u.username,u.avatarUrl", "from flea f inner join user u on f.userId = u.id where f.pId is null and f.status = ? order by f.postDate desc", CommonStatus.NORMAL);
     }
 
     public List<Flea> getReplyByPId(long pid) {
