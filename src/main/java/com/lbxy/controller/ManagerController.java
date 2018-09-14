@@ -46,6 +46,8 @@ public class ManagerController extends BaseController {
     @Resource
     private NotificationService notificationService;
 
+    @Resource
+    private ImageService imageService;
 
     @Clear({ManagerLoginInterceptor.class})
     public void index() {
@@ -184,6 +186,12 @@ public class ManagerController extends BaseController {
         Page<Bill> billPage = billService.getAllBill(pn);
         setAttr("billPage", billPage);
         render("bill_list.html");
+    }
+
+    public void imageList(int pn){
+        Page<Image> imagePage=imageService.getAllImage(pn);
+        setAttr("imagePage",imagePage);
+        render("image_list.html");
     }
 
     @Before({EvictInterceptor.class})

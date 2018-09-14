@@ -1,6 +1,7 @@
 package com.lbxy.service.impl;
 
 import com.jfinal.aop.Before;
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.lbxy.common.ImageType;
 import com.lbxy.core.annotation.Service;
@@ -36,5 +37,10 @@ public class ImageServiceImpl implements ImageService {
     public List<Image> getIndexImages() {
 
         return imageDao.getImagesByType(ImageType.INDEX_SWIPER);
+    }
+
+    @Override
+    public Page<Image> getAllImage(int pn) {
+        return imageDao.getImageByPn(pn);
     }
 }
