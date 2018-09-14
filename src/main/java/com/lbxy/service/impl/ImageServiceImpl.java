@@ -40,8 +40,8 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Page<Image> getAllImage(int pn) {
-        return imageDao.getImageByPn(pn);
+    public Page<Image> getIndexImagesByPage(int pn) {
+        return imageDao.getImageByPn(pn, ImageType.INDEX_SWIPER);
     }
 
     @Override

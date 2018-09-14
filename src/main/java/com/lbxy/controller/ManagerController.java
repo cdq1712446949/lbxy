@@ -188,9 +188,10 @@ public class ManagerController extends BaseController {
         render("bill_list.html");
     }
 
-    public void imageList(int pn){
-        Page<Image> imagePage=imageService.getAllImage(pn);
-        setAttr("imagePage",imagePage);
+    public void imageList(int pn) {
+        if (pn <= 0) pn = 1;
+        Page<Image> imagePage = imageService.getIndexImagesByPage(pn);
+        setAttr("imagePage", imagePage);
         render("image_list.html");
     }
 
@@ -260,17 +261,17 @@ public class ManagerController extends BaseController {
     }
 
     public void cancelAuthencation(@Range(min = 1) int id) {
-        userService.updateUserStatus(id,UserStatus.UNAUTHENTICATION);
+        userService.updateUserStatus(id, UserStatus.UNAUTHENTICATION);
         redirect("./userList?pn=1");
     }
 
     public void blockUser(@Range(min = 1) int id) {
-        userService.updateUserStatus(id,UserStatus.BLOCKED);
+        userService.updateUserStatus(id, UserStatus.BLOCKED);
         redirect("./userList?pn=1");
     }
 
     public void unBlockUser(@Range(min = 1) int id) {
-        userService.updateUserStatus(id,UserStatus.UNAUTHENTICATION);
+        userService.updateUserStatus(id, UserStatus.UNAUTHENTICATION);
         redirect("./userList?pn=1");
     }
 
@@ -304,10 +305,10 @@ public class ManagerController extends BaseController {
         redirect("./notificationList?pn=1");
     }
 
-    public void createdImage(String location){
-        Image image=new Image();
-        image.set("location",location);
-        boolean b=imageService.saveImage(image);
+    public void createdImage(@NotBlank String location) {
+        Image image = new Image();
+        image.set("location", location);
+        boolean b = imageService.saveImage(image);
         redirect("./imageList?pn=1");
     }
 

@@ -15,7 +15,7 @@ public interface ImageService {
 
     List<Image> getIndexImages();
 
-    Page<Image> getAllImage(int pn);
+    Page<Image> getIndexImagesByPage(int pn);
 
     boolean saveImage(Image image);
 

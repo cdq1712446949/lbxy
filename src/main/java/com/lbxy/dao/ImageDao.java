@@ -27,8 +27,8 @@ public class ImageDao {
         return Image.DAO.find("select location from image where type = ?", type);
     }
 
-    public Page<Image> getImageByPn(int pn){
-        return Image.DAO.paginate(pn,10,"select *","from image");
+    public Page<Image> getImageByPn(int pn,int type){
+        return Image.DAO.paginate(pn,10,"select *","from image where type = ?",type);
     }
 
 }
