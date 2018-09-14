@@ -6,6 +6,7 @@ import com.jfinal.aop.Clear;
 import com.jfinal.core.paragetter.Para;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
+import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 import com.lbxy.common.request.SaveUserInfoBean;
@@ -14,6 +15,7 @@ import com.lbxy.common.request.VerificationBean;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.core.annotation.ValidParam;
 import com.lbxy.core.interceptors.WeixinLoginInterceptor;
+import com.lbxy.manager.UploadManager;
 import com.lbxy.model.Bill;
 import com.lbxy.model.User;
 import com.lbxy.service.BillService;
@@ -24,6 +26,7 @@ import javax.annotation.Resource;
 import javax.validation.constraints.NotBlank;
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Before(WeixinLoginInterceptor.class)
 public class UserController extends BaseController {
@@ -34,6 +37,9 @@ public class UserController extends BaseController {
     private OrderService orderService;
     @Resource
     private BillService billService;
+
+    @Resource
+    private UploadManager uploadManager;
 
     @Clear(WeixinLoginInterceptor.class)
     @Before(POST.class)
@@ -56,8 +62,16 @@ public class UserController extends BaseController {
 
     @Before(POST.class)
     public void auth(UploadFile img, long userId, @ValidParam @Para("") VerificationBean verification) {
-        //TODO 部署之后还要调试上传路径
-        verification.setStuNoPic(img.getUploadPath() + File.separator + img.getFileName());
+        String imagePath = img.getUploadPath() + File.separatorChar + img.getFileName();
+        Optional<String> imageUrl = uploadManager.upload2SM(imagePath);
+
+        if (imageUrl.isPresent()) {
+            verification.setStuNoPic(imageUrl.get());
+        } else {
+            String url = PropKit.get("server.host") + File.separatorChar + "upload" + File.separatorChar + img.getFileName();
+            verification.setStuNoPic(url);
+        }
+
         User result = userService.updateVerificationUserInfo(verification, userId);
         renderJson(MessageVoUtil.success("更新用户信息成功", result));
     }
