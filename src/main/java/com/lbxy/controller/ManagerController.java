@@ -46,6 +46,8 @@ public class ManagerController extends BaseController {
     @Resource
     private NotificationService notificationService;
 
+    @Resource
+    private ImageService imageService;
 
     @Clear({ManagerLoginInterceptor.class})
     public void index() {
@@ -186,6 +188,12 @@ public class ManagerController extends BaseController {
         render("bill_list.html");
     }
 
+    public void imageList(int pn){
+        Page<Image> imagePage=imageService.getAllImage(pn);
+        setAttr("imagePage",imagePage);
+        render("image_list.html");
+    }
+
     @Before({EvictInterceptor.class})
     @CacheName("treehole")
     public void deleteTreeHole(@Range(min = 1) int id) {
@@ -294,6 +302,13 @@ public class ManagerController extends BaseController {
     public void cancelNowActive(@Range(min = 1) int id) {
         boolean b = notificationService.cancelActive(id);
         redirect("./notificationList?pn=1");
+    }
+
+    public void createdImage(String location){
+        Image image=new Image();
+        image.set("location",location);
+        boolean b=imageService.saveImage(image);
+        redirect("./imageList?pn=1");
     }
 
 }

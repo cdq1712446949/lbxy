@@ -1,5 +1,6 @@
 package com.lbxy.dao;
 
+import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.ImageType;
 import com.lbxy.core.annotation.Repository;
 import com.lbxy.model.Image;
@@ -25,4 +26,9 @@ public class ImageDao {
     public List<Image> getImagesByType(int type) {
         return Image.DAO.find("select location from image where type = ?", type);
     }
+
+    public Page<Image> getImageByPn(int pn){
+        return Image.DAO.paginate(pn,10,"select *","from image");
+    }
+
 }

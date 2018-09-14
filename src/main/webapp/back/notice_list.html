@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <script type="text/javascript" src="scripts/jquery/jquery-1.7.1.js"></script>
+    <script type="text/javascript" src="/scripts/jquery/jquery-1.7.1.js"></script>
     <link href="/css/basic_layout.css" rel="stylesheet" type="text/css">
     <link href="/css/common_style.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.fancybox-1.3.4.css" media="screen"></link>
@@ -176,7 +176,7 @@
             <div id="box_border">
                 <form action="/back/noticeList" method="post">
                     <div id="box_bottom">
-                        <input type="button" name='notice_button' id="notice_button" value="发布公告" class="ui_input_btn01"
+                        <input type="button" name='notice_button' id="notice_button" value="发布公告" class="ui_input_btn02"
                                onclick="creatNotice()"/>
                         <form name="formpage">
                             第<input name='SkipPage' id="ai" class="ui_input_txt01">页
@@ -238,12 +238,12 @@
                     <!--    如果是第一页，则只显示下一页、尾页 -->
                     <a href="/back/notificationList?pn=1"
                        class="ui_input_btn01">首页</a>
-                    #if(!noticePage.firstPage)
-                    <a href="/back/notificationList?pn=#(noticePage.pageNumber-1)&totalPage=#(noticePage.totalPage)"
+                    #if(noticePage.pageNumber>1)
+                    <a href="/back/notificationList?pn=#(noticePage.pageNumber-1)"
                        class="ui_input_btn01">上一页</a>
                     #end
-                    #if(!noticePage.lastPage)
-                    <a href="/back/notificationList?pn=#(noticePage.pageNumber+1)&totalPage=#(noticePage.totalPage)"
+                    #if(noticePage.pageNumber<noticePage.pageNumber)
+                    <a href="/back/notificationList?pn=#(noticePage.pageNumber+1)"
                        class="ui_input_btn01">下一页</a>
                     #end
                     <a href="/back/notificationList?pn=#(noticePage.totalPage)"
