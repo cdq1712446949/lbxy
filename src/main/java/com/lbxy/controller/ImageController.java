@@ -45,10 +45,9 @@ public class ImageController extends BaseController {
         render("/back/image_show.html");
     }
 
-//    @Before({WeixinLoginInterceptor.class, POST.class})
+    @Before({WeixinLoginInterceptor.class, POST.class})
     public void image(UploadFile img, @Range(min = 0) long id, @Range(min = 0, max = 2) int type) {
         boolean result;
-        //TODO 部署之后还要调试上传路径
         String imagePath = img.getUploadPath() + File.separatorChar + img.getFileName();
         Optional<String> imageUrl = uploadManager.upload2SM(imagePath);
 
