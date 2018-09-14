@@ -10,6 +10,7 @@ import com.lbxy.common.ImageType;
 import com.lbxy.common.request.ReplyBean;
 import com.lbxy.common.status.CommonStatus;
 import com.lbxy.core.annotation.Service;
+import com.lbxy.core.utils.LoggerUtil;
 import com.lbxy.dao.FleaDao;
 import com.lbxy.dao.ImageDao;
 import com.lbxy.dao.UserDao;
@@ -22,10 +23,7 @@ import com.lbxy.weixin.utils.WeixinUtil;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 @Service("fleaService")
 public class FleaServiceImpl implements FleaService {
@@ -127,30 +125,34 @@ public class FleaServiceImpl implements FleaService {
 
     @Override
     @Before(Tx.class)
-    public boolean reply(long userId, String formId, ReplyBean replyBean) {
+    public boolean reply(long userId, Optional<String> formId, ReplyBean replyBean) {
         User currentUser = userDao.findById(userId);
         User toUser = userDao.findById(replyBean.getToUserId());
         Flea currentFlea = fleaDao.getById(replyBean.getpId());
 
-        WeixinUtil.sendMessage(toUser.getOpenId(),
-                formId,
-                String.format("/pages/community/detail/detail?id=%s&type=0", replyBean.getpId()),
-                "跳蚤市场",
-                currentFlea.getContent(),
-                currentUser.getUsername(),
-                replyBean.getContent(),
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.CHINA)));
-
-        if (Objects.nonNull(replyBean.getpUserId())) {
-            User pUser = userDao.findById(replyBean.getpUserId());
-            WeixinUtil.sendMessage(pUser.getOpenId(),
-                    formId,
+        if (formId.isPresent()) {
+            WeixinUtil.sendMessage(toUser.getOpenId(),
+                    formId.get(),
                     String.format("/pages/community/detail/detail?id=%s&type=0", replyBean.getpId()),
                     "跳蚤市场",
                     currentFlea.getContent(),
                     currentUser.getUsername(),
                     replyBean.getContent(),
                     LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.CHINA)));
+
+            if (Objects.nonNull(replyBean.getpUserId())) {
+                User pUser = userDao.findById(replyBean.getpUserId());
+                WeixinUtil.sendMessage(pUser.getOpenId(),
+                        formId.get(),
+                        String.format("/pages/community/detail/detail?id=%s&type=0", replyBean.getpId()),
+                        "跳蚤市场",
+                        currentFlea.getContent(),
+                        currentUser.getUsername(),
+                        replyBean.getContent(),
+                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.CHINA)));
+            }
+        } else {
+            LoggerUtil.info(getClass(), userId + "无可用formid");
         }
 
         Flea flea = new Flea();

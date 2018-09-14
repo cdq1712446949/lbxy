@@ -1,8 +1,8 @@
 package com.lbxy.service;
 
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.jfinal.plugin.ehcache.CacheKit;
+import com.lbxy.core.utils.LoggerUtil;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
@@ -41,6 +41,7 @@ public interface FormService {
             element = new Element(count, formId, 0, expireSeconds);
         }
         currentCache.put(element);
+        reportFormIds(userId);
     }
 
     /**
@@ -50,6 +51,8 @@ public interface FormService {
      * @return
      */
     static Optional<String> getRandom(long userId) {
+        reportFormIds(userId);
+
         CacheManager ehCacheManager = CacheKit.getCacheManager();
         if (!ehCacheManager.cacheExists(String.valueOf(userId))) {
             return Optional.empty();
@@ -66,7 +69,23 @@ public interface FormService {
         }
     }
 
+    static void reportFormIds(long userId) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(userId).append(" have form id:").append("\n");
+
+        CacheManager ehCacheManager = CacheKit.getCacheManager();
+        if (!ehCacheManager.cacheExists(String.valueOf(userId))) {
+            builder.append("null");
+        } else {
+            Cache currentCache = ehCacheManager.getCache(String.valueOf(userId));
+            List keys = currentCache.getKeysWithExpiryCheck();
+            keys.forEach(key -> builder.append(currentCache.get(key)).append("\n"));
+        }
+
+        LoggerUtil.debug(FormService.class, builder.toString());
+    }
+
     void put(long userId, JSONArray formIds);
 
-    String get(long userId) throws Exception;
+    Optional<String> get(long userId) throws Exception;
 }

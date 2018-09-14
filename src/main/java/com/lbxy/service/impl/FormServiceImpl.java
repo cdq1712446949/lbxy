@@ -37,8 +37,7 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public String get(long userId) throws Exception {
-        Optional<String> formId = FormService.getRandom(userId);
-        return formId.orElseThrow(() -> new Exception("no formid is available（无可用formId）"));
+    public Optional<String> get(long userId) {
+       return FormService.getRandom(userId);
     }
 }

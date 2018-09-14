@@ -17,6 +17,7 @@ import com.lbxy.service.FormService;
 import com.lbxy.service.TreeHoleService;
 
 import javax.annotation.Resource;
+import java.util.Optional;
 
 /**
  * @author lmy
@@ -46,7 +47,7 @@ public class TreeholeController extends Controller {
     @Before({POST.class, EvictInterceptor.class})
     @CacheName("treehole")
     public void reply(@ValidParam @Para("") ReplyBean replyBean, long userId) throws Exception {
-        String formId = formService.get(userId);
+        Optional<String> formId = formService.get(userId);
         boolean result = treeHoleService.reply(userId, formId, replyBean);
         if (result) {
             renderJson(MessageVoUtil.success("回复成功"));

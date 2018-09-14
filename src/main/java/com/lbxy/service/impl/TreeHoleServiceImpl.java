@@ -10,6 +10,7 @@ import com.lbxy.common.ImageType;
 import com.lbxy.common.request.ReplyBean;
 import com.lbxy.common.status.CommonStatus;
 import com.lbxy.core.annotation.Service;
+import com.lbxy.core.utils.LoggerUtil;
 import com.lbxy.core.utils.RandomAvatarUtil;
 import com.lbxy.core.utils.RandomColorUtil;
 import com.lbxy.dao.ImageDao;
@@ -24,10 +25,7 @@ import com.lbxy.weixin.utils.WeixinUtil;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 @Service("treeHoleService")
 public class TreeHoleServiceImpl implements TreeHoleService {
@@ -125,30 +123,34 @@ public class TreeHoleServiceImpl implements TreeHoleService {
 
     @Override
     @Before(Tx.class)
-    public boolean reply(long userId, String formId, ReplyBean replyBean) {
+    public boolean reply(long userId, Optional<String> formId, ReplyBean replyBean) {
         User currentUser = userDao.findById(userId);
         User toUser = userDao.findById(replyBean.getToUserId());
         Treehole currentTreehole = treeHoleDao.getById(replyBean.getpId());
 
-        WeixinUtil.sendMessage(toUser.getOpenId(),
-                formId,
-                String.format("/pages/community/detail/detail?id=%s&type=1", replyBean.getpId()),
-                "跳蚤市场",
-                currentTreehole.getContent(),
-                currentUser.getUsername(),
-                replyBean.getContent(),
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.CHINA)));
-
-        if (Objects.nonNull(replyBean.getpUserId())) {
-            User pUser = userDao.findById(replyBean.getpUserId());
-            WeixinUtil.sendMessage(pUser.getOpenId(),
-                    formId,
+        if (formId.isPresent()) {
+            WeixinUtil.sendMessage(toUser.getOpenId(),
+                    formId.get(),
                     String.format("/pages/community/detail/detail?id=%s&type=1", replyBean.getpId()),
                     "跳蚤市场",
                     currentTreehole.getContent(),
                     currentUser.getUsername(),
                     replyBean.getContent(),
                     LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.CHINA)));
+
+            if (Objects.nonNull(replyBean.getpUserId())) {
+                User pUser = userDao.findById(replyBean.getpUserId());
+                WeixinUtil.sendMessage(pUser.getOpenId(),
+                        formId.get(),
+                        String.format("/pages/community/detail/detail?id=%s&type=1", replyBean.getpId()),
+                        "跳蚤市场",
+                        currentTreehole.getContent(),
+                        currentUser.getUsername(),
+                        replyBean.getContent(),
+                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.CHINA)));
+            }
+        } else {
+            LoggerUtil.info(getClass(), userId + "无可用formid");
         }
 
         Treehole treehole = new Treehole();

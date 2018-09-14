@@ -5,6 +5,8 @@ import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.request.ReplyBean;
 import com.lbxy.model.Lostfound;
 
+import java.util.Optional;
+
 public interface LostFoundService {
 
     Page<Lostfound> getAllLostFound(int pn);
@@ -17,7 +19,7 @@ public interface LostFoundService {
 
     JSONObject getMainByPage(int pn);
 
-    boolean reply(long userId, String formId, ReplyBean replyBean);
+    boolean reply(long userId, Optional<String> formId, ReplyBean replyBean);
 
     Page<Lostfound> getLostFoundByContent(int pn, String content);
 

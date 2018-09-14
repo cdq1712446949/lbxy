@@ -5,6 +5,8 @@ import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.request.ReplyBean;
 import com.lbxy.model.Flea;
 
+import java.util.Optional;
+
 public interface FleaService {
 
     Page<Flea> getAllFlea(int pn);
@@ -17,7 +19,7 @@ public interface FleaService {
 
     JSONObject getMainByPage(int pn);
 
-    boolean reply(long userId, String formId, ReplyBean replyBean);
+    boolean reply(long userId, Optional<String> formId, ReplyBean replyBean);
 
     Page<Flea> getFleaByContent(int pn, String content);
 

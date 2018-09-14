@@ -17,6 +17,7 @@ import com.lbxy.service.FleaService;
 import com.lbxy.service.FormService;
 
 import javax.annotation.Resource;
+import java.util.Optional;
 
 /**
  * @author lmy
@@ -49,7 +50,7 @@ public class FleaController extends Controller {
     @Before({POST.class, EvictInterceptor.class})
     @CacheName("flea")
     public void reply(@ValidParam @Para("") ReplyBean replyBean, long userId) throws Exception {
-        String formId = formService.get(userId);
+        Optional<String> formId = formService.get(userId);
         boolean result = fleaService.reply(userId, formId, replyBean);
         if (result) {
             renderJson(MessageVoUtil.success("回复成功"));
