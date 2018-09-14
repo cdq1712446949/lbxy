@@ -12,7 +12,6 @@ import com.lbxy.service.UserService;
 import org.hibernate.validator.constraints.Range;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.NotBlank;
 import java.io.File;
 
 public class ImageController extends BaseController {
@@ -40,7 +39,7 @@ public class ImageController extends BaseController {
     }
 
     @Before({WeixinLoginInterceptor.class, POST.class})
-    public void image(UploadFile img, @NotBlank @Range(min = 0) long id, @NotBlank @Range(min = 0, max = 2) int type) {
+    public void image(UploadFile img, @Range(min = 0) long id, @Range(min = 0, max = 2) int type) {
         //TODO 部署之后还要调试上传路径
         String imagePath = img.getUploadPath() + File.separatorChar + img.getFileName();
         boolean result = imageService.saveImageInfo(id, type, imagePath);

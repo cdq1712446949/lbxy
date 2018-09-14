@@ -21,7 +21,6 @@ import com.lbxy.service.OrderService;
 import com.lbxy.service.UserService;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.io.File;
 import java.math.BigDecimal;
