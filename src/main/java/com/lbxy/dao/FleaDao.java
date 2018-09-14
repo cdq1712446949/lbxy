@@ -1,9 +1,13 @@
 package com.lbxy.dao;
 
+import com.alibaba.fastjson.JSON;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.lbxy.common.PageConst;
 import com.lbxy.common.status.CommonStatus;
 import com.lbxy.core.annotation.Repository;
+import com.lbxy.core.utils.LoggerUtil;
 import com.lbxy.model.Flea;
 
 import java.util.List;
@@ -23,12 +27,13 @@ public class FleaDao {
         return flea.save();
     }
 
-    public Page<Flea> getMainByPage(int pn) {
-        return Flea.DAO.paginate(pn, PageConst.PAGE_SIZE, "select f.*,u.username,u.avatarUrl", "from flea f inner join user u on f.userId = u.id where f.pId is null and f.status = ? order by f.postDate desc", CommonStatus.NORMAL);
+    public Page<Record> getMainByPage(int pn) {
+        Page<Record> result = Db.paginate(pn, PageConst.PAGE_SIZE, "select f.*,u.username,u.avatarUrl", "from flea f inner join user u on f.userId = u.id where f.pId is null and f.status = ? order by f.postDate desc", CommonStatus.NORMAL);
+        return result;
     }
 
-    public List<Flea> getReplyByPId(long pid) {
-        return Flea.DAO.find("select f.*,u.username from flea f inner join user u on f.userId = u.id where f.pId = ? and f.status = ? order by f.postDate asc", pid, CommonStatus.NORMAL);
+    public List<Record> getReplyByPId(long pid) {
+        return Db.find("select f.*,u.username from flea f inner join user u on f.userId = u.id where f.pId = ? and f.status = ? order by f.postDate asc", pid, CommonStatus.NORMAL);
     }
 
     public Flea getById(long id) {

@@ -64,8 +64,10 @@ public interface FormService {
         } else {
             int size = keys.size();
             int randomKey = RandomUtils.nextInt(1, size + 1);
+            String value = currentCache.get(randomKey).toString();
+            currentCache.remove(randomKey);
 
-            return Optional.of(currentCache.get(randomKey).toString());
+            return Optional.of(value);
         }
     }
 

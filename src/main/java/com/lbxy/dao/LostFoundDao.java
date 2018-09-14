@@ -1,6 +1,8 @@
 package com.lbxy.dao;
 
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.lbxy.common.PageConst;
 import com.lbxy.common.status.CommonStatus;
 import com.lbxy.core.annotation.Repository;
@@ -23,12 +25,12 @@ public class LostFoundDao {
         return lostfound.save();
     }
 
-    public Page<Lostfound> getMainByPage(int pn) {
-        return Lostfound.DAO.paginate(pn, PageConst.PAGE_SIZE, "select f.*,u.username,u.avatarUrl", "from lostfound f inner join user u on f.userId = u.id where f.pId is null and f.status = ? order by f.postDate desc", CommonStatus.NORMAL);
+    public Page<Record> getMainByPage(int pn) {
+        return Db.paginate(pn, PageConst.PAGE_SIZE, "select f.*,u.username,u.avatarUrl", "from lostfound f inner join user u on f.userId = u.id where f.pId is null and f.status = ? order by f.postDate desc", CommonStatus.NORMAL);
     }
 
-    public List<Lostfound> getReplyByPId(long pid) {
-        return Lostfound.DAO.find("select f.*,u.username from lostfound f inner join user u on f.userId = u.id where f.pId = ? and f.status = ? order by f.postDate asc", pid, CommonStatus.NORMAL);
+    public List<Record> getReplyByPId(long pid) {
+        return Db.find("select f.*,u.username from lostfound f inner join user u on f.userId = u.id where f.pId = ? and f.status = ? order by f.postDate asc", pid, CommonStatus.NORMAL);
     }
 
     public Lostfound getById(long id) {

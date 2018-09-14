@@ -1,6 +1,7 @@
 package com.lbxy.service;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.lbxy.common.request.CreateOrderBean;
 import com.lbxy.model.Order;
 
@@ -20,7 +21,7 @@ public interface OrderService {
 
     Order findById(long id);
 
-    Page<Order> getOrdersByPage(int pn);
+    Page<Record> getOrdersByPage(int pn);
 
     Page<Order> getUnCompletedAndWaitCompletedAndCompletedOrdersByPage(int pn);
 

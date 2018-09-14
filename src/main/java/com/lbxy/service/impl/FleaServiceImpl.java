@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
+import com.jfinal.kit.LogKit;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.lbxy.common.ImageType;
 import com.lbxy.common.request.ReplyBean;
@@ -65,24 +67,18 @@ public class FleaServiceImpl implements FleaService {
     @Override
     public JSONObject getMainByPage(int pn) {
 
-        Page<Flea> page = fleaDao.getMainByPage(pn);
+        Page<Record> page = fleaDao.getMainByPage(pn);
+        LoggerUtil.debug(getClass(), JSON.toJSONString(fleaDao.getMainByPage(pn)));
+
         JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(page));
         JSONArray jsonArray = jsonObject.getJSONArray("list");
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject one = jsonArray.getJSONObject(i);
 
             //将每一条回复放入结果集
-            List<Flea> reply = fleaDao.getReplyByPId(one.getIntValue("id"));
-            JSONArray replyArray = JSON.parseArray(JSON.toJSONString(reply));
-            for (int i1 = 0; i1 < replyArray.size(); i1++) {
-                // 将回复中的被回复者的username放入结果集
-                JSONObject replyObject = replyArray.getJSONObject(i1);
-                User userInReply = userDao.findById(replyObject.getIntValue("userId"));
-                replyObject.put("username", userInReply.getUsername());
-                replyObject.put("userId", userInReply.getId());
-            }
+            List<Record> reply = fleaDao.getReplyByPId(one.getIntValue("id"));
 
-            one.put("reply", replyArray);
+            one.put("reply", reply);
 
             // 将每一条的图片放入结果集
             List<Image> images = imageDao.getImagesByContentIdAndType(one.getIntValue("id"), ImageType.FLEA);
@@ -105,17 +101,9 @@ public class FleaServiceImpl implements FleaService {
         jsonObject.put("avatarUrl", userInMain.getAvatarUrl());
 
         //将每一条回复放入结果集
-        List<Flea> reply = fleaDao.getReplyByPId(jsonObject.getIntValue("id"));
-        JSONArray replyArray = JSON.parseArray(JSON.toJSONString(reply));
-        for (int i1 = 0; i1 < replyArray.size(); i1++) {
-            // 将回复中的被回复者的username放入结果集
-            JSONObject replyObject = replyArray.getJSONObject(i1);
-            User userInReply = userDao.findById(replyObject.getIntValue("userId"));
-            replyObject.put("username", userInReply.getUsername());
-            replyObject.put("userId", userInReply.getId());
-        }
+        List<Record> reply = fleaDao.getReplyByPId(jsonObject.getIntValue("id"));
 
-        jsonObject.put("reply", replyArray);
+        jsonObject.put("reply", reply);
 
         // 将每一条的图片放入结果集
         List<Image> images = imageDao.getImagesByContentIdAndType(jsonObject.getIntValue("id"), ImageType.FLEA);

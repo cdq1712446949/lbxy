@@ -5,6 +5,7 @@ import com.jfinal.core.paragetter.Para;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.ehcache.CacheInterceptor;
 import com.jfinal.plugin.ehcache.CacheName;
 import com.jfinal.plugin.ehcache.EvictInterceptor;
@@ -27,7 +28,7 @@ public class OrderController extends BaseController {
     @Before({GET.class, CacheInterceptor.class})
     @CacheName("order")
     public void index(int pn) {
-        Page<Order> page = orderService.getOrdersByPage(pn);
+        Page<Record> page = orderService.getOrdersByPage(pn);
         renderJson(MessageVoUtil.success(page));
     }
 

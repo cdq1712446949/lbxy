@@ -2,6 +2,7 @@ package com.lbxy.service.impl;
 
 import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.lbxy.common.request.CreateOrderBean;
 import com.lbxy.common.status.BillStatus;
@@ -41,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.findById(id);
     }
 
-    public Page<Order> getOrdersByPage(int pn) {
+    public Page<Record> getOrdersByPage(int pn) {
         return orderDao.getUnCompletedOrdersByPage(pn);
     }
 

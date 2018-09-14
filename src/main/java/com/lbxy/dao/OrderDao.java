@@ -2,6 +2,7 @@ package com.lbxy.dao;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.lbxy.common.PageConst;
 import com.lbxy.common.status.CommonStatus;
 import com.lbxy.common.status.OrderStatus;
@@ -30,11 +31,11 @@ public class OrderDao {
         return Db.queryBigDecimal("select sum(reward) from `order` where acceptUserId=? and status=?", acceptUserId, OrderStatus.WAIT_COMPLETE);
     }
 
-    public Page<Order> getUnCompletedOrdersByPage(int pn) {
+    public Page<Record> getUnCompletedOrdersByPage(int pn) {
         /*
         .createdDate,o.reward,o.userName,o.userPhoneNumber,o.fromAddress,o.toAddress,o.remark,o.detail
          */
-        return Order.DAO.paginate(pn, PageConst.PAGE_SIZE, "select u.username,u.avatarUrl,o.*", " from `order` o inner join user u on o.userId = u.id where o.status=?", OrderStatus.UN_COMPLETED);
+        return Db.paginate(pn, PageConst.PAGE_SIZE, "select u.username,u.avatarUrl,o.*", " from `order` o inner join user u on o.userId = u.id where o.status=?", OrderStatus.UN_COMPLETED);
     }
 
     public Page<Order> findByPn(int pn) {
@@ -42,7 +43,7 @@ public class OrderDao {
     }
 
     public Order findById(long orderId) {
-        return Order.DAO.findFirst("select u.username,u.avatarUrl,o.* from `order` o inner join user u on o.userId = u.id where o.id=?", orderId);
+        return Order.DAO.findFirst("select o.* from `order` o where o.id=?", orderId);
     }
 
     public Page<Order> findByUserId(long userId, int pn) {
