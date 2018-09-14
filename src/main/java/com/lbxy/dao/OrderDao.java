@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 public class OrderDao {
 
     public int getTotalNumber() {
-        return Db.queryInt("select count(*) from `Order`");
+        return Db.queryInt("select count(*) from `order`");
     }
 
     public Page<Order> getUnCompletedAndWaitCompletedAndCompletedOrdersByPage(int pn) {
