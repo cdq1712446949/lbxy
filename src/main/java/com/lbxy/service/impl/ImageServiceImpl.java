@@ -43,4 +43,9 @@ public class ImageServiceImpl implements ImageService {
     public Page<Image> getAllImage(int pn) {
         return imageDao.getImageByPn(pn);
     }
+
+    @Override
+    public boolean saveImage(Image image) {
+        return imageDao.save(image);
+    }
 }

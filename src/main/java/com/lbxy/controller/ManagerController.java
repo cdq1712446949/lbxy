@@ -304,4 +304,11 @@ public class ManagerController extends BaseController {
         redirect("./notificationList?pn=1");
     }
 
+    public void createdImage(String location){
+        Image image=new Image();
+        image.set("location",location);
+        boolean b=imageService.saveImage(image);
+        redirect("./imageList?pn=1");
+    }
+
 }

@@ -17,4 +17,6 @@ public interface ImageService {
 
     Page<Image> getAllImage(int pn);
 
+    boolean saveImage(Image image);
+
 }

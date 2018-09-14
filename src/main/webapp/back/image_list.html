@@ -19,7 +19,15 @@
                     pn = 1
                 }
             }
-            window.location.href = "/back/fleaList?pn=" + pn;
+            window.location.href = "/back/imageList?pn=" + pn;
+        }
+
+        function creatImage() {
+            var url=prompt("请输入图片链接");
+            if (confirm("是否确定保存")){
+                window.location.href="/back/createdImage?location="+url;
+                alert("图片地址保存成功，请刷新页面");
+            }
         }
 
     </script>
@@ -31,64 +39,60 @@
 </head>
 <body>
 
-    <div id="container">
-        <div class="ui_content">
-            <div class="ui_text_indent">
-                <div id="box_border">
-                    <div id="box_top">搜索</div>
-                    <form action="/back/searchFlea?pn=1" method="post">
-                        <div id="box_center">
-                            内容&nbsp;&nbsp;<input type="text" name="content" class="ui_input_txt02"/>
-                            <button id="search_btn" type="submit" class="ui_input_btn02"  >查询</button>
-                            <div>#(error_search)</div>
-                        </div>
-                        <div id="box_bottom">
-                            <form name="formpage">
-                                第<input name='SkipPage' id="ai" class="ui_input_txt01">页
-                                <input name='submitSkip' type='button' onClick="GoPage('#(imagePage.totalPage)')"
-                                       value='转到'>
-                            </form>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="ui_content">
-            <div class="ui_tb">
-                <table class="table" cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
-                    <tr>
-                        <th>id</th>
-                        <th>地址</th>
-                    </tr>
-                    #for(x:imagePage.list)
-                    <tr>
-                        <td>#(x.id)</td>
-                        <td><a href="#(x.location)" target="_blank">#(x.location)</a></td>
-                    </tr>
-                    #end
-
-                </table>
-            </div>
-            <div class="ui_tb_h30">
-                <div class="ui_flt" style="height: 30px; line-height: 30px;">
-                    共有
-                    <span class="ui_txt_bold04">#(imagePage.totalRow)</span>
-                    条记录，当前第
-                    <span class="ui_txt_bold04">#(imagePage.pageNumber)/#(imagePage.totalPage)</span>
-                    页
-                </div>
-                <div class="ui_frt">
-                    <!--    如果是第一页，则只显示下一页、尾页 -->
-
-                    <a href="/back/fleaList?pn=1" class="ui_input_btn02">首页</a>
-                    <a href="/back/fleaList?pn=#(fleaPage.pageNumber-1)" class="ui_input_btn02">上一页</a>
-                    <a href="/back/fleaList?pn=#(fleaPage.pageNumber+1)" class="ui_input_btn02">下一页</a>
-                    <a href="/back/fleaList?pn=#(fleaPage.totalPage)" class="ui_input_btn02">尾页</a>
-
-                </div>
+<div id="container">
+    <div class="ui_content">
+        <div class="ui_text_indent">
+            <div id="box_border">
+                <form action="/back/imageList" method="post">
+                    <div id="box_bottom">
+                        <input type="button"  value="添加图片" class="ui_input_btn02"
+                               onclick="creatImage()"/>
+                        <form name="formpage">
+                            第<input name='SkipPage' id="ai" class="ui_input_txt01">页
+                            <input name='submitSkip' type='button' onClick="GoPage('#(imagePage.totalPage)')"
+                                   value='转到'>
+                        </form>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+    <div class="ui_content">
+        <div class="ui_tb">
+            <table class="table" cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
+                <tr>
+                    <th>id</th>
+                    <th>地址</th>
+                </tr>
+                #for(x:imagePage.list)
+                <tr>
+                    <td>#(x.id)</td>
+                    <td><a href="#(x.location)" target="_blank">#(x.location)</a></td>
+                </tr>
+                #end
+
+            </table>
+        </div>
+        <div class="ui_tb_h30">
+            <div class="ui_flt" style="height: 30px; line-height: 30px;">
+                共有
+                <span class="ui_txt_bold04">#(imagePage.totalRow)</span>
+                条记录，当前第
+                <span class="ui_txt_bold04">#(imagePage.pageNumber)/#(imagePage.totalPage)</span>
+                页
+            </div>
+            <div class="ui_frt">
+                <!--    如果是第一页，则只显示下一页、尾页 -->
+
+                <a href="/back/imageList?pn=1" class="ui_input_btn02">首页</a>
+                <a href="/back/imageList?pn=#(imagePage.pageNumber-1)" class="ui_input_btn02">上一页</a>
+                <a href="/back/imageList?pn=#(imagePage.pageNumber+1)" class="ui_input_btn02">下一页</a>
+                <a href="/back/imageList?pn=#(imagePage.totalPage)" class="ui_input_btn02">尾页</a>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 
 </body>
