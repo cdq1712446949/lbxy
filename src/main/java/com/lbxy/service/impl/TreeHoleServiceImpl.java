@@ -72,6 +72,11 @@ public class TreeHoleServiceImpl implements TreeHoleService {
         Treehole page = treeHoleDao.getById(id);
         JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(page));
 
+        //将用户信息放入结果集中
+        User userInMain = userDao.findById(jsonObject.getIntValue("userId"));
+        jsonObject.put("username", userInMain.getUsername());
+        jsonObject.put("userId", userInMain.getId());
+
         //将每一条回复放入结果集
         List<Treehole> reply = treeHoleDao.getReplyByPId(id);
         JSONArray replyArray = JSON.parseArray(JSON.toJSONString(reply));
@@ -98,11 +103,6 @@ public class TreeHoleServiceImpl implements TreeHoleService {
         JSONArray jsonArray = jsonObject.getJSONArray("list");
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject one = jsonArray.getJSONObject(i);
-
-            //将用户信息放入结果集中
-            User userInMain = userDao.findById(one.getIntValue("userId"));
-            one.put("avatarUrl", userInMain.getAvatarUrl());
-            one.put("username", userInMain.getUsername());
 
             //将每一条回复放入结果集
             List<Treehole> reply = treeHoleDao.getReplyByPId(one.getIntValue("id"));
