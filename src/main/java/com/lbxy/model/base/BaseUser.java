@@ -90,13 +90,13 @@ public abstract class BaseUser<M extends BaseUser<M>> extends Model<M> implement
 		return getStr("stuNoPic");
 	}
 
-	public M setReadName(java.lang.String readName) {
-		set("readName", readName);
+	public M setRealName(java.lang.String realName) {
+		set("realName", realName);
 		return (M)this;
 	}
 	
-	public java.lang.String getReadName() {
-		return getStr("readName");
+	public java.lang.String getRealName() {
+		return getStr("realName");
 	}
 
 	public M setAvatarUrl(java.lang.String avatarUrl) {
@@ -124,6 +124,15 @@ public abstract class BaseUser<M extends BaseUser<M>> extends Model<M> implement
 	
 	public java.lang.String getStudentNumber() {
 		return getStr("studentNumber");
+	}
+
+	public M setAddress(java.lang.String address) {
+		set("address", address);
+		return (M)this;
+	}
+	
+	public java.lang.String getAddress() {
+		return getStr("address");
 	}
 
 }

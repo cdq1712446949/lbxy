@@ -13,7 +13,7 @@ public abstract class BaseNotification<M extends BaseNotification<M>> extends Mo
 		set("id", id);
 		return (M)this;
 	}
-
+	
 	public java.lang.Long getId() {
 		return getLong("id");
 	}
@@ -22,7 +22,7 @@ public abstract class BaseNotification<M extends BaseNotification<M>> extends Mo
 		set("content", content);
 		return (M)this;
 	}
-
+	
 	public java.lang.String getContent() {
 		return getStr("content");
 	}
@@ -31,7 +31,7 @@ public abstract class BaseNotification<M extends BaseNotification<M>> extends Mo
 		set("createdDate", createdDate);
 		return (M)this;
 	}
-
+	
 	public java.util.Date getCreatedDate() {
 		return get("createdDate");
 	}
@@ -40,7 +40,7 @@ public abstract class BaseNotification<M extends BaseNotification<M>> extends Mo
 		set("active", active);
 		return (M)this;
 	}
-
+	
 	public java.lang.Integer getActive() {
 		return getInt("active");
 	}

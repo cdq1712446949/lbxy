@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
     @Before(Tx.class)
     public User updateVerificationUserInfo(VerificationBean verification, long userId) {
         User currentUser = this.findById(userId);
-        currentUser.setReadName(verification.getRealName());
+        currentUser.setRealName(verification.getRealName());
         currentUser.setStudentNumber(verification.getStudentNumber());
         currentUser.setStuNoPic(verification.getStuNoPic());
         currentUser.setStatus(UserStatus.WAIT_AUTHENTICATION);

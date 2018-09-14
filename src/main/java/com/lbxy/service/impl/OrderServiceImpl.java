@@ -65,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
         if (user == null) {
             return ERROR_USERID;
         }
-        if (user.getPhoneNumber() == null || user.getReadName() == null) {
+        if (user.getPhoneNumber() == null || user.getRealName() == null) {
             return NEED_MORE_INFO;
         }
 
