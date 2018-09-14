@@ -90,7 +90,7 @@ public class Config extends JFinalConfig {
         /*
         基于注解 依赖注入
          */
-        me.add(new AnnotationInjectionPlugin("com.lbxy.service.impl", "com.lbxy.dao"));
+        me.add(new AnnotationInjectionPlugin("com.lbxy.service.impl", "com.lbxy.dao","com.lbxy.manager"));
 
         /*
         配置定时任务

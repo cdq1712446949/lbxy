@@ -3,9 +3,12 @@ package com.lbxy.controller;
 import com.jfinal.aop.Before;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
+import com.jfinal.kit.PropKit;
 import com.jfinal.upload.UploadFile;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.core.interceptors.WeixinLoginInterceptor;
+import com.lbxy.core.utils.LoggerUtil;
+import com.lbxy.manager.UploadManager;
 import com.lbxy.model.User;
 import com.lbxy.service.ImageService;
 import com.lbxy.service.UserService;
@@ -13,6 +16,7 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.util.Optional;
 
 public class ImageController extends BaseController {
 
@@ -21,6 +25,9 @@ public class ImageController extends BaseController {
 
     @Resource
     private ImageService imageService;
+
+    @Resource
+    private UploadManager uploadManager;
 
     @Before({GET.class})
     public void index(int id) {
@@ -38,11 +45,19 @@ public class ImageController extends BaseController {
         render("/back/image_show.html");
     }
 
-    @Before({WeixinLoginInterceptor.class, POST.class})
+//    @Before({WeixinLoginInterceptor.class, POST.class})
     public void image(UploadFile img, @Range(min = 0) long id, @Range(min = 0, max = 2) int type) {
+        boolean result;
         //TODO 部署之后还要调试上传路径
         String imagePath = img.getUploadPath() + File.separatorChar + img.getFileName();
-        boolean result = imageService.saveImageInfo(id, type, imagePath);
+        Optional<String> imageUrl = uploadManager.upload2SM(imagePath);
+
+        if (imageUrl.isPresent()) {
+            result =imageService.saveImageInfo(id, type, imageUrl.get());
+        } else {
+            String url = PropKit.get("server.host") + File.separatorChar + "upload" + File.separatorChar + img.getFileName();
+            result =imageService.saveImageInfo(id, type, url);
+        }
         if (result) {
             renderJson(MessageVoUtil.success("上传成功"));
         } else {

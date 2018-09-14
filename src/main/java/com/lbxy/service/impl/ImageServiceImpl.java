@@ -5,6 +5,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.lbxy.common.ImageType;
 import com.lbxy.core.annotation.Service;
+import com.lbxy.core.utils.NetWorkUtil;
 import com.lbxy.dao.ImageDao;
 import com.lbxy.model.Image;
 import com.lbxy.service.ImageService;
@@ -26,6 +27,7 @@ public class ImageServiceImpl implements ImageService {
     @Override
     @Before(Tx.class)
     public boolean saveImageInfo(long postId, int type, String imagePath) {
+
         Image image = new Image();
         image.setContentId(postId);
         image.setLocation(imagePath);

@@ -1,7 +1,11 @@
 package com.lbxy;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
+import com.lbxy.core.utils.NetWorkUtil;
 import com.lbxy.core.utils.PasswordUtil;
 import com.lbxy.model.Order;
 import com.lbxy.service.OrderService;
@@ -10,6 +14,7 @@ import com.lbxy.weixin.utils.PayCacheUtil;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
@@ -22,6 +27,12 @@ import java.util.Date;
  */
 
 class UtilTest {
+
+    @BeforeAll
+    static void before() {
+        PropKit.use("globalConfig.properties");
+    }
+
     @Test
     void test() throws URISyntaxException, ClassNotFoundException {
 
@@ -92,5 +103,11 @@ class UtilTest {
         System.out.println(new Date().getTime());
         int a = Math.toIntExact(new Date().getTime() / 1000);
         System.out.println(a);
+    }
+
+    @Test
+    void test7() {
+        JSONObject object = NetWorkUtil.uploadFile("https://sm.ms/api/upload2SM", "E:\\workPlace\\JavaWorkPlace\\javaWebWorkPlace\\lbxy\\src\\main\\webapp\\upload2SM\\IMG_0339.JPG", "smfile");
+        System.out.println(object.toJSONString());
     }
 }

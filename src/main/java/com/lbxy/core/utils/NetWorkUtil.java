@@ -21,7 +21,10 @@ import org.apache.http.util.CharsetUtils;
 import org.apache.http.util.EntityUtils;
 
 import javax.net.ssl.SSLContext;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -35,11 +38,11 @@ import java.util.Map;
  */
 public class NetWorkUtil {
 
+    private static final Class CLAZZ = NetWorkUtil.class;
+
     private NetWorkUtil() {
 
     }
-
-    private static final Class CLAZZ = NetWorkUtil.class;
 
     private static HttpGet preDoGet(String uri) {
 
@@ -61,7 +64,7 @@ public class NetWorkUtil {
         return get;
     }
 
-    public static void doGetDownload(String uri,String savePath) {
+    public static void doGetDownload(String uri, String savePath) {
         HttpGet get = preDoGet(uri);
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -71,11 +74,11 @@ public class NetWorkUtil {
             response = httpClient.execute(get);
 
             if (response.getStatusLine().getStatusCode() == 200) {
-                LoggerUtil.debug(CLAZZ, "got response success " );
+                LoggerUtil.debug(CLAZZ, "got response success ");
                 fos = new FileOutputStream(savePath);
                 response.getEntity().writeTo(fos);
             } else {
-                LoggerUtil.error(CLAZZ, "something wrong happened" );
+                LoggerUtil.error(CLAZZ, "something wrong happened");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -243,7 +246,7 @@ public class NetWorkUtil {
         }
         SSLConnectionSocketFactory factory = new SSLConnectionSocketFactory(context);
 
-        CloseableHttpResponse httpResponse = null;
+
         CloseableHttpClient httpClient = HttpClients.custom()
                 .setSSLSocketFactory(factory).build();
 
@@ -268,44 +271,7 @@ public class NetWorkUtil {
         // uploadFile对应服务端类的同名属性<File类型>
         // .addPart("uploadFileName", uploadFileName)
         // uploadFileName对应服务端类的同名属性<String类型>
-
-        String result = "";
-
-        try {
-            HttpPost httpPost = new HttpPost(url);
-            httpPost.addHeader("Connection", "keep-alive");
-            httpPost.addHeader("Accept", "*/*");
-            httpPost.setEntity(reqEntity);
-            httpResponse = httpClient.execute(httpPost);
-            Integer statusCode = httpResponse.getStatusLine().getStatusCode();
-
-            if (statusCode == 200) {
-                result = EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
-                LoggerUtil.debug(CLAZZ, "got response : " + result);
-            } else {
-                LoggerUtil.error(CLAZZ, "something wrong happened,error code is " + statusCode);
-            }
-        } catch (Exception e) {
-            LoggerUtil.error(NetWorkUtil.class, "发送请求失败");
-        } finally {
-
-            if (httpResponse != null) {
-                try {
-                    httpResponse.close();
-                } catch (Exception e) {
-                    LoggerUtil.error(NetWorkUtil.class, "关闭httpResponse时出现错误", e);
-                }
-            }
-            if (httpClient != null) {
-                try {
-                    httpClient.close();
-                } catch (Exception e) {
-                    LoggerUtil.error(NetWorkUtil.class, "关闭httpClient时出现错误", e);
-                }
-            }
-        }
-
-        return JSON.parseObject(result);
+        return doPostUpload(url, reqEntity, httpClient);
     }
 
     /**
@@ -335,7 +301,6 @@ public class NetWorkUtil {
         }
         SSLConnectionSocketFactory factory = new SSLConnectionSocketFactory(context);
 
-        CloseableHttpResponse httpResponse = null;
         CloseableHttpClient httpClient = HttpClients.custom()
                 .setSSLSocketFactory(factory).build();
 
@@ -368,15 +333,19 @@ public class NetWorkUtil {
         // .addPart("uploadFileName", uploadFileName)
         // uploadFileName对应服务端类的同名属性<String类型>
 
-        String result = "";
+        return doPostUpload(url, reqEntity, httpClient);
+    }
 
+    private static JSONObject doPostUpload(String url, HttpEntity reqEntity, CloseableHttpClient httpClient) {
+        CloseableHttpResponse httpResponse = null;
+        String result = "";
         try {
             HttpPost httpPost = new HttpPost(url);
             httpPost.addHeader("Connection", "keep-alive");
             httpPost.addHeader("Accept", "*/*");
             httpPost.setEntity(reqEntity);
             httpResponse = httpClient.execute(httpPost);
-            Integer statusCode = httpResponse.getStatusLine().getStatusCode();
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
 
             if (statusCode == 200) {
                 result = EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
