@@ -18,7 +18,7 @@ public interface NotificationService {
 
     boolean notificationEdit(int id,String title,String content);
 
-    boolean notificationSave(String content,int active);
+    boolean notificationSave(String title,String content,int active);
 
     boolean cancelActive(int id);
 

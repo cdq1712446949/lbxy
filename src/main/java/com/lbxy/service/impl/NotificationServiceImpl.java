@@ -46,8 +46,9 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     @Before(Tx.class)
-    public boolean notificationSave(String content, int active) {
+    public boolean notificationSave(String title,String content, int active) {
         Notification notification = new Notification();
+        notification.set("title",title);
         notification.set("content", content);
         notification.set("createdDate", new Date());
         notification.set("active", active);

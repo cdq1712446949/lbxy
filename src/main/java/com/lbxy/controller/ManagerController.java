@@ -247,8 +247,8 @@ public class ManagerController extends BaseController {
 
     @Before({EvictInterceptor.class})
     @CacheName("notification")
-    public void notificationSave(@NotBlank String content, @Range(min = 0, max = 1) int active) {
-        boolean isSave = notificationService.notificationSave(content, active);
+    public void notificationSave(@NotBlank String title,@NotBlank String content, @Range(min = 0, max = 1) int active) {
+        boolean isSave = notificationService.notificationSave(title,content, active);
         if (isSave) {
             setAttr("isSave", "true");
         } else {
