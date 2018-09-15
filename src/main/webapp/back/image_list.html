@@ -62,12 +62,32 @@
             <table class="table" cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
                 <tr>
                     <th>id</th>
+                    <th>类型</th>
+                    <th>状态</th>
                     <th>地址</th>
+                    <th>操作</th>
                 </tr>
                 #for(x:imagePage.list)
                 <tr>
                     <td>#(x.id)</td>
+                    <td>轮播图</td>
+                    <td>
+                        #if(x.status==0)
+                        正常
+                        #end
+                        #if(x.status==-1)
+                        以删除
+                        #end
+                    </td>
                     <td><a href="#(x.location)" target="_blank">#(x.location)</a></td>
+                    <td>
+                        #if(x.status==0)
+                        <a href="/back/deleteIndexImage?id=#(x.id)">删除</a>
+                        #end
+                        <!--#if(x.status==-1)-->
+                        <!--<a>恢复</a>-->
+                        <!--#end-->
+                    </td>
                 </tr>
                 #end
 
@@ -85,10 +105,10 @@
                 <!--    如果是第一页，则只显示下一页、尾页 -->
 
                 <a href="/back/imageList?pn=1" class="ui_input_btn02">首页</a>
-                #if(imageList.pageNumber>1)
+                #if(imagePage.pageNumber>1)
                 <a href="/back/imageList?pn=#(imagePage.pageNumber-1)" class="ui_input_btn02">上一页</a>
                 #end
-                #if(imageList.pageNumber<imageList.totalPage)
+                #if(imagePage.pageNumber<imagePage.totalPage)
                 <a href="/back/imageList?pn=#(imagePage.pageNumber+1)" class="ui_input_btn02">下一页</a>
                 #end
                 <a href="/back/imageList?pn=#(imagePage.totalPage)" class="ui_input_btn02">尾页</a>

@@ -19,4 +19,6 @@ public interface ImageService {
 
     boolean saveImage(Image image);
 
+    boolean deleteImage(Image image);
+
 }

@@ -50,4 +50,9 @@ public class ImageServiceImpl implements ImageService {
     public boolean saveImage(Image image) {
         return imageDao.save(image);
     }
+
+    @Override
+    public boolean deleteImage(Image image) {
+        return imageDao.updateImage(image);
+    }
 }
