@@ -2,6 +2,7 @@ package com.lbxy.dao;
 
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.ImageType;
+import com.lbxy.common.PageConst;
 import com.lbxy.core.annotation.Repository;
 import com.lbxy.model.Image;
 import jdk.nashorn.internal.ir.LiteralNode;
@@ -28,7 +29,7 @@ public class ImageDao {
     }
 
     public Page<Image> getImageByPn(int pn,int type){
-        return Image.DAO.paginate(pn,10,"select *","from image where type = ?",type);
+        return Image.DAO.paginate(pn, PageConst.PAGE_SIZE,"select *","from image where type = ?",type);
     }
 
     public boolean updateImage(Image image){
@@ -36,7 +37,7 @@ public class ImageDao {
     }
 
     public Page<Image> findImageByTypeAndId(int type,int id){
-        return Image.DAO.paginate(1,10,"select *","from image where type=? and contentId=?",type,id);
+        return Image.DAO.paginate(1,PageConst.PAGE_SIZE,"select *","from image where type=? and contentId=?",type,id);
     }
 
 }
