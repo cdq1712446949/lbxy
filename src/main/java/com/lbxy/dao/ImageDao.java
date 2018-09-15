@@ -31,4 +31,8 @@ public class ImageDao {
         return Image.DAO.paginate(pn,10,"select *","from image where type = ?",type);
     }
 
+    public boolean updateImage(Image image){
+        return image.update();
+    }
+
 }
