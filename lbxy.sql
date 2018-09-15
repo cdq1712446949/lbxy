@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : lbxy
-Source Server Version : 50723
+Source Server         : local_ubuntu_3306
+Source Server Version : 50722
 Source Host           : localhost:3306
 Source Database       : lbxy
 
 Target Server Type    : MYSQL
-Target Server Version : 50723
+Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2018-09-15 17:19:16
+Date: 2018-09-15 17:33:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -250,16 +250,17 @@ CREATE TABLE `notification` (
   `createdDate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `active` tinyint(2) DEFAULT '0' COMMENT '启用为1，不启用为0',
   `title` varchar(255) DEFAULT NULL,
+  `status` tinyint(2) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of notification
 -- ----------------------------
-INSERT INTO `notification` VALUES ('1', 'ssss', '2018-09-15 14:33:39', '0', null);
-INSERT INTO `notification` VALUES ('2', 'asdasdasda', '2018-09-15 15:19:50', '0', null);
-INSERT INTO `notification` VALUES ('3', '这是一条测试公告', '2018-09-15 15:20:55', '0', null);
-INSERT INTO `notification` VALUES ('4', '测试公告', '2018-09-15 15:20:55', '1', null);
+INSERT INTO `notification` VALUES ('1', 'ssss', '2018-09-15 14:33:39', '0', null, '0');
+INSERT INTO `notification` VALUES ('2', 'asdasdasda', '2018-09-15 15:19:50', '0', null, '0');
+INSERT INTO `notification` VALUES ('3', '这是一条测试公告', '2018-09-15 15:20:55', '0', null, '0');
+INSERT INTO `notification` VALUES ('4', '测试公告', '2018-09-15 15:20:55', '1', null, '0');
 
 -- ----------------------------
 -- Table structure for order
