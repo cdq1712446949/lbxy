@@ -8,6 +8,7 @@ import com.jfinal.plugin.ehcache.CacheKit;
 import com.jfinal.plugin.ehcache.CacheName;
 import com.jfinal.plugin.ehcache.EvictInterceptor;
 import com.lbxy.common.CacheNameConst;
+import com.lbxy.common.ImageType;
 import com.lbxy.common.NotificationType;
 import com.lbxy.common.status.UserStatus;
 import com.lbxy.core.interceptors.ManagerLoginInterceptor;
@@ -308,6 +309,7 @@ public class ManagerController extends BaseController {
     public void createdImage(@NotBlank String location) {
         Image image = new Image();
         image.set("location", location);
+        image.setType(ImageType.INDEX_SWIPER);
         boolean b = imageService.saveImage(image);
         redirect("./imageList?pn=1");
     }

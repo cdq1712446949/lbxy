@@ -121,8 +121,12 @@
             <div class="ui_frt">
                 <!--    如果是第一页，则只显示下一页、尾页 -->
                 <a href="/back/orderList?pn=1" class="ui_input_btn02">首页</a>
+                #if(orderPage.pageNumber>1)
                 <a href="/back/orderList?pn=#(orderPage.pageNumber-1)" class="ui_input_btn02">上一页</a>
+                #end
+                #if(orderPage.pageNumber<orderPage.totalPage)
                 <a href="/back/orderList?pn=#(orderPage.pageNumber+1)" class="ui_input_btn02">下一页</a>
+                #end
                 <a href="/back/orderList?pn=#(orderPage.totalPage)" class="ui_input_btn02">尾页</a>
 
             </div>

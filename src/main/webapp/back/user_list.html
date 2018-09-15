@@ -142,8 +142,12 @@
                 <!--    如果是第一页，则只显示下一页、尾页 -->
 
                 <a href="/back/userList?pn=1" class="ui_input_btn02">首页</a>
+                #if(data.pageNumber>1)
                 <a href="/back/userList?pn=#(data.pageNumber-1)" class="ui_input_btn02">上一页</a>
+                #end
+                #if(data.pageNumber<data.totalPage)
                 <a href="/back/userList?pn=#(data.pageNumber+1)" class="ui_input_btn02">下一页</a>
+                #end
                 <a href="/back/userList?pn=#(data.totalPage)" class="ui_input_btn02">尾页</a>
 
             </div>

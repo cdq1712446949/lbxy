@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="/css/basic_layout.css" rel="stylesheet" type="text/css">
     <link href="/css/common_style.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="/css/jquery.fancybox-1.3.4.css" media="screen"></link>
+    <link rel="stylesheet" type="text/css" href="/css/jquery.fancybox-1.3.4.css" media="screen"/>
     <title>乐帮校园后台系统</title>
     <script type="text/javascript">
 
@@ -96,8 +96,12 @@
                 <!--    如果是第一页，则只显示下一页、尾页 -->
 
                 <a href="/back/treeHoleList?pn=1" class="ui_input_btn02">首页</a>
+                #if(treeHolePage.pageNumber>1)
                 <a href="/back/treeHoleList?pn=#(treeHolePage.pageNumber-1)" class="ui_input_btn02">上一页</a>
+                #end
+                #if(treeHolePage.pageNumber<treeHolePage.totalPage)
                 <a href="/back/treeHoleList?pn=#(treeHolePage.pageNumber+1)" class="ui_input_btn02">下一页</a>
+                #end
                 <a href="/back/treeHoleList?pn=#(treeHolePage.totalPage)" class="ui_input_btn02">尾页</a>
 
             </div>

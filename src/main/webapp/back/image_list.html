@@ -85,8 +85,12 @@
                 <!--    如果是第一页，则只显示下一页、尾页 -->
 
                 <a href="/back/imageList?pn=1" class="ui_input_btn02">首页</a>
+                #if(imageList.pageNumber>1)
                 <a href="/back/imageList?pn=#(imagePage.pageNumber-1)" class="ui_input_btn02">上一页</a>
+                #end
+                #if(imageList.pageNumber<imageList.totalPage)
                 <a href="/back/imageList?pn=#(imagePage.pageNumber+1)" class="ui_input_btn02">下一页</a>
+                #end
                 <a href="/back/imageList?pn=#(imagePage.totalPage)" class="ui_input_btn02">尾页</a>
 
             </div>
