@@ -82,7 +82,7 @@ public class ManagerController extends BaseController {
     //查询用户交易记录
     public void searchBill(String phoneNumber) {
         if (StringUtils.isBlank(phoneNumber)) {
-            redirect("./billList?pn=1");
+            redirect("/back/billList?pn=1");
         } else {
             setAttr("billPage", billService.getBillByPhoneNumber(1, phoneNumber));
             render("bill_list.html");
@@ -92,7 +92,7 @@ public class ManagerController extends BaseController {
     public void searchTreehole(int pn, String content) {
         if (pn <= 0) pn = 1;
         if (StringUtils.isBlank(content)) {
-            redirect("./notificationList?pn=1");
+            redirect("/back/notificationList?pn=1");
         } else {
             setAttr("treeHolePage", treeHoleService.getTreeHoleByContent(pn, content));
             render("treehole_list.html");
@@ -102,7 +102,7 @@ public class ManagerController extends BaseController {
     public void searchFlea(int pn, String content) {
         if (pn <= 0) pn = 1;
         if (StringUtils.isBlank(content)) {
-            redirect("./fleaList?pn=1");
+            redirect("/back/fleaList?pn=1");
         } else {
             setAttr("fleaPage", fleaService.getFleaByContent(pn, content));
             render("flea_list.html");
@@ -112,7 +112,7 @@ public class ManagerController extends BaseController {
     public void searchLostFound(int pn, String content) {
         if (pn <= 0) pn = 1;
         if (StringUtils.isBlank(content)) {
-            redirect("./lostFoundList?pn=1");
+            redirect("/back/lostFoundList?pn=1");
         } else {
             setAttr("lostFoundPage", lostFoundService.getLostFoundByContent(pn, content));
             render("lostFound_list.html");
@@ -205,7 +205,7 @@ public class ManagerController extends BaseController {
         } else {
             setAttr("isDelete", "false");
         }
-        redirect("./treeHoleList?pn=1");
+        redirect("/back/treeHoleList?pn=1");
     }
 
     @Before({EvictInterceptor.class})
@@ -217,7 +217,7 @@ public class ManagerController extends BaseController {
         } else {
             setAttr("isDelete", "false");
         }
-        redirect("./fleaList?pn=1");
+        redirect("/back/fleaList?pn=1");
     }
 
     @Before({EvictInterceptor.class})
@@ -229,7 +229,7 @@ public class ManagerController extends BaseController {
         } else {
             setAttr("isDelete", "false");
         }
-        redirect("./lostFoundList?pn=1");
+        redirect("/back/lostFoundList?pn=1");
     }
 
     @Before({EvictInterceptor.class})
@@ -241,7 +241,7 @@ public class ManagerController extends BaseController {
         } else {
             setAttr("isEdit", "false");
         }
-        redirect("./notificationList?pn=1");
+        redirect("/back/notificationList?pn=1");
     }
 
     @Before({EvictInterceptor.class})
@@ -253,27 +253,27 @@ public class ManagerController extends BaseController {
         } else {
             setAttr("isSave", "false");
         }
-        redirect("./notificationList?pn=1");
+        redirect("/back/notificationList?pn=1");
     }
 
     public void throughAuthencation(@Range(min = 1) int id) {
         userService.updateUserStatus(id, UserStatus.AUTHENTACATED);
-        redirect("./userList?pn=1");
+        redirect("/back/userList?pn=1");
     }
 
     public void cancelAuthencation(@Range(min = 1) int id) {
         userService.updateUserStatus(id, UserStatus.UNAUTHENTICATION);
-        redirect("./userList?pn=1");
+        redirect("/back/userList?pn=1");
     }
 
     public void blockUser(@Range(min = 1) int id) {
         userService.updateUserStatus(id, UserStatus.BLOCKED);
-        redirect("./userList?pn=1");
+        redirect("/back/userList?pn=1");
     }
 
     public void unBlockUser(@Range(min = 1) int id) {
         userService.updateUserStatus(id, UserStatus.UNAUTHENTICATION);
-        redirect("./userList?pn=1");
+        redirect("/back/userList?pn=1");
     }
 
     public void changeMoney(@Range(min = 1) int id, @Range double money) {
@@ -286,7 +286,7 @@ public class ManagerController extends BaseController {
         } else {
             setAttr("isChange", "false");
         }
-        redirect("./userList?pn=1");
+        redirect("/back/userList?pn=1");
     }
 
     @Before({EvictInterceptor.class})
@@ -296,14 +296,14 @@ public class ManagerController extends BaseController {
         notification.set("id", id);
         notification.set("active", NotificationType.ACTIVE);
         boolean b = notificationService.notificationUpdate(notification);
-        redirect("./notificationList?pn=1");
+        redirect("/back/notificationList?pn=1");
     }
 
     @Before({EvictInterceptor.class})
     @CacheName("notification")
     public void cancelNowActive(@Range(min = 1) int id) {
         boolean b = notificationService.cancelActive(id);
-        redirect("./notificationList?pn=1");
+        redirect("/back/notificationList?pn=1");
     }
 
     public void createdImage(@NotBlank String location) {
@@ -311,7 +311,7 @@ public class ManagerController extends BaseController {
         image.set("location", location);
         image.setType(ImageType.INDEX_SWIPER);
         boolean b = imageService.saveImage(image);
-        redirect("./imageList?pn=1");
+        redirect("/back/imageList?pn=1");
     }
 
 }
