@@ -1,6 +1,8 @@
 package com.lbxy.dao;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.lbxy.common.NotificationType;
+import com.lbxy.common.PageConst;
 import com.lbxy.common.status.CommonStatus;
 import com.lbxy.core.annotation.Repository;
 import com.lbxy.model.Notification;
@@ -20,7 +22,7 @@ public class NotificationDao {
     }
 
     public Page<Notification> getAllNotificationByPn(int pn) {
-        return Notification.dao.paginate(pn, 10, "select *", "from notification where active=?",1);
+        return Notification.dao.paginate(pn, PageConst.PAGE_SIZE, "select *", "from notification where active=?", NotificationType.ACTIVE);
     }
 
     public boolean notificationUpdate(Notification notification) {

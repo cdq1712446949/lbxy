@@ -45,4 +45,22 @@ public abstract class BaseNotification<M extends BaseNotification<M>> extends Mo
 		return getInt("active");
 	}
 
+	public M setTitle(java.lang.String title) {
+		set("title", title);
+		return (M)this;
+	}
+	
+	public java.lang.String getTitle() {
+		return getStr("title");
+	}
+
+	public M setStatus(java.lang.Integer status) {
+		set("status", status);
+		return (M)this;
+	}
+	
+	public java.lang.Integer getStatus() {
+		return getInt("status");
+	}
+
 }

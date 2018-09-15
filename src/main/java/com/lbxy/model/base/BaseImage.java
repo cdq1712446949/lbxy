@@ -45,4 +45,13 @@ public abstract class BaseImage<M extends BaseImage<M>> extends Model<M> impleme
 		return getLong("contentId");
 	}
 
+	public M setStatus(java.lang.Integer status) {
+		set("status", status);
+		return (M)this;
+	}
+	
+	public java.lang.Integer getStatus() {
+		return getInt("status");
+	}
+
 }
