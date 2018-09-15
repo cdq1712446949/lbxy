@@ -11,6 +11,7 @@ import com.lbxy.service.NotificationService;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author lmy
@@ -24,7 +25,7 @@ public class NotificationServiceImpl implements NotificationService {
     private NotificationDao notificationDao;
 
     @Override
-    public Notification getActiveNotification() {
+    public List<Notification> getActiveNotification() {
         return notificationDao.getNotificationByActive(NotificationType.ACTIVE);
     }
 
@@ -45,8 +46,6 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     @Before(Tx.class)
     public boolean notificationSave(String content, int active) {
-        this.cancelActive();
-
         Notification notification = new Notification();
         notification.set("content", content);
         notification.set("createdDate", new Date());
@@ -64,22 +63,8 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public Notification findNotificationByActive() {
-        return notificationDao.getNotificationByActive(NotificationType.ACTIVE);
-    }
-
-    @Override
     @Before(Tx.class)
     public boolean notificationUpdate(Notification notification) {
-        this.cancelActive();
         return notificationDao.notificationUpdate(notification);
-    }
-
-    private void cancelActive() {
-        Notification activeNotification = this.findNotificationByActive();
-        if (activeNotification != null) {
-            activeNotification.setActive(NotificationType.INACTIVE);
-            notificationDao.notificationUpdate(activeNotification);
-        }
     }
 }

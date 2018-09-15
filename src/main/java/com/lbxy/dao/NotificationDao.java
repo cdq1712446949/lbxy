@@ -5,6 +5,8 @@ import com.lbxy.common.NotificationType;
 import com.lbxy.core.annotation.Repository;
 import com.lbxy.model.Notification;
 
+import java.util.List;
+
 /**
  * @author lmy
  * @description NotificationDao
@@ -13,8 +15,8 @@ import com.lbxy.model.Notification;
 @Repository
 public class NotificationDao {
 
-    public Notification getNotificationByActive(int type) {
-       return Notification.dao.findFirst("select * from notification where active = ?", type);
+    public List<Notification> getNotificationByActive(int type) {
+       return Notification.dao.find("select * from notification where active = ?", type);
     }
 
     public Page<Notification> getAllNotificationByPn(int pn){
