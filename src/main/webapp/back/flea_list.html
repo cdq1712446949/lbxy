@@ -76,7 +76,9 @@
                         <td>#(x.content)</td>
                         <td>#(x.postDate)</td>
                         <td>#(x.status==0?"正常":"已删除")</td>
-                        <td>#(x.pictureUrl)</td>
+                        <td>
+                            <a href="/back/findImage?type=0&&id=#(x.id)" target="_blank">查看图片</a>
+                        </td>
                         <td>
                             <a href="/back/deleteFlea?id=#(x.id)">删除</a>
                         </td>

@@ -21,4 +21,6 @@ public interface ImageService {
 
     boolean deleteImage(Image image);
 
+    Page<Image> findImage(int type,int id);
+
 }

@@ -35,4 +35,8 @@ public class ImageDao {
         return image.update();
     }
 
+    public Page<Image> findImageByTypeAndId(int type,int id){
+        return Image.DAO.paginate(1,10,"select *","from image where type=? and contentId=?",type,id);
+    }
+
 }

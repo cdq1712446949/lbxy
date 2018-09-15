@@ -324,4 +324,10 @@ public class ManagerController extends BaseController {
         redirect("/back/imageList?pn=1");
     }
 
+    public void findImage(int type,int id){
+        Page<Image> imagePage=imageService.findImage(type,id);
+        setAttr("imagePage",imagePage);
+        render("findImage_list.html");
+    }
+
 }

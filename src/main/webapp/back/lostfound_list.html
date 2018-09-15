@@ -76,7 +76,9 @@
                     <td>#(x.content)</td>
                     <td>#(x.postDate)</td>
                     <td>#(x.status==0?"正常":"已删除")</td>
-                    <td>#(x.pictureUrl)</td>
+                    <td>
+                        <a href="/back/findImage?type=2&&id=#(x.id)" target="_blank">查看图片</a>
+                    </td>
                     <td>
                         <a href="/back/deleteLostFound?id=#(x.id)">删除</a>
                     </td>
@@ -97,10 +99,10 @@
                 <!--    如果是第一页，则只显示下一页、尾页 -->
 
                 <a href="/back/lostFoundList?pn=1" class="ui_input_btn02">首页</a>
-                #if(lostFoundList.pageNumber>1)
+                #if(lostFoundPage.pageNumber>1)
                 <a href="/back/lostFoundList?pn=#(lostFoundPage.pageNumber-1)" class="ui_input_btn02">上一页</a>
                 #end
-                #if(lostFoundList.pageNumber<lostFoundList.totalPage)
+                #if(lostFoundPage.pageNumber<lostFoundPage.totalPage)
                 <a href="/back/lostFoundList?pn=#(lostFoundPage.pageNumber+1)" class="ui_input_btn02">下一页</a>
                 #end
                 <a href="/back/lostFoundList?pn=#(lostFoundPage.totalPage)" class="ui_input_btn02">尾页</a>

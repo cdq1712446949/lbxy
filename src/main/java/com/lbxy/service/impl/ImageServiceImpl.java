@@ -55,4 +55,9 @@ public class ImageServiceImpl implements ImageService {
     public boolean deleteImage(Image image) {
         return imageDao.updateImage(image);
     }
+
+    @Override
+    public Page<Image> findImage(int type, int id) {
+        return imageDao.findImageByTypeAndId(type,id);
+    }
 }
