@@ -316,7 +316,7 @@ public class ManagerController extends BaseController {
         redirect("/back/imageList?pn=1");
     }
 
-    public void deleteIndexImage(int id){
+    public void deleteIndexImage(@Range(min = 1)long id){
         Image image=new Image();
         image.set("id",id);
         image.set("status",ImageStatus.DELETE);
