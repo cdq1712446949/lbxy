@@ -170,6 +170,7 @@ public class OrderServiceImpl implements OrderService {
     @Before(Tx.class)
     public long createOrder(long userId, CreateOrderBean orderInfo) {
         Order order = new Order();
+        order.setStatus(OrderStatus.UN_PAYED);
         order.setCreatedDate(new Date());
         order.setReward(BigDecimal.valueOf(orderInfo.getReward()));
         order.setUserId(userId);

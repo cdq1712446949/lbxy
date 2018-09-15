@@ -35,11 +35,11 @@ public class OrderDao {
         /*
         .createdDate,o.reward,o.userName,o.userPhoneNumber,o.fromAddress,o.toAddress,o.remark,o.detail
          */
-        return Db.paginate(pn, PageConst.PAGE_SIZE, "select u.username,u.avatarUrl,o.*", " from `order` o inner join user u on o.userId = u.id where o.status=?", OrderStatus.UN_COMPLETED);
+        return Db.paginate(pn, PageConst.PAGE_SIZE, "select u.username,u.avatarUrl,o.*", " from `order` o inner join user u on o.userId = u.id where o.status=? order by o.createdDate desc", OrderStatus.UN_COMPLETED);
     }
 
     public Page<Order> findByPn(int pn) {
-        return Order.DAO.paginate(pn, 10, "select *", " from `order`");
+        return Order.DAO.paginate(pn, 10, "select *", " from `order` order by createdDate desc");
     }
 
     public Order findById(long orderId) {
@@ -47,11 +47,11 @@ public class OrderDao {
     }
 
     public Page<Order> findByUserId(long userId, int pn) {
-        return Order.DAO.paginate(pn, PageConst.PAGE_SIZE, "select *", "from `order` where userId = ? and status != ?", userId, CommonStatus.DELETED);
+        return Order.DAO.paginate(pn, PageConst.PAGE_SIZE, "select *", "from `order` where userId = ? and status != ? order by createdDate desc", userId, CommonStatus.DELETED);
     }
 
     public Page<Order> findByAcceptUserId(long acceptUserId, int pn) {
-        return Order.DAO.paginate(pn, PageConst.PAGE_SIZE, "select *", "from `order` where acceptUserId = ? and status != ?", acceptUserId, CommonStatus.DELETED);
+        return Order.DAO.paginate(pn, PageConst.PAGE_SIZE, "select *", "from `order` where acceptUserId = ? and status != ? order by createdDate desc", acceptUserId, CommonStatus.DELETED);
     }
 
     public int updateOrderStatus(long orderId, int status) {

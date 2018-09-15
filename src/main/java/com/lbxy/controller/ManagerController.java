@@ -93,7 +93,7 @@ public class ManagerController extends BaseController {
     public void searchTreehole(int pn, String content) {
         if (pn <= 0) pn = 1;
         if (StringUtils.isBlank(content)) {
-            redirect("/back/notificationList?pn=1");
+            redirect("/back/treehole_list?pn=1");
         } else {
             setAttr("treeHolePage", treeHoleService.getTreeHoleByContent(pn, content));
             render("treehole_list.html");
@@ -316,7 +316,7 @@ public class ManagerController extends BaseController {
         redirect("/back/imageList?pn=1");
     }
 
-    public void deleteIndexImage(int id){
+    public void deleteIndexImage(@Range(min = 1)long id){
         Image image=new Image();
         image.set("id",id);
         image.set("status",ImageStatus.DELETE);

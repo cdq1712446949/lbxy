@@ -14,11 +14,11 @@ import java.util.List;
 public class BillDao {
 
     public Page<Bill> findBillPn(int pn) {
-        return Bill.DAO.paginate(pn, 10, "select *", "from bill");
+        return Bill.DAO.paginate(pn, 10, "select *", "from bill order by createdDate desc");
     }
 
     public List<Bill> findByUserId(long userId) {
-        return Bill.DAO.find("select * from bill where userId=?", userId);
+        return Bill.DAO.find("select * from bill where userId=? order by createdDate desc", userId);
     }
 
     public BigDecimal get7DaysTotalIncome(long userId) {
@@ -26,11 +26,11 @@ public class BillDao {
     }
 
     public Page<Bill> getAllByUserId(int pn, long userId) {
-        return Bill.DAO.paginate(pn, PageConst.PAGE_SIZE, "select b.status,b.money,b.createdDate,o.fromAddress,o.toAddress ", "from bill b inner join `order` o on b.orderId = o.id where b.userId=?", userId);
+        return Bill.DAO.paginate(pn, PageConst.PAGE_SIZE, "select b.status,b.money,b.createdDate,o.fromAddress,o.toAddress ", "from bill b inner join `order` o on b.orderId = o.id where b.userId=? order by b.createdDate desc", userId);
     }
 
     public Page<Bill> findBillByPhoneNumber(int pn, String phoneNumber) {
-        return Bill.DAO.paginate(pn, 10, "select b.*", "from bill b inner join user u on b.userId=u.id where u.phoneNumber = ?", phoneNumber);
+        return Bill.DAO.paginate(pn, 10, "select b.*", "from bill b inner join user u on b.userId=u.id where u.phoneNumber = ? order by createdDate desc", phoneNumber);
     }
 
     public boolean save(Bill bill) {
