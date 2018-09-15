@@ -57,12 +57,12 @@
       function update(obj, x) {
           var table = document.getElementById("table");
           var text1 = table.rows[x].cells[1].innerHTML;
-          var text2=table.rows[x].cells[2].innerHTML;
+          var text2 = table.rows[x].cells[2].innerHTML;
           table.rows[x].cells[1].innerHTML = '<input class="ui_input_txt02" name="input" type="text" value=""/>';
           table.rows[x].cells[2].innerHTML = '<input class="ui_input_txt02" name="input" type="text" value=""/>';
           var input = document.getElementsByName("input");
-          input[0].value=text1;
-          input[1].value=text2;
+          input[0].value = text1;
+          input[1].value = text2;
           obj.innerHTML = "确定";
           obj.onclick = function onclick(event) {
               update_success(this, x)
@@ -85,8 +85,8 @@
           }
           var id = table.rows[x].cells[0].innerHTML;
           title = arr[0];
-          content=arr[1];
-          // 同步请求服务器端
+          content = arr[1];
+          // 请求服务器端
           var xmlhttp;
           if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
               xmlhttp = new XMLHttpRequest();
@@ -96,24 +96,27 @@
           xmlhttp.onreadystatechange = function () {
               if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                   // document.getElementById("btn_change").innerHTML = xmlhttp.responseText;
+                  window.location.reload()
               }
           }
-          xmlhttp.open("GET", "/back/notificationEdit?id=" + id + "&title="+title+"&content=" + content + "", true);
+          xmlhttp.open("GET", "/back/notificationEdit?id=" + id + "&title=" + title + "&content=" + content + "", true);
           xmlhttp.send();
           //回到原来状态
           obj.innerHTML = "修改";
           obj.onclick = function onclick(event) {
               update(this, x)
           };
-          window.location.reload()
+
       }
 
       function createNotice() {
 
-          var title=prompt("请输入公告的标题内容")
+          var title = prompt("请输入公告的标题内容")
+          if (!title) return
           var content = prompt("请输入公告内容")
+          if (!content) return
 
-          if (confirm("是否显示此公告,完成本次操作后请刷新页面或点击左侧公告，查看最新发布的公告") == true) {
+          if (confirm("是否显示此公告") == true) {
               var active = 1;
           } else {
               active = 0;
@@ -131,7 +134,7 @@
                   window.location.reload()
               }
           }
-          xmlhttp.open("GET", "/back/notificationSave?title="+title+"&content=" + content + "&active=" + active + "", true);
+          xmlhttp.open("GET", "/back/notificationSave?title=" + title + "&content=" + content + "&active=" + active + "", true);
           xmlhttp.send();
       }
 
@@ -253,7 +256,7 @@
           #end
           #if(noticePage.pageNumber
           <noticePage.pageNumber
-          )
+              )
           <a href="/back/notificationList?pn=#(noticePage.pageNumber+1)"
              class="ui_input_btn01">下一页</a>
           #end
