@@ -3,6 +3,8 @@ package com.lbxy.service;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.model.Notification;
 
+import java.util.List;
+
 /**
  * @author lmy
  * @description NotificationService
@@ -10,7 +12,7 @@ import com.lbxy.model.Notification;
  */
 public interface NotificationService {
 
-    Notification getActiveNotification();
+    List<Notification> getActiveNotification();
 
     Page<Notification> getAllNotification(int pn);
 
@@ -19,8 +21,6 @@ public interface NotificationService {
     boolean notificationSave(String content,int active);
 
     boolean cancelActive(int id);
-
-    Notification findNotificationByActive();
 
     boolean notificationUpdate(Notification notification);
 
