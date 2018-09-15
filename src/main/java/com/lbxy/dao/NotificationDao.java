@@ -20,7 +20,7 @@ public class NotificationDao {
     }
 
     public Page<Notification> getAllNotificationByPn(int pn) {
-        return Notification.dao.paginate(pn, 10, "select *", "from notification");
+        return Notification.dao.paginate(pn, 10, "select *", "from notification where active=?",1);
     }
 
     public boolean notificationUpdate(Notification notification) {
