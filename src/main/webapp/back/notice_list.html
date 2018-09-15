@@ -56,10 +56,13 @@
 
       function update(obj, x) {
           var table = document.getElementById("table");
-          var text = table.rows[x].cells[1].innerHTML;
+          var text1 = table.rows[x].cells[1].innerHTML;
+          var text2=table.rows[x].cells[2].innerHTML;
           table.rows[x].cells[1].innerHTML = '<input class="ui_input_txt02" name="input" type="text" value=""/>';
+          table.rows[x].cells[2].innerHTML = '<input class="ui_input_txt02" name="input" type="text" value=""/>';
           var input = document.getElementsByName("input");
-          input[0].value = text;
+          input[0].value=text1;
+          input[1].value=text2;
           obj.innerHTML = "确定";
           obj.onclick = function onclick(event) {
               update_success(this, x)
@@ -70,17 +73,19 @@
           var arr = [];
           var table = document.getElementById("table");
           var input = document.getElementsByName("input");
-          for (var i = 0; i < 1; i++) {
+          for (var i = 0; i < 2; i++) {
               var text = input[i].value;
               arr.push(text);
           }
           //把值赋值给表格，不能在取值的时候给，会打乱input的个数
+          var title;
           var content;
           for (var j = 0; j < arr.length; j++) {
               table.rows[x].cells[1].innerHTML = arr[j];
-              var id = table.rows[x].cells[0].innerHTML;
-              content = arr[0];
           }
+          var id = table.rows[x].cells[0].innerHTML;
+          title = arr[0];
+          content=arr[1];
           // 同步请求服务器端
           var xmlhttp;
           if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -93,7 +98,7 @@
                   // document.getElementById("btn_change").innerHTML = xmlhttp.responseText;
               }
           }
-          xmlhttp.open("GET", "/back/notificationEdit?id=" + id + "&content=" + content + "", true);
+          xmlhttp.open("GET", "/back/notificationEdit?id=" + id + "&title="+title+"&content=" + content + "", true);
           xmlhttp.send();
           //回到原来状态
           obj.innerHTML = "修改";
@@ -198,6 +203,7 @@
              border="0">
         <tr>
           <th>id</th>
+          <th>标题</th>
           <th>内容</th>
           <th>是否显示</th>
           <th>创建时间</th>
@@ -210,6 +216,7 @@
         #for(x:noticePage.list)
         <tr>
           <td>#(x.id)</td>
+          <td>#(x.title)</td>
           <td>#(x.content)</td>
           <td>#(x.active==0?"否":"是")</td>
           <td>#(x.createdDate)</td>

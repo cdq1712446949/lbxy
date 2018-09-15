@@ -93,7 +93,6 @@ CREATE TABLE `flea` (
 -- Records of flea
 -- ----------------------------
 INSERT INTO `flea` VALUES ('1', '5', null, null, '测试', '0', '2018-09-14 13:45:09.305000');
-INSERT INTO `flea` VALUES ('2', '5', null, null, '😂😂😂', '0', '2018-09-14 14:02:13.995000');
 INSERT INTO `flea` VALUES ('3', '5', null, null, '哈哈哈哈', '0', '2018-09-14 14:03:28.286000');
 INSERT INTO `flea` VALUES ('4', '5', null, null, 'cesjo测试机哦', '-1', '2018-09-14 14:04:45.339000');
 INSERT INTO `flea` VALUES ('5', '5', null, null, '再试一下', '-1', '2018-09-14 14:05:41.683000');

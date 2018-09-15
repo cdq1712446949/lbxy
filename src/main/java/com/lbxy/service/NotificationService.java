@@ -16,7 +16,7 @@ public interface NotificationService {
 
     Page<Notification> getAllNotification(int pn);
 
-    boolean notificationEdit(int id,String content);
+    boolean notificationEdit(int id,String title,String content);
 
     boolean notificationSave(String content,int active);
 

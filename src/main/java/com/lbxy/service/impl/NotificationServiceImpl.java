@@ -36,10 +36,11 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     @Before(Tx.class)
-    public boolean notificationEdit(int id, String content) {
+    public boolean notificationEdit(int id,String title, String content) {
         Notification notification = new Notification();
         notification.set("id", id);
         notification.set("content", content);
+        notification.set("title",title);
         return notificationDao.notificationUpdate(notification);
     }
 

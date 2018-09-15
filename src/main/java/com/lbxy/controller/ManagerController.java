@@ -235,8 +235,8 @@ public class ManagerController extends BaseController {
 
     @Before({EvictInterceptor.class})
     @CacheName("notification")
-    public void notificationEdit(@Range(min = 1) int id, @NotBlank String content) {
-        boolean isEdit = notificationService.notificationEdit(id, content);
+    public void notificationEdit(@Range(min = 1) int id, @NotBlank String content,@NotBlank String title) {
+        boolean isEdit = notificationService.notificationEdit(id,title, content);
         if (isEdit) {
             setAttr("isEdit", "true");
         } else {
