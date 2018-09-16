@@ -26,7 +26,7 @@ public class OrderCronTask implements Runnable {
         OrderService orderService = (OrderService) InjectionCache.get("orderService");
         LoggerUtil.info(getClass(),"定时任务开始执行");
         Page<Order> orderPage = orderService.getUnCompletedAndWaitCompletedAndCompletedOrdersByPage(1);
-        while (!orderPage.isLastPage()) {
+        do {
             orderPage.getList().forEach(order -> {
                 Date availableDate = order.getAvailableDate();
                 ZoneId zoneId = ZoneId.systemDefault();
@@ -55,7 +55,7 @@ public class OrderCronTask implements Runnable {
                         //  未过期
                     } else if (availableLocalTime.plusHours(2).isBefore(LocalTime.now())) {
                         // 已经过期
-                         orderService.setPayBack(order);
+                        orderService.setPayBack(order);
                     }
                 } else if (order.getStatus() == OrderStatus.COMPLETED) {
                     // 已完成的订单过期未结算将自动结算
@@ -75,6 +75,6 @@ public class OrderCronTask implements Runnable {
             });
 
             orderPage = orderService.getUnCompletedAndWaitCompletedAndCompletedOrdersByPage(orderPage.getPageNumber() + 1);
-        }
+        } while (!orderPage.isLastPage());
     }
 }
