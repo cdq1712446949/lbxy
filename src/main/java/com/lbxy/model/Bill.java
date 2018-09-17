@@ -8,4 +8,11 @@ import com.lbxy.model.base.BaseBill;
 @SuppressWarnings("serial")
 public class Bill extends BaseBill<Bill> {
 	public static final Bill DAO = new Bill().dao();
+
+	@Override
+	protected void filter(int filterBy) {
+		if (filterBy == FILTER_BY_UPDATE) {
+
+		}
+	}
 }

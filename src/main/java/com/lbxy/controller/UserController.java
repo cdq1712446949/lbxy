@@ -78,7 +78,7 @@ public class UserController extends BaseController {
 
     @Before(GET.class)
     public void account(long userId) {
-        BigDecimal balance = userService.getUserAccountBalance(userId);
+        BigDecimal balance = userService.findById(userId).getBalance();
         BigDecimal waitSettle = orderService.getWaitSettledReward(userId);
         BigDecimal weeklyIncome = billService.get7DaysTotalIncome(userId);
         JSONObject result = new JSONObject();
@@ -98,4 +98,5 @@ public class UserController extends BaseController {
     public void getUserInfo(long userId) {
         renderJson(MessageVoUtil.success(userService.findById(userId)));
     }
+
 }

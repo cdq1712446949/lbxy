@@ -16,6 +16,7 @@ import com.lbxy.core.interceptors.ParamValidateInterceptor;
 import com.lbxy.core.interceptors.exception.ExceptionsInterceptor;
 import com.lbxy.core.plugins.AnnotationInjectionPlugin;
 import com.lbxy.model._MappingKit;
+import net.dreamlu.event.EventPlugin;
 
 /**
  * API引导式配置
@@ -97,6 +98,14 @@ public class Config extends JFinalConfig {
          */
         Cron4jPlugin cp = new Cron4jPlugin(PropKit.get("cron4j.configFile"));
         me.add(cp);
+
+        /*
+        事件驱动
+         */
+        EventPlugin eventPlugin = new EventPlugin();
+        eventPlugin.async();
+        eventPlugin.scanPackage("com.lbxy.event");
+        me.add(eventPlugin);
     }
 
     /**

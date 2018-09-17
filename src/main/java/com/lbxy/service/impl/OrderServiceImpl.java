@@ -9,13 +9,14 @@ import com.lbxy.common.status.BillStatus;
 import com.lbxy.common.status.CommonStatus;
 import com.lbxy.common.status.OrderStatus;
 import com.lbxy.core.annotation.Service;
-import com.lbxy.dao.BillDao;
 import com.lbxy.dao.OrderDao;
 import com.lbxy.dao.UserDao;
-import com.lbxy.model.Bill;
+import com.lbxy.event.CreateBillEvent;
+import com.lbxy.event.UpdateUserBalanceEvent;
 import com.lbxy.model.Order;
 import com.lbxy.model.User;
 import com.lbxy.service.OrderService;
+import net.dreamlu.event.EventKit;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -24,18 +25,13 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.Objects;
 
 @Service("orderService")
 public class OrderServiceImpl implements OrderService {
 
     @Resource
     private OrderDao orderDao;
-
-    @Resource
-    private UserDao userDao;
-
-    @Resource
-    private BillDao billDao;
 
     @Override
     public Order findById(long id) {
@@ -59,27 +55,19 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.update(order);
     }
 
-    @Before(Tx.class)
-    public int accept(long orderId, long userId) {
-        User user = userDao.findById(userId);
-        if (user == null) {
-            return ERROR_USERID;
-        }
-        if (user.getPhoneNumber() == null || user.getRealName() == null) {
-            return NEED_MORE_INFO;
-        }
-
+    @Override
+    public boolean updateAcceptOrder(long orderId, User user) throws Exception {
         Order order = orderDao.findById(orderId);
-        if (order.getUserId() == userId) {
-            return CANT_ACCEPT_OWN_ORDER;
+        if (Objects.equals(order.getUserId(), user.getId())) {
+            throw new Exception("can't accept own orders(不能接受自己的订单)");
         }
-        order.setAcceptUserId(userId);
+        order.setAcceptUserId(user.getId());
         order.setAcceptUserPhoneNumber(user.getPhoneNumber());
         order.setAcceptDate(new Date());
         order.setStatus(OrderStatus.WAIT_COMPLETE);
-        orderDao.update(order);
-        return SUCCESS;
+        return orderDao.update(order);
     }
+
 
     public Page<Order> getOwnerPostOrders(int pn, long userId) {
         return orderDao.findByUserId(userId, pn);
@@ -91,12 +79,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Before(Tx.class)
-    public int cancelOrder( long orderId) {
+    public boolean cancelOrder(long orderId) {
         Order order = orderDao.findById(orderId);
         order.setStatus(OrderStatus.CANCELED);
-        orderDao.update(order);
+        boolean result = orderDao.update(order);
 
-        return userDao.updateUserBalance(order.getUserId(), order.getReward());
+        EventKit.post(new UpdateUserBalanceEvent(getClass()).setUserId(order.getUserId()).setReward(order.getReward()));
+        return result;
     }
 
     @Override
@@ -106,24 +95,12 @@ public class OrderServiceImpl implements OrderService {
         long acceptUserId = order.getAcceptUserId();
         BigDecimal reward = order.getReward();
 
-        User acceptUser = userDao.findById(acceptUserId);
-        BigDecimal balance = acceptUser.getBalance();
-        acceptUser.setBalance(balance.add(reward));
-        boolean result = userDao.update(acceptUser);
-        if (result) {
-            Bill bill = new Bill();
-            bill.setOrderId(orderId);
-            bill.setUserId(acceptUserId);
-            bill.setMoney(reward);
-            bill.setStatus(BillStatus.INCOME);
-            billDao.save(bill);
+        EventKit.post(new UpdateUserBalanceEvent(getClass()).setUserId(order.getUserId()).setReward(order.getReward()));
+        EventKit.post(new CreateBillEvent(getClass(),orderId,acceptUserId,reward, BillStatus.INCOME));
 
-            order.setStatus(OrderStatus.SETTLED);
-            order.setSettledDate(new Date());
-            return orderDao.update(order);
-        } else {
-            throw new Exception("订单结算失败，orderId：" + orderId);
-        }
+        order.setStatus(OrderStatus.SETTLED);
+        order.setSettledDate(new Date());
+        return orderDao.update(order);
     }
 
     @Override

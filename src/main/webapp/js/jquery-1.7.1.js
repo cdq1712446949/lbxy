@@ -3565,7 +3565,7 @@ if ( !jQuery.support.submitBubbles ) {
 					form._submit_attached = true;
 				}
 			});
-			// return undefined since we don't need an event listener
+			// return undefined since we don't need an event listeners
 		},
 
 		teardown: function() {

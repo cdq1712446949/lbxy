@@ -3,11 +3,15 @@ package com.lbxy;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.kit.PropKit;
+import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
+import com.lbxy.core.Config;
 import com.lbxy.core.utils.NetWorkUtil;
 import com.lbxy.core.utils.PasswordUtil;
 import com.lbxy.model.Order;
+import com.lbxy.model.User;
 import com.lbxy.service.OrderService;
 import com.lbxy.service.impl.OrderServiceImpl;
 import com.lbxy.weixin.utils.PayCacheUtil;
@@ -17,6 +21,7 @@ import net.sf.ehcache.Element;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.util.Date;
 

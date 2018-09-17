@@ -15,6 +15,7 @@ import com.lbxy.core.annotation.ValidParam;
 import com.lbxy.core.interceptors.WeixinLoginInterceptor;
 import com.lbxy.model.Order;
 import com.lbxy.service.OrderService;
+import com.lbxy.service.UserService;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotBlank;
@@ -24,6 +25,9 @@ public class OrderController extends BaseController {
 
     @Resource
     private OrderService orderService;
+
+    @Resource
+    private UserService userService;
 
     @Before({GET.class, CacheInterceptor.class})
     @CacheName("order")
@@ -58,16 +62,16 @@ public class OrderController extends BaseController {
     @Before({POST.class, EvictInterceptor.class})
     @CacheName("order")
     public void acceptOrder(int userId, @NotBlank int orderId) {
-        int result = orderService.accept(orderId, userId);
-        if (result == OrderService.SUCCESS) {
+        int result = userService.accept(orderId, userId);
+        if (result == UserService.SUCCESS) {
             renderJson(MessageVoUtil.success("接单成功"));
-        } else if (result == OrderService.ERROR_USERID) {
+        } else if (result == UserService.ERROR_USERID) {
             renderJson(MessageVoUtil.error("登陆过期，请重新登陆"));
-        } else if (result == OrderService.NEED_MORE_INFO) {
+        } else if (result == UserService.NEED_MORE_INFO) {
             renderJson(MessageVoUtil.error("请完善个人信息"));
-        } else if (result == OrderService.ORDER_NOT_EXIST) {
+        } else if (result == UserService.ORDER_NOT_EXIST) {
             renderJson(MessageVoUtil.error("订单不存在,请重试或联系管理员"));
-        } else if (result == OrderService.CANT_ACCEPT_OWN_ORDER) {
+        } else if (result == UserService.CANT_ACCEPT_OWN_ORDER) {
             renderJson(MessageVoUtil.error("不能接受自己发布的订单！"));
         }
         {
@@ -90,8 +94,8 @@ public class OrderController extends BaseController {
     @Before({POST.class, EvictInterceptor.class})
     @CacheName("order")
     public void cancelOrder(int orderId) {
-        int result = orderService.cancelOrder(orderId);
-        if (result != 0) {
+        boolean result = orderService.cancelOrder(orderId);
+        if (result) {
             renderJson(MessageVoUtil.success("订单取消成功"));
         } else {
             renderJson(MessageVoUtil.error("订单取消失败"));

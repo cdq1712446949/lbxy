@@ -12,9 +12,11 @@ import com.lbxy.common.status.UserStatus;
 import com.lbxy.core.annotation.Service;
 import com.lbxy.core.utils.JWTUtil;
 import com.lbxy.dao.UserDao;
+import com.lbxy.event.UpdateAcceptOrderEvent;
 import com.lbxy.model.User;
 import com.lbxy.service.UserService;
 import com.lbxy.weixin.utils.WeixinUtil;
+import net.dreamlu.event.EventKit;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -85,7 +87,7 @@ public class UserServiceImpl implements UserService {
         Map.Entry<String, String> paramEntry = param.entrySet().iterator().next();
         User user = userDao.findById(userId);
         user.set(paramEntry.getKey(), paramEntry.getValue());
-        user.update();
+        userDao.update(user);
         return user;
     }
 
@@ -97,7 +99,7 @@ public class UserServiceImpl implements UserService {
         currentUser.setStudentNumber(verification.getStudentNumber());
         currentUser.setStuNoPic(verification.getStuNoPic());
         currentUser.setStatus(UserStatus.WAIT_AUTHENTICATION);
-        currentUser.update();
+        userDao.update(currentUser);
         return currentUser;
     }
 
@@ -110,8 +112,15 @@ public class UserServiceImpl implements UserService {
         currentUser.setAvatarUrl(userInfo.getAvatarUrl());
         currentUser.setGender(userInfo.getGender());
 
-        currentUser.update();
+        userDao.update(currentUser);
         return currentUser;
+    }
+
+    @Override
+    public void updateUserBalance(long userId, BigDecimal reward) {
+        User user = this.findById(userId);
+        user.setBalance(user.getBalance().add(reward));
+        userDao.update(user);
     }
 
     @Override
@@ -120,12 +129,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.set("id", id);
         user.set("status", status);
-        return userDao.userSave(user);
-    }
-
-    @Override
-    public BigDecimal getUserAccountBalance(long userId) {
-        return userDao.getUserBalance(userId);
+        return userDao.save(user);
     }
 
     @Override
@@ -134,4 +138,22 @@ public class UserServiceImpl implements UserService {
         return userDao.update(user);
     }
 
+    @Before(Tx.class)
+    public int accept(long orderId, long userId) {
+        User user = userDao.findById(userId);
+        if (user == null) {
+            return ERROR_USERID;
+        }
+        if (user.getPhoneNumber() == null || user.getRealName() == null) {
+            return NEED_MORE_INFO;
+        }
+
+        try {
+            EventKit.post(new UpdateAcceptOrderEvent(getClass(), user, orderId));
+        } catch (Exception e) {
+            return CANT_ACCEPT_OWN_ORDER;
+        }
+
+        return SUCCESS;
+    }
 }

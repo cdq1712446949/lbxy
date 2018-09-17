@@ -4,6 +4,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.lbxy.common.request.CreateOrderBean;
 import com.lbxy.model.Order;
+import com.lbxy.model.User;
 
 import java.math.BigDecimal;
 
@@ -13,11 +14,6 @@ import java.math.BigDecimal;
  * @date 2018/8/14
  */
 public interface OrderService {
-    int SUCCESS = 0;
-    int ERROR_USERID = 1;
-    int ORDER_NOT_EXIST = 2;
-    int NEED_MORE_INFO = 3;
-    int CANT_ACCEPT_OWN_ORDER = 4;
 
     Order findById(long id);
 
@@ -27,7 +23,7 @@ public interface OrderService {
 
     boolean complete(long id);
 
-    int accept(long orderId, long userId);
+    boolean updateAcceptOrder(long orderId, User user) throws Exception;
 
     boolean delete(long id);
 
@@ -41,7 +37,7 @@ public interface OrderService {
 
     Page<Order> getOwnerAcceptOrders(int pn, long userId);
 
-    int cancelOrder(long orderId);
+    boolean cancelOrder(long orderId);
 
     boolean settleOrder(long orderId) throws Exception;
 

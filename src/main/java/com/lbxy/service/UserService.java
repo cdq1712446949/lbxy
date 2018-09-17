@@ -15,6 +15,12 @@ import java.math.BigDecimal;
  * @date 2018/8/14
  */
 public interface UserService {
+    int SUCCESS = 0;
+    int ERROR_USERID = 1;
+    int ORDER_NOT_EXIST = 2;
+    int NEED_MORE_INFO = 3;
+    int CANT_ACCEPT_OWN_ORDER = 4;
+
     User findById(long id);
 
     Page<User> getAllUsers(int pn);
@@ -29,10 +35,12 @@ public interface UserService {
 
     User saveUserInfo(SaveUserInfoBean userInfo, long userId);
 
+    void updateUserBalance(long userId, BigDecimal reward);
+
     boolean updateUserStatus(long id,int status);
 
-    BigDecimal getUserAccountBalance(long userId);
-
     boolean changeMoney(User user);
+
+    int accept(long orderId, long userId);
 
 }

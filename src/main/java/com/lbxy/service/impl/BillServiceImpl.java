@@ -26,8 +26,7 @@ public class BillServiceImpl implements BillService {
     @Before(Tx.class)
     @Override
     public boolean add(Bill bill) {
-        boolean i = bill.save();
-        return i;
+        return bill.save();
     }
 
     @Override

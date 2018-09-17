@@ -10,7 +10,7 @@ import com.jfinal.plugin.ehcache.EvictInterceptor;
 import com.lbxy.common.CacheNameConst;
 import com.lbxy.common.ImageType;
 import com.lbxy.common.NotificationType;
-import com.lbxy.common.status.ImageStatus;
+import com.lbxy.common.status.CommonStatus;
 import com.lbxy.common.status.UserStatus;
 import com.lbxy.core.interceptors.ManagerLoginInterceptor;
 import com.lbxy.model.*;
@@ -319,7 +319,7 @@ public class ManagerController extends BaseController {
     public void deleteIndexImage(@Range(min = 1)long id){
         Image image=new Image();
         image.set("id",id);
-        image.set("status",ImageStatus.DELETE);
+        image.set("status", CommonStatus.DELETED);
         boolean b=imageService.deleteImage(image);
         redirect("/back/imageList?pn=1");
     }
