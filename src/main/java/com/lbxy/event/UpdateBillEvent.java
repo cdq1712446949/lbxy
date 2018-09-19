@@ -2,25 +2,26 @@ package com.lbxy.event;
 
 import net.dreamlu.event.core.ApplicationEvent;
 
-import java.math.BigDecimal;
-
 /**
  * @author lmy
- * @description CreateBillEvent
- * @date 2018/9/18
+ * @description UpdateBillEvent
+ * @date 2018/9/19
  */
-public class CreateBillEvent extends ApplicationEvent {
-    private static final long serialVersionUID = 7185851026934884720L;
+public class UpdateBillEvent extends ApplicationEvent {
+    private static final long serialVersionUID = 7121245747863582147L;
+
     private long orderId;
     private long userId;
-    private BigDecimal money;
     private int status;
-
-    public CreateBillEvent(Object source, long orderId, long userId, BigDecimal money, int status) {
+    /**
+     * Create a new ApplicationEvent.
+     *
+     * @param source the component that published the event (never {@code null})
+     */
+    public UpdateBillEvent(Class<?> source, long orderId, long userId, int status) {
         super(source);
         this.orderId = orderId;
         this.userId = userId;
-        this.money = money;
         this.status = status;
     }
 
@@ -40,25 +41,11 @@ public class CreateBillEvent extends ApplicationEvent {
         this.userId = userId;
     }
 
-    public BigDecimal getMoney() {
-        return money;
-    }
-
-    public void setMoney(BigDecimal money) {
-        this.money = money;
-    }
-
     public int getStatus() {
         return status;
     }
 
     public void setStatus(int status) {
         this.status = status;
-    }
-
-
-
-    public CreateBillEvent(Object source) {
-        super(source);
     }
 }

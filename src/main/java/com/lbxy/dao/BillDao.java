@@ -2,6 +2,7 @@ package com.lbxy.dao;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.lbxy.common.PageConst;
 import com.lbxy.common.status.BillStatus;
 import com.lbxy.model.Bill;
@@ -25,8 +26,8 @@ public class BillDao {
         return Db.queryBigDecimal("select sum(money) from bill where userId=? and status=?", userId, BillStatus.INCOME);
     }
 
-    public Page<Bill> getAllByUserId(int pn, long userId) {
-        return Bill.DAO.paginate(pn, PageConst.PAGE_SIZE, "select b.status,b.money,b.createdDate,o.fromAddress,o.toAddress ", "from bill b inner join `order` o on b.orderId = o.id where b.userId=? order by b.createdDate desc", userId);
+    public Page<Record> getAllByUserId(int pn, long userId) {
+        return Db.paginate(pn, PageConst.PAGE_SIZE, "select b.status,b.money,b.createdDate,o.fromAddress,o.toAddress ", "from bill b inner join `order` o on b.orderId = o.id where b.userId=? order by b.createdDate desc", userId);
     }
 
     public Page<Bill> findBillByPhoneNumber(int pn, String phoneNumber) {
@@ -35,5 +36,9 @@ public class BillDao {
 
     public boolean save(Bill bill) {
         return bill.save();
+    }
+
+    public int updateStatusByUserIdAndOrderId(long userId, long orderId, int status) {
+        return Db.update("update bill set status = ? where userId = ? and orderId = ?", status, userId, orderId);
     }
 }

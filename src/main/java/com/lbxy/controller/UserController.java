@@ -8,6 +8,7 @@ import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 import com.lbxy.common.request.SaveUserInfoBean;
 import com.lbxy.common.request.UpdateUserInfoBean;
@@ -94,7 +95,7 @@ public class UserController extends BaseController {
 
     @Before(GET.class)
     public void accountDetail(int pn, long userId) {
-        Page<Bill> bills = billService.getAllByUserId(pn, userId);
+        Page<Record> bills = billService.getAllByUserId(pn, userId);
         renderJson(MessageVoUtil.success("请求成功", bills));
     }
 

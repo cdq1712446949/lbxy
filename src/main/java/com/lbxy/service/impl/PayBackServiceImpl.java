@@ -23,6 +23,6 @@ public class PayBackServiceImpl implements PayBackService {
     public void payBack(long orderId, long userId, double totalFee) {
         EventKit.post(new UpdateOrderStatusEvent(getClass(), orderId, OrderStatus.UN_COMPLETED));
 
-        EventKit.post(new CreateBillEvent(getClass(), orderId, userId, BigDecimal.valueOf(totalFee / 100), BillStatus.PAY));
+        EventKit.post(new CreateBillEvent(getClass(), orderId, userId, BigDecimal.valueOf(totalFee / 100), BillStatus.WAIT_SETTLE));
     }
 }

@@ -2,6 +2,7 @@ package com.lbxy.service.impl;
 
 import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.lbxy.dao.BillDao;
 import com.lbxy.model.Bill;
@@ -42,12 +43,17 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public Page<Bill> getAllByUserId(int pn, long userId) {
+    public Page<Record> getAllByUserId(int pn, long userId) {
         return billDao.getAllByUserId(pn, userId);
     }
 
     @Override
     public Page<Bill> getBillByPhoneNumber(int pn, String phoneNumber) {
         return billDao.findBillByPhoneNumber(pn, phoneNumber);
+    }
+
+    @Override
+    public int updateStatusByUserIdAndOrderId(long userId, long orderId, int status) {
+        return billDao.updateStatusByUserIdAndOrderId(userId, orderId, status);
     }
 }

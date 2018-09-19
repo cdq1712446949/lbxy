@@ -1,8 +1,8 @@
 package com.lbxy.event.listeners;
 
-import com.lbxy.core.plugins.cache.InjectionCache;
 import com.lbxy.core.plugins.cache.Injector;
 import com.lbxy.event.CreateBillEvent;
+import com.lbxy.event.UpdateBillEvent;
 import com.lbxy.model.Bill;
 import com.lbxy.service.BillService;
 import net.dreamlu.event.core.EventListener;
@@ -26,5 +26,10 @@ public class BillListener {
         bill.setStatus(event.getStatus());
         bill.setCreatedDate(new Date());
         billService.add(bill);
+    }
+
+    @EventListener(async = true)
+    public void listeneUpdateBillEvent(UpdateBillEvent even) {
+        billService.updateStatusByUserIdAndOrderId(even.getUserId(), even.getOrderId(), even.getStatus());
     }
 }

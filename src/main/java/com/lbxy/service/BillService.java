@@ -1,6 +1,7 @@
 package com.lbxy.service;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.lbxy.model.Bill;
 
 import java.math.BigDecimal;
@@ -20,8 +21,9 @@ public interface BillService {
 
     BigDecimal get7DaysTotalIncome(long userId);
 
-    Page<Bill> getAllByUserId(int pn, long userId);
+    Page<Record> getAllByUserId(int pn, long userId);
 
-    Page<Bill> getBillByPhoneNumber(int pn,String phoneNumber);
+    Page<Bill> getBillByPhoneNumber(int pn, String phoneNumber);
 
+    int updateStatusByUserIdAndOrderId(long userId, long orderId, int status);
 }

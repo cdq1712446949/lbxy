@@ -10,6 +10,7 @@ import com.lbxy.common.status.CommonStatus;
 import com.lbxy.common.status.OrderStatus;
 import com.lbxy.dao.OrderDao;
 import com.lbxy.event.CreateBillEvent;
+import com.lbxy.event.UpdateBillEvent;
 import com.lbxy.event.UpdateUserBalanceEvent;
 import com.lbxy.model.Order;
 import com.lbxy.model.User;
@@ -91,13 +92,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Before(Tx.class)
-    public boolean settleOrder(long orderId) throws Exception {
+    public boolean settleOrder(long orderId) {
         Order order = orderDao.findById(orderId);
         long acceptUserId = order.getAcceptUserId();
+        long userId = order.getUserId();
         BigDecimal reward = order.getReward();
 
         EventKit.post(new UpdateUserBalanceEvent(getClass()).setUserId(order.getUserId()).setReward(order.getReward()));
         EventKit.post(new CreateBillEvent(getClass(),orderId,acceptUserId,reward, BillStatus.INCOME));
+        EventKit.post(new UpdateBillEvent(getClass(),orderId,userId, BillStatus.PAY));
 
         order.setStatus(OrderStatus.SETTLED);
         order.setSettledDate(new Date());
