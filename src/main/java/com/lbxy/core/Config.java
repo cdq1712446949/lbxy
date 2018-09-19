@@ -13,6 +13,7 @@ import com.lbxy.controller.*;
 import com.lbxy.core.handlers.ServletExcludeHandler;
 import com.lbxy.core.interceptors.InjectionInterceptor;
 import com.lbxy.core.interceptors.ParamValidateInterceptor;
+import com.lbxy.core.interceptors.RequestInterceptor;
 import com.lbxy.core.interceptors.exception.ExceptionsInterceptor;
 import com.lbxy.core.plugins.AnnotationInjectionPlugin;
 import com.lbxy.core.plugins.GuicePlugin;
@@ -89,10 +90,6 @@ public class Config extends JFinalConfig {
          */
         me.add(new EhCachePlugin());
 
-        /*
-        基于注解 依赖注入
-         */
-//        me.add(new AnnotationInjectionPlugin("com.lbxy.service.impl", "com.lbxy.dao","com.lbxy.manager"));
 
         /*
         配置定时任务
@@ -121,7 +118,7 @@ public class Config extends JFinalConfig {
     public void configInterceptor(Interceptors me) {
         me.addGlobalActionInterceptor(new ExceptionsInterceptor()); //全局异常拦截
         me.addGlobalActionInterceptor(new ParamValidateInterceptor());  // 使用hibernate-validator参数校验
-//        me.addGlobalActionInterceptor(new InjectionInterceptor()); //控制器拦截注入
+        me.addGlobalActionInterceptor(new RequestInterceptor());
     }
 
     /**

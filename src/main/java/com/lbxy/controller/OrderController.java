@@ -18,9 +18,7 @@ import com.lbxy.model.Order;
 import com.lbxy.service.OrderService;
 import com.lbxy.service.UserService;
 
-import javax.annotation.Resource;
 import javax.inject.Inject;
-import javax.validation.constraints.NotBlank;
 
 @Before(WeixinLoginInterceptor.class)
 public class OrderController extends BaseController {
@@ -78,8 +76,7 @@ public class OrderController extends BaseController {
             renderJson(MessageVoUtil.error("订单不存在,请重试或联系管理员"));
         } else if (result == UserService.CANT_ACCEPT_OWN_ORDER) {
             renderJson(MessageVoUtil.error("不能接受自己发布的订单！"));
-        }
-        {
+        } else {
             renderJson(MessageVoUtil.error("未知错误"));
         }
     }
