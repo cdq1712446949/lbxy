@@ -2,11 +2,10 @@ package com.lbxy.service.cron;
 
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.status.OrderStatus;
-import com.lbxy.core.plugins.cache.InjectionCache;
+import com.lbxy.core.plugins.cache.Injector;
 import com.lbxy.core.utils.LoggerUtil;
 import com.lbxy.model.Order;
 import com.lbxy.service.OrderService;
-import com.lbxy.service.impl.OrderServiceImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,8 +22,8 @@ public class OrderCronTask implements Runnable {
 
     @Override
     public void run() {
-        OrderService orderService = (OrderService) InjectionCache.get("orderService");
-        LoggerUtil.info(getClass(),"定时任务开始执行");
+        final OrderService orderService = Injector.getInjector().getInstance(OrderService.class);
+        LoggerUtil.info(getClass(), "定时任务开始执行");
         Page<Order> orderPage = orderService.getUnCompletedAndWaitCompletedAndCompletedOrdersByPage(1);
         do {
             orderPage.getList().forEach(order -> {

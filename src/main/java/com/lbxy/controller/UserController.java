@@ -15,6 +15,7 @@ import com.lbxy.common.request.VerificationBean;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.core.annotation.ValidParam;
 import com.lbxy.core.interceptors.WeixinLoginInterceptor;
+import com.lbxy.core.plugins.cache.Injector;
 import com.lbxy.manager.UploadManager;
 import com.lbxy.model.Bill;
 import com.lbxy.model.User;
@@ -22,7 +23,7 @@ import com.lbxy.service.BillService;
 import com.lbxy.service.OrderService;
 import com.lbxy.service.UserService;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.validation.constraints.NotBlank;
 import java.io.File;
 import java.math.BigDecimal;
@@ -31,15 +32,18 @@ import java.util.Optional;
 @Before(WeixinLoginInterceptor.class)
 public class UserController extends BaseController {
 
-    @Resource
+    @Inject
     private UserService userService;
-    @Resource
+    @Inject
     private OrderService orderService;
-    @Resource
+    @Inject
     private BillService billService;
-
-    @Resource
+    @Inject
     private UploadManager uploadManager;
+
+    public UserController() {
+        Injector.getInjector().injectMembers(this);
+    }
 
     @Clear(WeixinLoginInterceptor.class)
     @Before(POST.class)

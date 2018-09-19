@@ -10,6 +10,7 @@ import com.lbxy.model.Notification;
 import com.lbxy.service.NotificationService;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
 
@@ -18,11 +19,14 @@ import java.util.List;
  * @description NotificationServiceImpl
  * @date 2018/8/28
  */
-@Service("notificationService")
 public class NotificationServiceImpl implements NotificationService {
 
-    @Resource
-    private NotificationDao notificationDao;
+    private final NotificationDao notificationDao;
+
+    @Inject
+    public NotificationServiceImpl(NotificationDao notificationDao) {
+        this.notificationDao = notificationDao;
+    }
 
     @Override
     public List<Notification> getActiveNotification() {

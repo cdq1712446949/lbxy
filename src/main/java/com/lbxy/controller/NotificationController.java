@@ -7,9 +7,10 @@ import com.jfinal.plugin.ehcache.CacheInterceptor;
 import com.jfinal.plugin.ehcache.CacheName;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.core.interceptors.WeixinLoginInterceptor;
+import com.lbxy.core.plugins.cache.Injector;
 import com.lbxy.service.NotificationService;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 
 /**
  * @author lmy
@@ -18,9 +19,13 @@ import javax.annotation.Resource;
  */
 @Before(WeixinLoginInterceptor.class)
 public class NotificationController extends Controller {
-
-    @Resource
+    @Inject
     private NotificationService notificationService;
+
+
+    public NotificationController() {
+        Injector.getInjector().injectMembers(this);
+    }
 
     @Before({GET.class, CacheInterceptor.class})
     @CacheName("notification")

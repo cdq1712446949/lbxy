@@ -5,13 +5,14 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.lbxy.common.PageConst;
 import com.lbxy.common.status.CommonStatus;
-import com.lbxy.core.annotation.Repository;
 import com.lbxy.model.Lostfound;
 
 import java.util.List;
 
-@Repository
 public class LostFoundDao {
+
+    public LostFoundDao() {
+    }
 
     public Page<Lostfound> findLostFoundByPn(int pn) {
         return Lostfound.DAO.paginate(pn, 10, "select *", "from lostfound");

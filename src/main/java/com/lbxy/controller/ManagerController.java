@@ -13,43 +13,39 @@ import com.lbxy.common.NotificationType;
 import com.lbxy.common.status.CommonStatus;
 import com.lbxy.common.status.UserStatus;
 import com.lbxy.core.interceptors.ManagerLoginInterceptor;
+import com.lbxy.core.plugins.cache.Injector;
 import com.lbxy.model.*;
 import com.lbxy.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Range;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.validation.constraints.NotBlank;
 
 @Before(ManagerLoginInterceptor.class)
 public class ManagerController extends BaseController {
-
-    @Resource
+    @Inject
     private ManagerService managerService;
-
-    @Resource
+    @Inject
     private UserService userService;
-
-    @Resource
+    @Inject
     private OrderService orderService;
-
-    @Resource
+    @Inject
     private TreeHoleService treeHoleService;
-
-    @Resource
+    @Inject
     private FleaService fleaService;
-
-    @Resource
+    @Inject
     private LostFoundService lostFoundService;
-
-    @Resource
+    @Inject
     private BillService billService;
-
-    @Resource
+    @Inject
     private NotificationService notificationService;
-
-    @Resource
+    @Inject
     private ImageService imageService;
+
+    public ManagerController() {
+        Injector.getInjector().injectMembers(this);
+    }
 
     @Clear({ManagerLoginInterceptor.class})
     public void index() {

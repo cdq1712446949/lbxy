@@ -8,9 +8,7 @@ import com.lbxy.common.request.CreateOrderBean;
 import com.lbxy.common.status.BillStatus;
 import com.lbxy.common.status.CommonStatus;
 import com.lbxy.common.status.OrderStatus;
-import com.lbxy.core.annotation.Service;
 import com.lbxy.dao.OrderDao;
-import com.lbxy.dao.UserDao;
 import com.lbxy.event.CreateBillEvent;
 import com.lbxy.event.UpdateUserBalanceEvent;
 import com.lbxy.model.Order;
@@ -18,7 +16,7 @@ import com.lbxy.model.User;
 import com.lbxy.service.OrderService;
 import net.dreamlu.event.EventKit;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,11 +25,14 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Objects;
 
-@Service("orderService")
 public class OrderServiceImpl implements OrderService {
 
-    @Resource
-    private OrderDao orderDao;
+    private final OrderDao orderDao;
+
+    @Inject
+    public OrderServiceImpl(OrderDao orderDao) {
+        this.orderDao = orderDao;
+    }
 
     @Override
     public Order findById(long id) {

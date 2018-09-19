@@ -1,6 +1,7 @@
 package com.lbxy.event.listeners;
 
 import com.lbxy.core.plugins.cache.InjectionCache;
+import com.lbxy.core.plugins.cache.Injector;
 import com.lbxy.event.CreateBillEvent;
 import com.lbxy.model.Bill;
 import com.lbxy.service.BillService;
@@ -14,7 +15,7 @@ import java.util.Date;
  * @date 2018/9/18
  */
 public class BillListener {
-    private BillService billService = (BillService) InjectionCache.get("billService");
+    private final BillService billService = Injector.getInjector().getInstance(BillService.class);
 
     @EventListener(async = true)
     public void listenCreateBillEvent(CreateBillEvent event) {

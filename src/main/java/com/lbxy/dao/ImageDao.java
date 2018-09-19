@@ -3,7 +3,6 @@ package com.lbxy.dao;
 import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.PageConst;
 import com.lbxy.common.status.CommonStatus;
-import com.lbxy.core.annotation.Repository;
 import com.lbxy.model.Image;
 
 import java.util.List;
@@ -13,8 +12,10 @@ import java.util.List;
  * @description ImageDao
  * @date 2018/8/26
  */
-@Repository
 public class ImageDao {
+    public ImageDao() {
+    }
+
     public boolean save(Image image) {
         return image.save();
     }

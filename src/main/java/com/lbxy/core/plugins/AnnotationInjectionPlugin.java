@@ -20,6 +20,7 @@ import java.util.Set;
  * @description AnnotationInjectionPlugin
  * @date 2018/8/21
  */
+@Deprecated
 public class AnnotationInjectionPlugin implements IPlugin {
 
     private String[] basePackages;

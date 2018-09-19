@@ -8,6 +8,7 @@ import java.util.Map;
  * @description InjectionCache
  * @date 2018/8/21
  */
+@Deprecated
 public class InjectionCache {
     private static final Map<String, Object> SERVICE_MAP = new HashMap<>();
 

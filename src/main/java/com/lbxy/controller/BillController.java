@@ -6,17 +6,22 @@ import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 import com.lbxy.common.response.MessageVo;
 import com.lbxy.common.response.ResponseStatus;
+import com.lbxy.core.plugins.cache.Injector;
 import com.lbxy.model.Bill;
 import com.lbxy.service.BillService;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
 
 public class BillController extends BaseController {
 
-    @Resource
+    @Inject
     private BillService billService;
+
+    public BillController() {
+        Injector.getInjector().injectMembers(this);
+    }
 
     @Before(GET.class)
     public void index() {

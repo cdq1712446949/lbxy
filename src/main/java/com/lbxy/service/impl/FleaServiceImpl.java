@@ -4,14 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
-import com.jfinal.kit.LogKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.lbxy.common.ImageType;
 import com.lbxy.common.request.ReplyBean;
 import com.lbxy.common.status.CommonStatus;
-import com.lbxy.core.annotation.Service;
 import com.lbxy.core.utils.LoggerUtil;
 import com.lbxy.dao.FleaDao;
 import com.lbxy.dao.ImageDao;
@@ -22,22 +20,25 @@ import com.lbxy.model.User;
 import com.lbxy.service.FleaService;
 import com.lbxy.weixin.utils.WeixinUtil;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-@Service("fleaService")
 public class FleaServiceImpl implements FleaService {
 
-    @Resource
-    private FleaDao fleaDao;
+    private final FleaDao fleaDao;
 
-    @Resource
-    private UserDao userDao;
+    private final UserDao userDao;
 
-    @Resource
-    private ImageDao imageDao;
+    private final ImageDao imageDao;
+
+    @Inject
+    public FleaServiceImpl(FleaDao fleaDao, UserDao userDao, ImageDao imageDao) {
+        this.fleaDao = fleaDao;
+        this.userDao = userDao;
+        this.imageDao = imageDao;
+    }
 
     @Override
     public Page<Flea> getAllFlea(int pn) {

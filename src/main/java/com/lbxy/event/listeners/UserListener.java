@@ -1,6 +1,6 @@
 package com.lbxy.event.listeners;
 
-import com.lbxy.core.plugins.cache.InjectionCache;
+import com.lbxy.core.plugins.cache.Injector;
 import com.lbxy.event.UpdateUserBalanceEvent;
 import com.lbxy.service.UserService;
 import net.dreamlu.event.core.EventListener;
@@ -12,7 +12,7 @@ import net.dreamlu.event.core.EventListener;
  */
 public class UserListener {
 
-    private UserService userService = (UserService) InjectionCache.get("userService");
+    private final UserService userService = Injector.getInjector().getInstance(UserService.class);
 
     @EventListener(async = true)
     public void listenUpdateUserBalanceEvent(UpdateUserBalanceEvent event) {

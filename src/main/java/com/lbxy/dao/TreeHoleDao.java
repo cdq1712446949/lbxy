@@ -5,13 +5,14 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.lbxy.common.PageConst;
 import com.lbxy.common.status.CommonStatus;
-import com.lbxy.core.annotation.Repository;
 import com.lbxy.model.Treehole;
 
 import java.util.List;
 
-@Repository
 public class TreeHoleDao {
+
+    public TreeHoleDao() {
+    }
 
     public Page<Treehole> findAllTreeHole(int pn) {
         return Treehole.DAO.paginate(pn, 10, "select *", "from treehole");

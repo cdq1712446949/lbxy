@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.tx.Tx;
-import com.lbxy.core.annotation.Service;
 import com.lbxy.service.FormService;
 
 import java.util.Date;
@@ -16,7 +15,6 @@ import java.util.Optional;
  * @date 2018/9/11
  */
 
-@Service("formService")
 public class FormServiceImpl implements FormService {
     @Override
     @Before(Tx.class)

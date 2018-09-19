@@ -1,19 +1,17 @@
 package com.lbxy.dao;
 
-import com.alibaba.fastjson.JSON;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.lbxy.common.PageConst;
 import com.lbxy.common.status.CommonStatus;
-import com.lbxy.core.annotation.Repository;
-import com.lbxy.core.utils.LoggerUtil;
 import com.lbxy.model.Flea;
 
 import java.util.List;
 
-@Repository
 public class FleaDao {
+    public FleaDao() {
+    }
 
     public Page<Flea> findFleaByPn(int pn) {
         return Flea.DAO.paginate(pn, PageConst.PAGE_SIZE, "select *", "from flea");

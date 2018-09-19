@@ -10,7 +10,6 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import com.lbxy.common.ImageType;
 import com.lbxy.common.request.ReplyBean;
 import com.lbxy.common.status.CommonStatus;
-import com.lbxy.core.annotation.Service;
 import com.lbxy.core.utils.LoggerUtil;
 import com.lbxy.dao.ImageDao;
 import com.lbxy.dao.LostFoundDao;
@@ -21,22 +20,25 @@ import com.lbxy.model.User;
 import com.lbxy.service.LostFoundService;
 import com.lbxy.weixin.utils.WeixinUtil;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-@Service("lostFoundService")
 public class LostFoundServiceImpl implements LostFoundService {
 
-    @Resource
-    private LostFoundDao lostFoundDao;
+    private final LostFoundDao lostFoundDao;
 
-    @Resource
-    private ImageDao imageDao;
+    private final ImageDao imageDao;
 
-    @Resource
-    private UserDao userDao;
+    private final UserDao userDao;
+
+    @Inject
+    public LostFoundServiceImpl(LostFoundDao lostFoundDao, UserDao userDao, ImageDao imageDao) {
+        this.lostFoundDao = lostFoundDao;
+        this.userDao = userDao;
+        this.imageDao = imageDao;
+    }
 
     @Override
     public Page<Lostfound> getAllLostFound(int pn) {

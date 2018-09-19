@@ -78,12 +78,6 @@ class UtilTest {
         System.out.println(PasswordUtil.createHash("123456"));
     }
 
-    @Test
-    void test4() {
-        OrderService orderService = new OrderServiceImpl();
-        Page<Order> orderPage = orderService.getUnCompletedAndWaitCompletedAndCompletedOrdersByPage(1);
-        System.out.println(orderPage);
-    }
 
     @Test
     void test5() throws InterruptedException {

@@ -3,6 +3,7 @@ package com.lbxy.weixin.servlet;
 import com.alibaba.fastjson.JSON;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.core.plugins.cache.InjectionCache;
+import com.lbxy.core.plugins.cache.Injector;
 import com.lbxy.core.utils.JWTUtil;
 import com.lbxy.model.User;
 import com.lbxy.service.UserService;
@@ -39,7 +40,7 @@ public class PayServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
 
-        userService = (UserService) InjectionCache.get("userService");
+        userService = Injector.getInjector().getInstance(UserService.class);
 
         PAY_SERVICE.setPreHandler(result -> {
             String out_trade_no = result.get("out_trade_no");

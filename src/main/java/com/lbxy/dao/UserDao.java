@@ -2,18 +2,17 @@ package com.lbxy.dao;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-import com.lbxy.core.annotation.Repository;
 import com.lbxy.model.User;
-
-import java.math.BigDecimal;
 
 /**
  * @author lmy
  * @description UserDao
  * @date 2018/8/14
  */
-@Repository
 public class UserDao {
+
+    public UserDao() {
+    }
 
     public boolean insert(User user) {
         return user.save();

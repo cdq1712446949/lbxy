@@ -3,6 +3,7 @@ package com.lbxy.weixin.servlet;
 import com.alibaba.fastjson.JSON;
 import com.lbxy.common.status.BillStatus;
 import com.lbxy.core.plugins.cache.InjectionCache;
+import com.lbxy.core.plugins.cache.Injector;
 import com.lbxy.model.Bill;
 import com.lbxy.service.BillService;
 import com.lbxy.service.OrderService;
@@ -43,7 +44,7 @@ public class PayCallbackServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
 
-        payBackService = (PayBackService) InjectionCache.get("payBackService");
+        payBackService = Injector.getInjector().getInstance(PayBackService.class);
 
         PAY_SERVICE.setSuccessHandler(result -> {
             String out_trade_no = result.get("out_trade_no");

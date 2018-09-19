@@ -7,6 +7,7 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.upload.UploadFile;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.core.interceptors.WeixinLoginInterceptor;
+import com.lbxy.core.plugins.cache.Injector;
 import com.lbxy.core.utils.LoggerUtil;
 import com.lbxy.manager.UploadManager;
 import com.lbxy.model.User;
@@ -15,19 +16,28 @@ import com.lbxy.service.UserService;
 import org.hibernate.validator.constraints.Range;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
 import java.io.File;
 import java.util.Optional;
 
 public class ImageController extends BaseController {
-
-    @Resource
+    @Inject
     private UserService userService;
-
-    @Resource
+    @Inject
     private ImageService imageService;
-
-    @Resource
+    @Inject
     private UploadManager uploadManager;
+
+    public ImageController() {
+        Injector.getInjector().injectMembers(this);
+    }
+
+    @Inject
+    public ImageController(UserService userService, ImageService imageService, UploadManager uploadManager) {
+        this.userService = userService;
+        this.imageService = imageService;
+        this.uploadManager = uploadManager;
+    }
 
     @Before({GET.class})
     public void index(int id) {

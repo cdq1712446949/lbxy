@@ -4,7 +4,6 @@ import com.jfinal.plugin.activerecord.Page;
 import com.lbxy.common.NotificationType;
 import com.lbxy.common.PageConst;
 import com.lbxy.common.status.CommonStatus;
-import com.lbxy.core.annotation.Repository;
 import com.lbxy.model.Notification;
 
 import java.util.List;
@@ -14,8 +13,9 @@ import java.util.List;
  * @description NotificationDao
  * @date 2018/8/28
  */
-@Repository
 public class NotificationDao {
+    public NotificationDao() {
+    }
 
     public List<Notification> getNotificationByActive(int type) {
         return Notification.dao.find("select * from notification where active = ? and status = ?", type, CommonStatus.NORMAL);

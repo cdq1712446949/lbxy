@@ -13,21 +13,26 @@ import com.lbxy.common.request.CreateOrderBean;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.core.annotation.ValidParam;
 import com.lbxy.core.interceptors.WeixinLoginInterceptor;
+import com.lbxy.core.plugins.cache.Injector;
 import com.lbxy.model.Order;
 import com.lbxy.service.OrderService;
 import com.lbxy.service.UserService;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.validation.constraints.NotBlank;
 
 @Before(WeixinLoginInterceptor.class)
 public class OrderController extends BaseController {
-
-    @Resource
+    @Inject
     private OrderService orderService;
-
-    @Resource
+    @Inject
     private UserService userService;
+
+
+    public OrderController() {
+        Injector.getInjector().injectMembers(this);
+    }
 
     @Before({GET.class, CacheInterceptor.class})
     @CacheName("order")

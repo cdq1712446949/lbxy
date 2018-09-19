@@ -1,6 +1,6 @@
 package com.lbxy.event.listeners;
 
-import com.lbxy.core.plugins.cache.InjectionCache;
+import com.lbxy.core.plugins.cache.Injector;
 import com.lbxy.event.UpdateAcceptOrderEvent;
 import com.lbxy.event.UpdateOrderStatusEvent;
 import com.lbxy.model.Order;
@@ -14,7 +14,7 @@ import net.dreamlu.event.core.EventListener;
  */
 public class OrderListener {
 
-    private OrderService orderService = (OrderService) InjectionCache.get("orderService");
+    private final OrderService orderService = Injector.getInjector().getInstance(OrderService.class);
 
 
     @EventListener

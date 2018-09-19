@@ -11,6 +11,7 @@ import com.lbxy.model.Image;
 import com.lbxy.service.ImageService;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -18,11 +19,14 @@ import java.util.List;
  * @description ImageServiceImpl
  * @date 2018/8/26
  */
-@Service("imageService")
 public class ImageServiceImpl implements ImageService {
 
-    @Resource
-    private ImageDao imageDao;
+    private final ImageDao imageDao;
+
+    @Inject
+    public ImageServiceImpl(ImageDao imageDao) {
+        this.imageDao = imageDao;
+    }
 
     @Override
     @Before(Tx.class)

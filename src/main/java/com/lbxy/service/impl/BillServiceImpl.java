@@ -3,20 +3,22 @@ package com.lbxy.service.impl;
 import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
-import com.lbxy.core.annotation.Service;
 import com.lbxy.dao.BillDao;
 import com.lbxy.model.Bill;
 import com.lbxy.service.BillService;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Service("billService")
 public class BillServiceImpl implements BillService {
 
-    @Resource
-    private BillDao billDao;
+    private final BillDao billDao;
+
+    @Inject
+    public BillServiceImpl(BillDao billDao) {
+        this.billDao = billDao;
+    }
 
     @Override
     public List<Bill> getBill(long userId) {

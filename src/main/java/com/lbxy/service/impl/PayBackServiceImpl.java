@@ -4,7 +4,6 @@ import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.lbxy.common.status.BillStatus;
 import com.lbxy.common.status.OrderStatus;
-import com.lbxy.core.annotation.Service;
 import com.lbxy.event.CreateBillEvent;
 import com.lbxy.event.UpdateOrderStatusEvent;
 import com.lbxy.service.PayBackService;
@@ -17,7 +16,6 @@ import java.math.BigDecimal;
  * @description PayBackServiceImpl
  * @date 2018/9/13
  */
-@Service("payBackService")
 public class PayBackServiceImpl implements PayBackService {
 
     @Override

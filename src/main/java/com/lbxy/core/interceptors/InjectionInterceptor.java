@@ -16,6 +16,8 @@ import java.util.Map;
  * @description InjectionInterceptor 控制器依赖注入拦截器，在每次请求的时候将service单例注入到controller中
  * @date 2018/8/21
  */
+
+@Deprecated
 public class InjectionInterceptor implements Interceptor {
     @Override
     public void intercept(Invocation inv) {

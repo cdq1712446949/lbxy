@@ -10,7 +10,6 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import com.lbxy.common.ImageType;
 import com.lbxy.common.request.ReplyBean;
 import com.lbxy.common.status.CommonStatus;
-import com.lbxy.core.annotation.Service;
 import com.lbxy.core.utils.LoggerUtil;
 import com.lbxy.core.utils.RandomAvatarUtil;
 import com.lbxy.core.utils.RandomColorUtil;
@@ -23,22 +22,26 @@ import com.lbxy.model.User;
 import com.lbxy.service.TreeHoleService;
 import com.lbxy.weixin.utils.WeixinUtil;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-@Service("treeHoleService")
 public class TreeHoleServiceImpl implements TreeHoleService {
 
-    @Resource
-    private TreeHoleDao treeHoleDao;
+    private final TreeHoleDao treeHoleDao;
 
-    @Resource
-    private ImageDao imageDao;
+    private final ImageDao imageDao;
 
-    @Resource
-    private UserDao userDao;
+    private final UserDao userDao;
+
+    @Inject
+    public TreeHoleServiceImpl(TreeHoleDao treeHoleDao, UserDao userDao, ImageDao imageDao) {
+        this.treeHoleDao = treeHoleDao;
+        this.userDao = userDao;
+        this.imageDao = imageDao;
+    }
+
 
     @Override
     public Page<Treehole> getAllTreeHole(int pn) {

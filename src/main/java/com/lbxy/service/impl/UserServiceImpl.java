@@ -9,7 +9,6 @@ import com.lbxy.common.request.SaveUserInfoBean;
 import com.lbxy.common.request.UpdateUserInfoBean;
 import com.lbxy.common.request.VerificationBean;
 import com.lbxy.common.status.UserStatus;
-import com.lbxy.core.annotation.Service;
 import com.lbxy.core.utils.JWTUtil;
 import com.lbxy.dao.UserDao;
 import com.lbxy.event.UpdateAcceptOrderEvent;
@@ -18,14 +17,17 @@ import com.lbxy.service.UserService;
 import com.lbxy.weixin.utils.WeixinUtil;
 import net.dreamlu.event.EventKit;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.util.Map;
 
-@Service("userService")
 public class UserServiceImpl implements UserService {
-    @Resource
-    private UserDao userDao;
+    private final UserDao userDao;
+
+    @Inject
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     public User findById(long id) {
         return userDao.findById(id);

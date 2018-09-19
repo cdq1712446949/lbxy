@@ -13,10 +13,12 @@ import com.lbxy.common.request.ReplyBean;
 import com.lbxy.common.response.MessageVoUtil;
 import com.lbxy.core.annotation.ValidParam;
 import com.lbxy.core.interceptors.WeixinLoginInterceptor;
+import com.lbxy.core.plugins.cache.Injector;
 import com.lbxy.service.FormService;
 import com.lbxy.service.TreeHoleService;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
 import java.util.Optional;
 
 /**
@@ -26,10 +28,15 @@ import java.util.Optional;
  */
 @Before(WeixinLoginInterceptor.class)
 public class TreeholeController extends Controller {
-    @Resource
+    @Inject
     private TreeHoleService treeHoleService;
-    @Resource
+    @Inject
     private FormService formService;
+
+
+    public TreeholeController() {
+        Injector.getInjector().injectMembers(this);
+    }
 
     @Before({POST.class, EvictInterceptor.class})
     @CacheName("treehole")
