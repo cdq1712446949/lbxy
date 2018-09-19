@@ -61,7 +61,7 @@ public class OrderController extends BaseController {
 
     @Before({POST.class, EvictInterceptor.class})
     @CacheName("order")
-    public void acceptOrder(int userId, @NotBlank int orderId) {
+    public void acceptOrder(long userId, long orderId) {
         int result = userService.accept(orderId, userId);
         if (result == UserService.SUCCESS) {
             renderJson(MessageVoUtil.success("接单成功"));
