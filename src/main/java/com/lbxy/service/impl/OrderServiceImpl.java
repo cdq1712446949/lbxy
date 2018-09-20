@@ -98,7 +98,7 @@ public class OrderServiceImpl implements OrderService {
         long userId = order.getUserId();
         BigDecimal reward = order.getReward();
 
-        EventKit.post(new UpdateUserBalanceEvent(getClass()).setUserId(order.getUserId()).setReward(order.getReward()));
+        EventKit.post(new UpdateUserBalanceEvent(getClass()).setUserId(acceptUserId).setReward(order.getReward()));
         EventKit.post(new CreateBillEvent(getClass(),orderId,acceptUserId,reward, BillStatus.INCOME));
         EventKit.post(new UpdateBillEvent(getClass(),orderId,userId, BillStatus.PAY));
 

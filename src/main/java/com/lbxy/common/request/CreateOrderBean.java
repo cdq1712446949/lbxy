@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
  * @date 2018/8/19
  */
 public class CreateOrderBean {
-    @NotNull(message = "酬金不能为空")
     private double reward;
 
     @NotNull(message = "联系人不能为空")
