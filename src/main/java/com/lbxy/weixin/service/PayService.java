@@ -59,9 +59,17 @@ public class PayService {
         return this;
     }
 
+    /**
+     * 调用统一下单接口，成功之后对本地系统订单状态做更新（通过preHandler）
+     * @param fee 金额
+     * @param ip 用户ip
+     * @param openId 用户的openid
+     * @param otherArgs 其他参数，可任意放入，以便在preHandler里使用进行更方便的验证
+     * @return
+     */
     public Map<String, String> doPay(String fee, String ip, String openId, Map<String, String> otherArgs) {
         HashMap<String, String> data = new HashMap<>();
-        data.put("body", "vip充值");
+        data.put("body", "乐帮学园--跑腿业务小费");
         data.put("out_trade_no", UUIDUtil.generateUUID32());
         data.put("device_info", "WEB");
         data.put("total_fee", fee);
@@ -107,6 +115,11 @@ public class PayService {
         }
     }
 
+    /**
+     * 获取页面用于吊起支付的参数
+     * @param payResult
+     * @return
+     */
     public Map<String, String> getH5PayParams(Map<String, String> payResult) {
 
         Map<String, String> h5Result = new HashMap<>();

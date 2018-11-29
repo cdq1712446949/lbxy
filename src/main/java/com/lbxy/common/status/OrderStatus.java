@@ -7,8 +7,8 @@ package com.lbxy.common.status;
  */
 public class OrderStatus {
     //status
-    //TODO 先将UN_PAY修改为1以便于页面展示,等微信支付完成之后改为0
-    public static final int UN_PAYED = 1;//表示订单已发布但是未支付
+    //如果在没有微信支付的状态下测试的话,将UN_PAY修改为1以便于页面展示,等微信支付完成之后改为0
+    public static final int UN_PAYED = 0;//表示订单已发布但是未支付
     public static final int UN_COMPLETED = 1;//表示订单已经支付，未被接单
     public static final int WAIT_COMPLETE = 2;//表示订单被接单但是并未完成
     public static final int COMPLETED = 3;//表示订单完成状态，处于待结算状态

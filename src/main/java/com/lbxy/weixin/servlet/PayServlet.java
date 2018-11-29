@@ -2,7 +2,6 @@ package com.lbxy.weixin.servlet;
 
 import com.alibaba.fastjson.JSON;
 import com.lbxy.common.response.MessageVoUtil;
-import com.lbxy.core.plugins.cache.InjectionCache;
 import com.lbxy.core.plugins.cache.Injector;
 import com.lbxy.core.utils.JWTUtil;
 import com.lbxy.model.User;
@@ -52,7 +51,7 @@ public class PayServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
 
         String ip = req.getRemoteAddr();
@@ -62,10 +61,13 @@ public class PayServlet extends HttpServlet {
         String openId = currentUser.getOpenId();
         long userId = currentUser.getId();
 
-        Map<String, String> result = PAY_SERVICE.doPay(fee, ip, openId, new HashMap<String, String>() {{
-            put("orderId", orderId);
-            put("userId", String.valueOf(userId));
-        }});
+        Map<String, String> result = PAY_SERVICE.doPay(fee, ip, openId, new HashMap<String, String>() {
+            private static final long serialVersionUID = 8896468174858046144L;
+            {
+                put("orderId", orderId);
+                put("userId", String.valueOf(userId));
+            }
+        });
 
         PrintWriter out = resp.getWriter();
         out.print(JSON.toJSONString(PAY_SERVICE.getH5PayParams(result)));
